@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Welcome to Nemotron</title>
+<meta name="theme-color" content="#0A0A0A" />
+<link rel="icon" type="image/png" href="assets/logo/nemotron-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="design-system.css" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#onboardMain">Skip to content</a>
+
+<main id="onboardMain" class="onboarding">
+  <div class="onboarding__card" id="onboardStep" data-step="1">
+
+    <!-- Step 1 -->
+    <div class="onboard-panel" data-panel="1">
+      <img class="onboarding__mark" src="assets/logo/nemotron-192.png" alt="Nemotron" width="56" height="56" />
+      <span class="badge badge--brand">BETA v1.0</span>
+      <h1 style="font-size: var(--fs-h1);">Welcome to Nemotron</h1>
+      <p>NVIDIA's open, efficient AI model family — ready to reason, code, and build alongside you.</p>
+      <div class="onboarding__feature-list">
+        <div class="onboarding__feature">
+          <svg width="20" height="20"><use href="#icon-bolt"/></svg>
+          <span class="onboarding__feature-text">Fast, GPU-optimized inference</span>
+        </div>
+        <div class="onboarding__feature">
+          <svg width="20" height="20"><use href="#icon-layers"/></svg>
+          <span class="onboarding__feature-text">Nano, Super, and Ultra model sizes</span>
+        </div>
+        <div class="onboarding__feature">
+          <svg width="20" height="20"><use href="#icon-shield"/></svg>
+          <span class="onboarding__feature-text">Open weights, transparent training</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 (hidden by default) -->
+    <div class="onboard-panel hidden" data-panel="2">
+      <span class="modal__icon modal__icon--brand" style="margin-inline:auto;">
+        <svg><use href="#icon-cpu"/></svg>
+      </span>
+      <h1 style="font-size: var(--fs-h1);">Choose your model</h1>
+      <p>You can switch between model sizes anytime from the model selector once you're in.</p>
+      <div class="stack gap-3" style="width:100%; text-align:left; margin-top: var(--space-2);">
+        <label class="card" style="padding: var(--space-4); display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+          <span>
+            <strong style="display:block;">Nemotron Nano</strong>
+            <span class="text-caption">8B · fastest, runs on-device</span>
+          </span>
+          <input type="radio" name="modelChoice" checked />
+        </label>
+        <label class="card" style="padding: var(--space-4); display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+          <span>
+            <strong style="display:block;">Nemotron Super</strong>
+            <span class="text-caption">49B · balanced reasoning</span>
+          </span>
+          <input type="radio" name="modelChoice" />
+        </label>
+      </div>
+    </div>
+
+    <!-- Step 3 (hidden by default) -->
+    <div class="onboard-panel hidden" data-panel="3">
+      <span class="modal__icon modal__icon--brand" style="margin-inline:auto;">
+        <svg><use href="#icon-check-circle"/></svg>
+      </span>
+      <h1 style="font-size: var(--fs-h1);">You're all set</h1>
+      <p>Your workspace is ready. Jump in and start your first conversation with Nemotron.</p>
+    </div>
+
+    <div class="onboarding__steps" aria-hidden="true">
+      <span class="onboarding__dot is-active" data-dot="1"></span>
+      <span class="onboarding__dot" data-dot="2"></span>
+      <span class="onboarding__dot" data-dot="3"></span>
+    </div>
+
+    <div class="cluster gap-3" style="width:100%; justify-content:center; margin-top: var(--space-3);">
+      <button class="btn btn--ghost" type="button" id="onboardBack" style="visibility:hidden;">Back</button>
+      <button class="btn btn--primary btn--lg" type="button" id="onboardNext">Continue</button>
+    </div>
+  </div>
+</main>
+
+<div class="toast-region" id="toastRegion" aria-live="polite"></div>
+
+<div aria-hidden="true" style="display:none">
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+    <symbol id="icon-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 8l10 5 10-5-10-5z"/><path d="M2 13l10 5 10-5"/></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+    <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.3 2.3 4.7-5"/></symbol>
+  </svg>
+</div>
+
+<script src="app.js"></script>
+<script>
+  (function () {
+    const total = 3;
+    let step = 1;
+    const panels = document.querySelectorAll('.onboard-panel');
+    const dots = document.querySelectorAll('[data-dot]');
+    const nextBtn = document.getElementById('onboardNext');
+    const backBtn = document.getElementById('onboardBack');
+
+    function render() {
+      panels.forEach(p => p.classList.toggle('hidden', Number(p.dataset.panel) !== step));
+      dots.forEach(d => d.classList.toggle('is-active', Number(d.dataset.dot) === step));
+      backBtn.style.visibility = step === 1 ? 'hidden' : 'visible';
+      nextBtn.textContent = step === total ? 'Go to app' : 'Continue';
+    }
+    nextBtn.addEventListener('click', () => {
+      if (step < total) { step++; render(); }
+      else if (window.NemotronToast) {
+        window.NemotronToast('success', 'Welcome aboard', 'Setup complete — this is a foundation-milestone mockup.');
+      }
+    });
+    backBtn.addEventListener('click', () => { if (step > 1) { step--; render(); } });
+    render();
+  })();
+</script>
+</body>
+</html>
