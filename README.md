@@ -3,21 +3,40 @@
 Frontend-only, static, GitHub Pages-ready. No frameworks, no build step —
 plain HTML, CSS, and vanilla JS.
 
-## What's included
+## Folder structure
 
-| File | Purpose |
-|---|---|
-| `index.html` | Landing page (hero, features, model highlights, CTA) + component showcase |
-| `onboarding.html` | Welcome / onboarding flow (3-step) |
-| `auth.html` | Standalone sign-in mockup (frontend only, no backend) |
-| `design-system.css` | Design tokens only — color, type, spacing, radius, shadow, motion |
-| `styles.css` | Reset, layout, and every reusable component |
-| `app.js` | Vanilla JS behavior: splash, drawer, modals, toasts, dropdown, context menu, offline detection |
-| `assets/logo/` | Nemotron logo exported at all required sizes + Apple touch icon |
-| `assets/favicon.ico` | Multi-size favicon (16/32/48) |
-| `assets/icons/sprite.svg` | Standalone icon sprite (also inlined in each HTML page for static-host reliability) |
-| `site.webmanifest` | PWA-style manifest referencing the Nemotron icon set |
-| `.nojekyll` | Disables Jekyll processing on GitHub Pages |
+```
+.
+├── index.html                  # Landing page + component showcase (entry point)
+├── site.webmanifest            # PWA-style manifest
+├── .nojekyll                   # Disables Jekyll processing on GitHub Pages
+├── README.md
+│
+├── pages/                      # Secondary standalone pages
+│   ├── onboarding.html         # 3-step welcome / onboarding flow
+│   └── auth.html               # Sign-in mockup (frontend only, no backend)
+│
+├── css/
+│   ├── design-system.css       # Tokens only — color, type, spacing, radius, shadow, motion
+│   └── styles.css              # Reset, layout, and every reusable component
+│
+├── js/
+│   └── app.js                  # Vanilla JS: splash, drawer, modals, toasts, dropdown,
+│                                # context menu, offline detection
+│
+└── assets/
+    ├── logo/                   # Nemotron logo exported at all required sizes
+    │   ├── nemotron-logo-source.png
+    │   ├── nemotron-16.png … nemotron-512.png
+    │   └── apple-touch-icon.png
+    ├── favicon/
+    │   └── favicon.ico         # Multi-size favicon (16/32/48)
+    └── icons/
+        └── sprite.svg          # Standalone reference icon sprite
+                                 # (icons actually used on each page are also
+                                 # inlined in that page's HTML for reliability
+                                 # on static hosts — no cross-file SVG fetch)
+```
 
 ## Design tokens
 
@@ -27,7 +46,7 @@ plain HTML, CSS, and vanilla JS.
 - **Surfaces:** glassmorphism (`.glass`, `.card--glass`, navbar, modal scrim) via `backdrop-filter` + low-opacity white borders.
 - **Motion:** one page-load moment (splash pulse, hero mark fade-in) + purposeful hover/open transitions; all durations collapse under `prefers-reduced-motion`.
 
-## Components (all in `styles.css`)
+## Components (all in `css/styles.css`)
 
 Buttons (primary/secondary/ghost/danger, sizes, loading, disabled), inputs
 (with icons, error state, password toggle), switches, dropdowns, chips,
@@ -40,7 +59,13 @@ offline banner, navbar + mobile drawer, splash screen.
 Chat interface, settings, profile pages, and client-side routing — these
 land in later milestones.
 
-## Deploying
+## Deploying to GitHub Pages
 
-Push this folder to a GitHub repo and enable Pages on the root (or `/docs`).
-No build step required.
+1. Push this repo (with this exact folder structure) to GitHub.
+2. Go to **Settings → Pages**.
+3. Set **Source** to the `main` branch, root folder (`/`).
+4. Save — your site will publish at `https://<username>.github.io/<repo>/`.
+
+No build step, no dependencies to install. `index.html` at the repo root
+is the entry point; `pages/onboarding.html` and `pages/auth.html` are
+reached via relative links from there in later milestones.
