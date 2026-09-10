@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://nvidia-ai-studio.github.io/</loc>
-    <lastmod>2025-01-15</lastmod>
+    <loc>https://accelerate.example.com/index.html</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://nvidia-ai-studio.github.io/404.html</loc>
-    <lastmod>2025-01-15</lastmod>
+    <loc>https://accelerate.example.com/pages/about.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.1</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://accelerate.example.com/pages/pricing.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://accelerate.example.com/pages/docs.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://accelerate.example.com/pages/contact.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://accelerate.example.com/pages/privacy.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://accelerate.example.com/pages/terms.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

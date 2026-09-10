@@ -1,121 +1,128 @@
-# NVIDIA AI Studio — Enterprise DGX Cloud
+# Accelerate — Marketing Site
 
-> Stitch-inspired dark glassmorphism landing page for NVIDIA AI Studio. Frontend-only, GitHub Pages ready.
+A clean, production-ready, frontend-only marketing site for **Accelerate**, a GPU inference infrastructure platform. Built as a static HTML/CSS/JS site with no build step, no framework, and no backend — ready to open directly in a browser or deploy to any static host.
 
-![License](https://img.shields.io/badge/license-MIT-green)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![GitHub Pages](https://img.shields.io/badge/deploy-GitHub%20Pages-black)
+The visual language (dark surface palette, lime-green accent, glassmorphism panels, monospace telemetry labels, glow accents) is adapted from a Stitch-generated dark-mode dashboard concept into a full multi-page marketing site: navigation, hero, feature grid, workflow, code showcase, pricing, docs, contact, and legal pages.
 
-## Overview
+## Features
 
-A production-ready, responsive landing page showcasing NVIDIA AI Studio's enterprise AI workspace. Built with clean semantic HTML5, modern CSS, and vanilla JavaScript — no frameworks, no dependencies, no build step.
+- **Zero dependencies** — vanilla HTML5, modern CSS (custom properties, `color-mix()`, container-aware layout), and vanilla JavaScript. No npm install, no bundler.
+- **Dark / light theme** — toggle in the navbar, persisted in `localStorage`, respects the OS preference on first visit, and applies before first paint (no flash of the wrong theme).
+- **Responsive** — mobile-first layout with a slide-in navigation drawer under 860px.
+- **Accessible** — semantic landmarks, skip-to-content link, visible focus states, `aria-*` attributes on interactive controls, reduced-motion support.
+- **SEO-ready** — per-page meta descriptions, canonical URLs, Open Graph and Twitter Card tags, `robots.txt`, `sitemap.xml`, and a generated OG share image.
+- **Scroll-reveal animation** — sections animate in via `IntersectionObserver`, degrades gracefully (and respects `prefers-reduced-motion`).
+- **Working contact form** — client-side validated; ships with no backend wired up (see note below).
 
-### Features
-
-- **Dark/Light Mode** — Toggle with system preference detection and localStorage persistence
-- **Responsive Design** — Mobile-first, works on all screen sizes (320px to 4K)
-- **Glassmorphism UI** — Frosted glass surfaces, NVIDIA green glow effects, layered depth
-- **Scroll Animations** — IntersectionObserver-powered reveals with staggered timing
-- **Accessible** — Semantic HTML5, ARIA labels, keyboard navigation, skip links, reduced motion
-- **SEO Optimized** — Meta tags, Open Graph, Twitter Cards, robots.txt, sitemap.xml
-- **GitHub Pages Ready** — No build step, no backend, deploy directly
-
-### Tech Stack
-
-| Technology | Usage |
-|---|---|
-| HTML5 | Semantic structure |
-| CSS3 | Custom properties, Grid, Flexbox, Glassmorphism |
-| JavaScript | Vanilla ES6+ modules, IntersectionObserver |
-| Geist | Primary typeface |
-| JetBrains Mono | Monospace / code typeface |
-| Material Symbols | Icon system |
-
-## Project Structure
+## Folder structure
 
 ```
-project/
-├── index.html              # Main entry page
-├── 404.html                # Custom 404 page
-├── robots.txt              # SEO robots directive
-├── sitemap.xml             # XML sitemap
-├── .gitignore              # Git ignore rules
-├── .nojekyll               # Disable Jekyll on GitHub Pages
-├── README.md               # This file
-├── favicon/
-│   └── favicon.svg         # SVG favicon
+.
+├── index.html              # Homepage: hero, features, workflow, code showcase, CTA
+├── 404.html                 # Root-level 404 (required by GitHub Pages)
+├── robots.txt
+├── sitemap.xml
 ├── styles/
-│   ├── main.css            # Design tokens, base styles, typography
-│   ├── components.css      # All component styles (navbar, cards, etc.)
-│   ├── animations.css      # Keyframes, scroll reveal, transitions
-│   └── responsive.css      # Media queries and breakpoints
+│   ├── main.css              # Imports every module below, in order
+│   ├── tokens.css            # Design tokens: color, type scale, spacing, radii
+│   ├── base.css               # Reset, scrollbars, focus states
+│   ├── typography.css        # Type-scale utility classes
+│   ├── navbar.css
+│   ├── buttons.css
+│   ├── hero.css
+│   ├── features.css
+│   ├── cta-footer.css
+│   ├── pages.css              # Interior page layout (pricing, docs, contact, prose, 404)
+│   └── animations.css
 ├── scripts/
-│   ├── main.js             # App entry point and initialization
-│   ├── theme.js            # Dark/light mode manager
-│   ├── navigation.js       # Responsive nav, mobile menu, scroll
-│   └── animations.js       # Scroll animation controller
-├── assets/                 # Static assets (images, icons)
-├── components/             # Reusable HTML partials (for reference)
-└── pages/                  # Additional pages (if needed)
+│   ├── theme.js               # Dark/light toggle + persistence
+│   ├── nav.js                  # Mobile nav drawer + sticky header
+│   ├── reveal.js               # Scroll-reveal via IntersectionObserver
+│   ├── main.js                 # Footer year, prompt-deck demo, copy-to-clipboard
+│   └── contact-form.js         # Contact form validation + local submit
+├── components/
+│   ├── navbar.html             # Reference partial (see components/README.md)
+│   ├── footer.html             # Reference partial
+│   └── README.md
+├── pages/
+│   ├── about.html
+│   ├── pricing.html
+│   ├── docs.html
+│   ├── contact.html
+│   ├── privacy.html
+│   ├── terms.html
+│   └── 404.html
+├── assets/
+│   └── img/
+│       ├── og-cover.svg
+│       └── og-cover.png        # Used for Open Graph / Twitter Card previews
+└── favicon/
+    ├── favicon.ico
+    ├── favicon.svg
+    ├── favicon-16x16.png
+    ├── favicon-32x32.png
+    ├── apple-touch-icon.png
+    ├── android-chrome-192x192.png
+    ├── android-chrome-512x512.png
+    └── site.webmanifest
 ```
 
-## Getting Started
+## Local development
 
-### Local Development
+No build step is required. Any static file server works:
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/nvidia-ai-studio.git
-   cd nvidia-ai-studio
-   ```
+```bash
+# Python
+python3 -m http.server 8000
 
-2. **Open in browser**
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve .
-   
-   # Using VS Code
-   # Install "Live Server" extension, right-click index.html → Open with Live Server
-   ```
+# Node
+npx serve .
+```
 
-3. **Visit** `http://localhost:8000`
+Then open `http://localhost:8000`.
 
-### Deploy to GitHub Pages
+Opening `index.html` directly via `file://` also works for a quick look, though a local server is recommended so root-relative paths (`/styles/main.css`, etc.) resolve exactly as they will in production.
 
-1. Push this repository to GitHub
-2. Go to **Settings → Pages**
-3. Set source to **Deploy from a branch**
-4. Select **main** branch and **/ (root)** folder
-5. Click **Save** — your site will be live in ~60 seconds
+## Deploying to GitHub Pages
 
-## Design System
+1. Push this repository to GitHub.
+2. In the repo, go to **Settings → Pages**.
+3. Under **Build and deployment**, set **Source** to `Deploy from a branch`.
+4. Choose the branch (e.g. `main`) and the `/ (root)` folder, then save.
+5. GitHub Pages will publish the site at `https://<your-username>.github.io/<repo-name>/`.
 
-### Color Palette (Dark Mode)
+Because every internal link in this project uses root-relative paths (`/styles/main.css`, `/pages/pricing.html`, etc.), the site works cleanly at a custom domain or at `https://<username>.github.io/` (root). If you deploy under a **project subpath** instead (`https://<username>.github.io/<repo-name>/`), update the root-relative paths to be relative to that subpath, or add a `<base href="/<repo-name>/">` tag in the `<head>` of each page.
 
-| Token | Hex | Usage |
-|---|---|---|
-| Canvas | `#0B0D0E` | Page background |
-| Surface Subtle | `#14171A` | Cards, sidebar |
-| Surface Elevated | `#1E2328` | Floating panels |
-| Border Default | `#2A313A` | Container borders |
-| Primary | `#94da32` | Interactive green |
-| Primary Container | `#76B900` | NVIDIA brand green |
-| Text Primary | `#F2F5F8` | Headings & body |
-| Text Secondary | `#9EACB9` | Supporting text |
-| Text Muted | `#5E6C79` | Metadata & hints |
+The root-level `404.html` is picked up automatically by GitHub Pages for unmatched routes.
 
-### Typography
+## Updating the canonical domain
 
-- **Geist** — Headlines, body, navigation
-- **JetBrains Mono** — Code, badges, telemetry, metadata
+Before going live, replace every occurrence of `https://accelerate.example.com` (used in canonical links and Open Graph tags) with your real production domain:
+
+```bash
+grep -rl "accelerate.example.com" . --include="*.html" --include="*.xml" --include="*.txt" \
+  | xargs sed -i 's#accelerate.example.com#yourdomain.com#g'
+```
+
+## Wiring up the contact form
+
+The contact form (`pages/contact.html` + `scripts/contact-form.js`) validates input and shows a success state entirely client-side — there is no backend in this project. Before launch, connect it to a real endpoint:
+
+- A form service (Formspree, Netlify Forms, Getform, etc.), or
+- Your own backend API via `fetch()`
+
+Replace the `// Frontend-only demo` block in `scripts/contact-form.js` with your real submission logic.
+
+## Customizing the design system
+
+All colors, type sizes, spacing, and radii are defined once in `styles/tokens.css` as CSS custom properties. Changing the accent color, for example, means editing `--primary` and `--primary-bright` in one place — every button, chip, glow, and link updates automatically.
+
+Light mode is defined as an override block under `[data-theme="light"]` in the same file.
+
+## Browser support
+
+Built against current evergreen browsers (Chrome, Firefox, Safari, Edge — last 2 versions). Uses `color-mix()`, which has been supported in all major browsers since 2023; no polyfill is included.
 
 ## License
 
-MIT License — feel free to use, modify, and distribute.
-
----
-
-*Accelerated by TensorRT-LLM & NeMo Guardrails*
+This is a template project. Replace the placeholder legal copy in `pages/privacy.html` and `pages/terms.html` with real, counsel-reviewed policies before using this in production.

@@ -1,78 +1,42 @@
 /**
- * NVIDIA AI Studio — Theme Manager
- * Handles dark/light mode toggle with localStorage persistence
- * and system preference detection.
+ * Theme toggle — persists the user's dark/light preference in localStorage
+ * and falls back to the OS-level preference on first visit.
  */
+(function () {
+  "use strict";
 
-const ThemeManager = (() => {
-  const STORAGE_KEY = 'nvidia-ai-studio-theme';
-  const DARK = 'dark';
-  const LIGHT = 'light';
+  const STORAGE_KEY = "accelerate-theme";
+  const root = document.documentElement;
 
-  let currentTheme = DARK;
-
-  /**
-   * Detect the user's preferred color scheme from the OS.
-   */
-  function getSystemPreference() {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return LIGHT;
-    }
-    return DARK;
+  function getPreferredTheme() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark") return stored;
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
   }
 
-  /**
-   * Apply a theme to the document.
-   */
   function applyTheme(theme) {
-    currentTheme = theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem(STORAGE_KEY, theme);
-    updateToggleIcon(theme);
-  }
-
-  /**
-   * Update the theme toggle button icon.
-   */
-  function updateToggleIcon(theme) {
-    const icon = document.getElementById('theme-icon');
-    if (icon) {
-      icon.textContent = theme === DARK ? 'dark_mode' : 'light_mode';
+    if (theme === "light") {
+      root.setAttribute("data-theme", "light");
+    } else {
+      root.removeAttribute("data-theme");
     }
+    root.style.colorScheme = theme;
+    document
+      .querySelectorAll("[data-theme-toggle]")
+      .forEach((btn) => btn.setAttribute("aria-pressed", String(theme === "light")));
   }
 
-  /**
-   * Toggle between dark and light themes.
-   */
-  function toggle() {
-    const newTheme = currentTheme === DARK ? LIGHT : DARK;
-    applyTheme(newTheme);
-  }
+  // Apply immediately (also mirrored by the inline blocking script in <head>)
+  applyTheme(getPreferredTheme());
 
-  /**
-   * Initialize the theme manager.
-   */
-  function init() {
-    // Priority: localStorage > system preference > dark default
-    const saved = localStorage.getItem(STORAGE_KEY);
-    const theme = saved || getSystemPreference();
-    applyTheme(theme);
-
-    // Bind toggle button
-    const toggleBtn = document.getElementById('theme-toggle');
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', toggle);
-    }
-
-    // Listen for system preference changes
-    if (window.matchMedia) {
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!localStorage.getItem(STORAGE_KEY)) {
-          applyTheme(e.matches ? DARK : LIGHT);
-        }
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+        const next = current === "light" ? "dark" : "light";
+        localStorage.setItem(STORAGE_KEY, next);
+        applyTheme(next);
       });
-    }
-  }
-
-  return { init, toggle, getTheme: () => currentTheme };
+    });
+  });
 })();

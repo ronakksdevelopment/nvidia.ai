@@ -1,0 +1,119 @@
+/* ==========================================================================
+   Typography utility classes — mirrors the token type-scale exactly
+   ========================================================================== */
+
+.text-display-hero {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-hero-mobile);
+  line-height: var(--lh-display-hero-mobile);
+  letter-spacing: var(--ls-display-hero-mobile);
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .text-display-hero {
+    font-size: var(--fs-display-hero);
+    line-height: var(--lh-display-hero);
+    letter-spacing: var(--ls-display-hero);
+  }
+}
+
+.text-headline-xl {
+  font-family: var(--font-display);
+  font-size: var(--fs-headline-xl-mobile);
+  line-height: var(--lh-headline-xl-mobile);
+  letter-spacing: var(--ls-headline-xl-mobile);
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .text-headline-xl {
+    font-size: var(--fs-headline-xl);
+    line-height: var(--lh-headline-xl);
+    letter-spacing: var(--ls-headline-xl);
+  }
+}
+
+.text-headline-lg {
+  font-family: var(--font-display);
+  font-size: var(--fs-headline-lg);
+  line-height: var(--lh-headline-lg);
+  letter-spacing: var(--ls-headline-lg);
+  font-weight: 500;
+}
+
+.text-headline-md {
+  font-family: var(--font-display);
+  font-size: var(--fs-headline-md);
+  line-height: var(--lh-headline-md);
+  letter-spacing: var(--ls-headline-md);
+  font-weight: 500;
+}
+
+.text-headline-sm {
+  font-family: var(--font-display);
+  font-size: var(--fs-headline-sm);
+  line-height: var(--lh-headline-sm);
+  letter-spacing: var(--ls-headline-sm);
+  font-weight: 600;
+}
+
+.text-body-lg {
+  font-family: var(--font-display);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-body-lg);
+  letter-spacing: var(--ls-body-lg);
+  font-weight: 400;
+}
+
+.text-body-md {
+  font-family: var(--font-display);
+  font-size: var(--fs-body-md);
+  line-height: var(--lh-body-md);
+  letter-spacing: var(--ls-body-md);
+  font-weight: 400;
+}
+
+.text-body-sm {
+  font-family: var(--font-display);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body-sm);
+  font-weight: 400;
+}
+
+.text-label-badge {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label-badge);
+  line-height: var(--lh-label-badge);
+  letter-spacing: var(--ls-label-badge);
+  font-weight: 600;
+}
+
+.text-label-meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label-meta);
+  line-height: var(--lh-label-meta);
+  letter-spacing: var(--ls-label-meta);
+  font-weight: 500;
+}
+
+.text-code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-sm);
+}
+
+.text-primary-color {
+  color: var(--primary-bright);
+}
+
+.text-secondary-color {
+  color: var(--text-secondary);
+}
+
+.text-muted-color {
+  color: var(--text-muted);
+}
+
+.text-balance {
+  text-wrap: balance;
+}

@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Design Tokens
+   Color, type, spacing and radius scale for the Accelerated / NVIDIA-inspired
+   dark interface. Values are lifted 1:1 from the Stitch design reference so
+   the rebuilt site matches the source palette and rhythm exactly.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- Surfaces -------------------------------------------------------- */
+  --surface-canvas: #0b0d0e;
+  --surface-subtle: #14171a;
+  --surface-elevated: #1e2328;
+  --surface-overlay: #242a31;
+  --surface-container-lowest: #0b0e11;
+  --surface-container-low: #191c1f;
+  --surface-container: #1d2023;
+  --surface-container-high: #272a2d;
+  --surface-container-highest: #323538;
+  --surface-bright: #37393d;
+
+  /* ---- Borders ----------------------------------------------------------- */
+  --border-subtle: #1f252c;
+  --border-default: #2a313a;
+  --border-active: #76b900;
+
+  /* ---- Text ---------------------------------------------------------------*/
+  --text-primary: #f2f5f8;
+  --text-secondary: #9eacb9;
+  --text-muted: #5e6c79;
+  --text-on-primary: #0b0d0e;
+
+  /* ---- Brand / accent ------------------------------------------------- */
+  --primary: #76b900;
+  --primary-bright: #94da32;
+  --primary-hover: #8be300;
+  --primary-fixed: #aff74e;
+  --secondary: #abff48;
+  --glow-accent: rgba(118, 185, 0, 0.22);
+  --glow-intense: rgba(139, 227, 0, 0.35);
+
+  /* ---- State ------------------------------------------------------------ */
+  --state-error: #ff4d4d;
+  --state-warning: #ffb300;
+  --state-info: #00a3ff;
+
+  /* ---- Type families ----------------------------------------------------- */
+  --font-display: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* ---- Type scale (size / line-height / tracking) ------------------------ */
+  --fs-display-hero: 44px;
+  --lh-display-hero: 52px;
+  --ls-display-hero: -0.03em;
+
+  --fs-display-hero-mobile: 32px;
+  --lh-display-hero-mobile: 38px;
+  --ls-display-hero-mobile: -0.02em;
+
+  --fs-headline-xl: 30px;
+  --lh-headline-xl: 38px;
+  --ls-headline-xl: -0.025em;
+
+  --fs-headline-xl-mobile: 24px;
+  --lh-headline-xl-mobile: 30px;
+  --ls-headline-xl-mobile: -0.015em;
+
+  --fs-headline-lg: 22px;
+  --lh-headline-lg: 28px;
+  --ls-headline-lg: -0.015em;
+
+  --fs-headline-md: 18px;
+  --lh-headline-md: 24px;
+  --ls-headline-md: -0.01em;
+
+  --fs-headline-sm: 15px;
+  --lh-headline-sm: 20px;
+  --ls-headline-sm: -0.005em;
+
+  --fs-body-lg: 16px;
+  --lh-body-lg: 26px;
+  --ls-body-lg: -0.01em;
+
+  --fs-body-md: 14px;
+  --lh-body-md: 22px;
+  --ls-body-md: -0.005em;
+
+  --fs-body-sm: 13px;
+  --lh-body-sm: 18px;
+
+  --fs-label-badge: 11px;
+  --lh-label-badge: 14px;
+  --ls-label-badge: 0.04em;
+
+  --fs-label-meta: 12px;
+  --lh-label-meta: 16px;
+  --ls-label-meta: 0.02em;
+
+  /* ---- Radius -------------------------------------------------------------*/
+  --radius-sm: 0.25rem;
+  --radius-default: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ---- Spacing ------------------------------------------------------------*/
+  --space-2xs: 0.125rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-base: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --content-max: 74rem;
+  --prose-max: 48rem;
+  --nav-height: 4.5rem;
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 220ms;
+  --duration-slow: 420ms;
+
+  /* ---- Elevation --------------------------------------------------------- */
+  --shadow-card: 0 12px 36px -8px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.02);
+  --shadow-modal: 0 12px 36px -8px rgba(0, 0, 0, 0.75), 0 0 0 1px var(--border-default);
+  --shadow-glow: 0 0 25px -5px var(--glow-accent);
+  --shadow-glow-strong: 0 0 35px 2px var(--glow-intense);
+}
+
+/* Light theme overrides, activated via [data-theme="light"] on <html> */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --surface-canvas: #f7f8f5;
+  --surface-subtle: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-overlay: #eef1e9;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f1f3ee;
+  --surface-container: #eceee7;
+  --surface-container-high: #e3e6dc;
+  --surface-container-highest: #d7dbcd;
+  --surface-bright: #ffffff;
+
+  --border-subtle: #e2e5db;
+  --border-default: #d3d8c7;
+  --border-active: #5e9400;
+
+  --text-primary: #171a14;
+  --text-secondary: #4b5442;
+  --text-muted: #7c8570;
+  --text-on-primary: #0b0d0e;
+
+  --primary: #5e9400;
+  --primary-bright: #5e9400;
+  --primary-hover: #4f7d00;
+
+  --shadow-card: 0 12px 30px -12px rgba(23, 26, 20, 0.16), 0 0 0 1px rgba(23, 26, 20, 0.03);
+  --shadow-modal: 0 16px 40px -12px rgba(23, 26, 20, 0.22), 0 0 0 1px var(--border-default);
+  --shadow-glow: 0 0 25px -8px rgba(94, 148, 0, 0.25);
+  --shadow-glow-strong: 0 0 30px -4px rgba(94, 148, 0, 0.35);
+}

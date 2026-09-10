@@ -1,43 +1,79 @@
 /**
- * NVIDIA AI Studio — Main Application Entry Point
- * Initializes all modules and handles global application state.
+ * General page behaviour: footer year, prompt-deck micro interaction demo,
+ * and copy-to-clipboard for the code showcase.
  */
+(function () {
+  "use strict";
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize core modules
-  ThemeManager.init();
-  Navigation.init();
-  ScrollAnimations.init();
+  document.addEventListener("DOMContentLoaded", function () {
+    // Footer year
+    document.querySelectorAll("[data-year]").forEach((el) => {
+      el.textContent = String(new Date().getFullYear());
+    });
 
-  // Console welcome message
-  console.log(
-    '%c⚡ NVIDIA AI Studio %cv1.0.0',
-    'background: #76B900; color: #0B0D0E; padding: 4px 8px; border-radius: 4px 0 0 4px; font-weight: bold;',
-    'background: #1E2328; color: #94da32; padding: 4px 8px; border-radius: 0 4px 4px 0; font-family: monospace;'
-  );
-  console.log(
-    '%cEnterprise DGX Cloud · TensorRT-LLM · NeMo Guardrails',
-    'color: #9EACB9; font-size: 11px;'
-  );
+    // Prompt deck demo: live character counter + enter-to-"submit" pulse
+    const textarea = document.querySelector("[data-prompt-input]");
+    const counter = document.querySelector("[data-prompt-counter]");
+    const submitBtn = document.querySelector("[data-prompt-submit]");
+    const maxContext = 128000;
 
-  // Keyboard shortcut: Ctrl/Cmd + K to scroll to get-started
-  document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-      e.preventDefault();
-      const target = document.getElementById('get-started');
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    function updateCounter() {
+      if (!textarea || !counter) return;
+      const len = textarea.value.length;
+      const kTokens = Math.min(Math.round(len / 4), maxContext);
+      counter.textContent = kTokens.toLocaleString() + " / 128k ctx";
+    }
+
+    if (textarea) {
+      textarea.addEventListener("input", updateCounter);
+      updateCounter();
+
+      textarea.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          triggerSubmitPulse();
+        }
+      });
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener("click", triggerSubmitPulse);
+    }
+
+    function triggerSubmitPulse() {
+      if (!submitBtn) return;
+      submitBtn.animate(
+        [
+          { transform: "scale(1)" },
+          { transform: "scale(0.9)" },
+          { transform: "scale(1)" },
+        ],
+        { duration: 260, easing: "cubic-bezier(0.16,1,0.3,1)" }
+      );
+      if (textarea && textarea.value.trim().length) {
+        textarea.value = "";
+        updateCounter();
       }
     }
-  });
 
-  // Add active nav link style
-  const style = document.createElement('style');
-  style.textContent = `
-    .navbar__link--active {
-      color: var(--color-primary) !important;
-      background: rgba(118, 185, 0, 0.1);
-    }
-  `;
-  document.head.appendChild(style);
-});
+    // Copy-to-clipboard for code showcase
+    document.querySelectorAll("[data-copy-target]").forEach((btn) => {
+      btn.addEventListener("click", async function () {
+        const targetId = btn.getAttribute("data-copy-target");
+        const target = targetId ? document.getElementById(targetId) : null;
+        if (!target) return;
+        const text = target.textContent || "";
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = btn.textContent;
+          btn.textContent = "Copied";
+          setTimeout(() => {
+            btn.textContent = original;
+          }, 1600);
+        } catch (err) {
+          /* Clipboard API unavailable — fail silently, no console noise for users */
+        }
+      });
+    });
+  });
+})();
