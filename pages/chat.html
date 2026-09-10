@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/logo/nemotron-16.png" />
 <link rel="icon" type="image/x-icon" href="../assets/favicon/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="../assets/logo/apple-touch-icon.png" />
-<link rel="manifest" href="../site.webmanifest" />
+<link rel="manifest" href="../manifest.json" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,6 +31,11 @@
 <div class="offline-banner" id="offlineBanner" role="status">
   <svg width="16" height="16"><use href="#icon-wifi-off"/></svg>
   <span>You're offline. Some features may be unavailable.</span>
+</div>
+
+<div class="offline-banner guest-banner" id="guestBanner" data-guest-only hidden role="status">
+  <svg width="16" height="16"><use href="#icon-user"/></svg>
+  <span>You're chatting as a guest — nothing here is saved, and this history disappears when you close the tab.</span>
 </div>
 
 <div class="chat-shell" id="chatShell" data-sidebar="expanded">
@@ -85,22 +90,25 @@
       </div>
 
       <button class="account-menu-trigger" id="accountMenuTrigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu">
-        <span class="account-avatar" aria-hidden="true">DK</span>
+        <span class="account-avatar" aria-hidden="true" data-account-initials>DK</span>
         <span class="account-menu-trigger__info">
-          <span class="account-menu-trigger__name">Dev Kumar</span>
-          <span class="account-menu-trigger__plan">Beta access</span>
+          <span class="account-menu-trigger__name" data-account-name>Dev Kumar</span>
+          <span class="account-menu-trigger__plan" data-account-plan>Beta access</span>
         </span>
         <svg class="account-menu-trigger__chevron" width="16" height="16"><use href="#icon-chevron-up"/></svg>
       </button>
 
       <div class="account-menu" id="accountMenu" role="menu" aria-label="Account menu">
         <div class="account-menu__header">
-          <span class="account-avatar account-avatar--lg" aria-hidden="true">DK</span>
+          <span class="account-avatar account-avatar--lg" aria-hidden="true" data-account-initials>DK</span>
           <div>
-            <div class="account-menu__name">Dev Kumar</div>
-            <div class="account-menu__email">dev.kumar@example.com</div>
+            <div class="account-menu__name" data-account-name>Dev Kumar</div>
+            <div class="account-menu__email" data-account-email>dev.kumar@example.com</div>
           </div>
         </div>
+        <p class="text-caption" data-guest-only hidden style="padding: 0 var(--space-2) var(--space-2); color: var(--text-tertiary);">
+          Guest session — nothing here is saved.
+        </p>
         <div class="dropdown__divider"></div>
         <button class="dropdown__item" role="menuitem" type="button" disabled>
           <svg width="16" height="16"><use href="#icon-settings"/></svg>
@@ -491,6 +499,8 @@
   </symbol>
 </svg>
 
+<script src="../js/session.js"></script>
+<script src="../js/router.js"></script>
 <script src="../js/chat.js"></script>
 </body>
 </html>

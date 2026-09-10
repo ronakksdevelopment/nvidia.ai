@@ -620,7 +620,7 @@ Multi-head attention just runs this several times in parallel with different lea
     avatar.className = "msg__avatar";
     avatar.setAttribute("aria-hidden", "true");
     if (msg.role === "user") {
-      avatar.textContent = "DK";
+      avatar.textContent = (window.NemotronSession && window.NemotronSession.getAccount() && window.NemotronSession.getAccount().initials) || "DK";
     } else {
       avatar.innerHTML = `<svg width="16" height="16"><use href="#icon-nemotron-mark"/></svg>`;
     }
@@ -1145,7 +1145,9 @@ Happy to expand on any step.`,
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAccountMenu(); });
   logoutBtn.addEventListener("click", () => {
     closeAccountMenu();
-    showToast("info", "Signed out", "This is a frontend demo — no backend session exists yet.");
+    if (window.NemotronSession) window.NemotronSession.signOut();
+    showToast("info", "Signed out", "Your session has been cleared on this device.");
+    setTimeout(() => { window.location.href = "../index.html"; }, 700);
   });
 
   /* =======================================================================

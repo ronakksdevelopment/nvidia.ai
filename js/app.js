@@ -1,8 +1,63 @@
 /* =========================================================================
    NVIDIA Nemotron — Foundation behavior layer (vanilla JS, no dependencies)
+   Production Milestone 4: adds service-worker registration, install-prompt
+   handling, and guest-mode wiring on top of the original Milestone 1 layer.
+   Every original behavior below is unchanged.
    ========================================================================= */
 (function () {
   "use strict";
+
+  /* -----------------------------------------------------------------------
+     Service worker registration (PWA / offline support)
+     Registered relative to the current document so it works from both the
+     site root and a GitHub Pages project sub-path, and skipped entirely on
+     file:// or unsupported browsers rather than throwing.
+     ----------------------------------------------------------------------- */
+  if ("serviceWorker" in navigator && window.location.protocol.indexOf("http") === 0) {
+    window.addEventListener("load", () => {
+      const here = window.location.pathname;
+      const pagesIdx = here.indexOf("/pages/");
+      const base = pagesIdx !== -1 ? here.slice(0, pagesIdx + 1) : here.slice(0, here.lastIndexOf("/") + 1);
+      navigator.serviceWorker.register(base + "sw.js").catch(() => {
+        /* Offline support degrades gracefully — the site still works fully online. */
+      });
+    });
+  }
+
+  /* -----------------------------------------------------------------------
+     "Add to Home Screen" / install prompt
+     Chromium fires beforeinstallprompt instead of showing its own mini-
+     infobar when we call preventDefault(); we stash the event and surface
+     our own install affordance wherever [data-install-app] exists on the
+     current page (wired up per-page, so pages without the button are
+     unaffected).
+     ----------------------------------------------------------------------- */
+  let deferredInstallPrompt = null;
+  const installButtons = () => document.querySelectorAll("[data-install-app]");
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    installButtons().forEach((btn) => { btn.hidden = false; });
+  });
+
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest("[data-install-app]");
+    if (!trigger || !deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.finally(() => {
+      deferredInstallPrompt = null;
+      installButtons().forEach((btn) => { btn.hidden = true; });
+    });
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    installButtons().forEach((btn) => { btn.hidden = true; });
+    if (window.NemotronToast) {
+      window.NemotronToast("success", "Installed", "Nemotron was added to this device.");
+    }
+  });
 
   /* -----------------------------------------------------------------------
      Splash screen
@@ -16,16 +71,28 @@
   }
 
   /* -----------------------------------------------------------------------
-     Offline / online banner
+     Offline / online banner + toast messaging
+     The banner reflects live state at all times; the toast fires once per
+     transition so reconnecting after a longer offline stretch is actually
+     noticed instead of only shown in a banner that's easy to miss.
      ----------------------------------------------------------------------- */
   const offlineBanner = document.getElementById("offlineBanner");
-  function updateOnlineStatus() {
-    if (!offlineBanner) return;
-    offlineBanner.classList.toggle("is-visible", !navigator.onLine);
+  let wasOffline = !navigator.onLine;
+
+  function updateOnlineStatus(announce) {
+    if (offlineBanner) offlineBanner.classList.toggle("is-visible", !navigator.onLine);
+    if (announce && window.NemotronToast) {
+      if (!navigator.onLine) {
+        window.NemotronToast("warning", "You're offline", "Nemotron will keep working with cached pages until you're back online.");
+      } else if (wasOffline) {
+        window.NemotronToast("success", "Back online", "Your connection has been restored.");
+      }
+    }
+    wasOffline = !navigator.onLine;
   }
-  window.addEventListener("online", updateOnlineStatus);
-  window.addEventListener("offline", updateOnlineStatus);
-  updateOnlineStatus();
+  window.addEventListener("online", () => updateOnlineStatus(true));
+  window.addEventListener("offline", () => updateOnlineStatus(true));
+  updateOnlineStatus(false);
 
   // Manual demo toggle (foundation showcase only)
   const offlineToggle = document.getElementById("offlineToggle");
@@ -285,6 +352,39 @@
     btn.addEventListener("click", () => {
       const type = btn.getAttribute("data-toast");
       showToast(type, null, DEMO_TOAST_MESSAGES[type]);
+    });
+  });
+
+  /* -----------------------------------------------------------------------
+     Guest mode entry points
+     Any element with [data-continue-guest] anywhere in the app (sign-in
+     modal, sign-up modal, auth.html page, onboarding) starts a guest
+     session and routes to chat. Guest sessions never touch localStorage —
+     see js/session.js — which also makes this the correct behavior in
+     private/incognito windows without any extra branching here.
+     ----------------------------------------------------------------------- */
+  document.querySelectorAll("[data-continue-guest]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (window.NemotronSession) window.NemotronSession.continueAsGuest();
+      const inPagesDir = window.location.pathname.indexOf("/pages/") !== -1;
+      window.location.href = inPagesDir ? "chat.html" : "pages/chat.html";
+    });
+  });
+
+  /* -----------------------------------------------------------------------
+     Reusable button loading-state helper (micro-interaction consistency)
+     Any [data-loading-on-submit] form shows its submit button in the same
+     spinner state chat.js/settings.js already use, for a consistent feel
+     across every form in the product without duplicating the CSS class
+     name in five different scripts.
+     ----------------------------------------------------------------------- */
+  document.querySelectorAll("[data-loading-on-submit]").forEach((form) => {
+    form.addEventListener("submit", () => {
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn && !submitBtn.disabled) {
+        submitBtn.classList.add("btn--loading");
+        submitBtn.disabled = true;
+      }
     });
   });
 })();

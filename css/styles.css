@@ -856,6 +856,19 @@ textarea.input { resize: vertical; min-height: 96px; }
 .state-panel__body { font-size: var(--fs-body-sm); color: var(--text-secondary); max-width: 40ch; }
 .state-panel__actions { display: flex; gap: var(--space-3); margin-top: var(--space-2); }
 
+/* 404 page — centers the state-panel in the viewport for a standalone page
+   (every other .state-panel usage lives inside an existing page layout). */
+.not-found-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--space-8);
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+}
+
 .offline-banner {
   display: flex;
   align-items: center;
@@ -872,6 +885,14 @@ textarea.input { resize: vertical; min-height: 96px; }
 }
 .offline-banner.is-visible { display: flex; }
 .offline-banner svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.guest-banner {
+  position: static;
+  background: var(--status-info-bg);
+  color: var(--status-info);
+  border-bottom: 1px solid rgba(77, 163, 229, 0.3);
+}
+.guest-banner:not([hidden]) { display: flex; }
 
 /* =========================================================================
    18. HERO

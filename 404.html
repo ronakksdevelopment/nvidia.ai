@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Page not found — Nemotron</title>
+<meta name="description" content="This page doesn't exist. Redirecting you back to Nemotron." />
+<meta name="theme-color" content="#0A0A0A" />
+<meta name="robots" content="noindex" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logo/nemotron-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/logo/nemotron-16.png" />
+<link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/logo/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.json" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="css/design-system.css" />
+<link rel="stylesheet" href="css/styles.css" />
+
+<script>
+  /* -----------------------------------------------------------------------
+     GitHub Pages has no server-side rewrites, so any deep link or hard
+     refresh to a path that isn't a literal file (e.g. /repo/pages/chat)
+     lands here. We record the attempted path (sessionStorage — tab-scoped,
+     never written to disk) and bounce straight to the real entry point.
+     A meta-refresh fallback covers browsers with JS disabled.
+     ----------------------------------------------------------------------- */
+  (function () {
+    "use strict";
+    var path = window.location.pathname + window.location.search + window.location.hash;
+    try {
+      window.sessionStorage.setItem("nemotron.redirectedFrom", path);
+    } catch (e) { /* private/locked-down context — degrade silently */ }
+
+    // Resolve project base the same way router.js does, so this works both
+    // at a domain root and at a GitHub Pages project sub-path.
+    var here = window.location.pathname;
+    var pagesIdx = here.indexOf("/pages/");
+    var base = pagesIdx !== -1 ? here.slice(0, pagesIdx + 1) : here.slice(0, here.lastIndexOf("/") + 1);
+    var redirectTimer = setTimeout(function () {
+      window.location.replace(base + "index.html");
+    }, 1800);
+
+    document.addEventListener("DOMContentLoaded", function () {
+      var goNowBtn = document.getElementById("goHomeNow");
+      if (goNowBtn) {
+        goNowBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          clearTimeout(redirectTimer);
+          window.location.replace(base + "index.html");
+        });
+        goNowBtn.setAttribute("href", base + "index.html");
+      }
+      var chatBtn = document.getElementById("goChatNow");
+      if (chatBtn) {
+        chatBtn.setAttribute("href", base + "pages/chat.html");
+        chatBtn.addEventListener("click", function () { clearTimeout(redirectTimer); });
+      }
+    });
+  })();
+</script>
+<meta http-equiv="refresh" content="3;url=index.html" />
+</head>
+<body>
+
+<main id="main" class="not-found-page">
+  <div class="container">
+    <div class="state-panel" style="margin-inline:auto; max-width: 480px;">
+      <span class="state-panel__icon" aria-hidden="true">
+        <svg width="30" height="30"><use href="#icon-compass"/></svg>
+      </span>
+      <h1 class="state-panel__title">Page not found</h1>
+      <p class="state-panel__body">
+        That link doesn't lead anywhere in Nemotron. We're taking you back to
+        the homepage automatically.
+      </p>
+      <div class="state-panel__actions">
+        <a class="btn btn--primary" id="goHomeNow" href="index.html">
+          <svg width="16" height="16"><use href="#icon-globe"/></svg>
+          Go home now
+        </a>
+        <a class="btn btn--secondary" id="goChatNow" href="pages/chat.html">
+          <svg width="16" height="16"><use href="#icon-arrow-right"/></svg>
+          Open chat
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div aria-hidden="true" style="display:none">
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2z"/></symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/></symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  </svg>
+</div>
+
+</body>
+</html>

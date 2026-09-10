@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/logo/nemotron-16.png" />
 <link rel="icon" type="image/x-icon" href="../assets/favicon/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="../assets/logo/apple-touch-icon.png" />
-<link rel="manifest" href="../site.webmanifest" />
+<link rel="manifest" href="../manifest.json" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -103,11 +103,11 @@
       </div>
 
       <div class="profile-header">
-        <span class="profile-header__avatar">DK</span>
+        <span class="profile-header__avatar" data-account-initials>DK</span>
         <div>
-          <div class="profile-header__name">Dev Kumar</div>
-          <div class="profile-header__email">dev.kumar@example.com</div>
-          <span class="badge badge--brand" style="margin-top:6px;">Beta access</span>
+          <div class="profile-header__name" data-account-name>Dev Kumar</div>
+          <div class="profile-header__email" data-account-email>dev.kumar@example.com</div>
+          <span class="badge badge--brand" style="margin-top:6px;" data-account-plan>Beta access</span>
         </div>
       </div>
 
@@ -137,13 +137,13 @@
         <div class="settings-row">
           <div class="settings-row__text">
             <div class="settings-row__label">Name</div>
-            <div class="settings-row__hint">Dev Kumar</div>
+            <div class="settings-row__hint" data-account-name>Dev Kumar</div>
           </div>
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
             <div class="settings-row__label">Email</div>
-            <div class="settings-row__hint">dev.kumar@example.com</div>
+            <div class="settings-row__hint" data-account-email>dev.kumar@example.com</div>
           </div>
         </div>
         <div class="settings-row">
@@ -197,6 +197,8 @@
   <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
 </svg>
 
+<script src="../js/session.js"></script>
+<script src="../js/router.js"></script>
 <script src="../js/app.js"></script>
 <script>
 (function () {

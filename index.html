@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/nemotron-16.png" />
 <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/apple-touch-icon.png" />
-<link rel="manifest" href="site.webmanifest" />
+<link rel="manifest" href="manifest.json" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -451,7 +451,7 @@
     <img src="assets/logo/nemotron-48.png" alt="" width="36" height="36" style="margin-bottom: var(--space-4);" />
     <h2 class="modal__title" id="signinTitle">Welcome back</h2>
     <p class="modal__body">Sign in to continue to Nemotron. This is a frontend-only mockup — no data is sent anywhere.</p>
-    <form class="auth-form" onsubmit="return false;">
+    <form class="auth-form">
       <div class="field">
         <label class="field__label" for="siEmail">Email</label>
         <div class="input-wrap">
@@ -471,6 +471,12 @@
       </div>
       <button class="btn btn--primary btn--full" type="submit">Sign in</button>
     </form>
+    <div class="auth-divider">or</div>
+    <button class="btn btn--secondary btn--full" type="button" data-continue-guest data-close-modal>
+      <svg width="18" height="18"><use href="#icon-user"/></svg>
+      Continue as guest
+    </button>
+    <p class="auth-footer-note mt-4" style="margin-top: var(--space-3);">Guest sessions aren't saved — nothing persists, even in a normal window.</p>
     <p class="auth-footer-note mt-4">No account? <a href="#" data-open-modal="signupModal" data-close-modal>Create one</a></p>
   </div>
 </div>
@@ -487,7 +493,7 @@
     <img src="assets/logo/nemotron-48.png" alt="" width="36" height="36" style="margin-bottom: var(--space-4);" />
     <h2 class="modal__title" id="signupTitle">Create your account</h2>
     <p class="modal__body">Get free access to Nemotron Nano and Super. This is a frontend-only mockup.</p>
-    <form class="auth-form" onsubmit="return false;">
+    <form class="auth-form">
       <div class="field">
         <label class="field__label" for="suName">Full name</label>
         <input class="input" id="suName" type="text" placeholder="Ada Lovelace" autocomplete="name" />
@@ -511,6 +517,12 @@
       </div>
       <button class="btn btn--primary btn--full" type="submit">Create account</button>
     </form>
+    <div class="auth-divider">or</div>
+    <button class="btn btn--secondary btn--full" type="button" data-continue-guest data-close-modal>
+      <svg width="18" height="18"><use href="#icon-user"/></svg>
+      Continue as guest
+    </button>
+    <p class="auth-footer-note mt-4" style="margin-top: var(--space-3);">Guest sessions aren't saved — nothing persists, even in a normal window.</p>
     <p class="auth-footer-note mt-4">Already have an account? <a href="#" data-open-modal="signinModal" data-close-modal>Sign in</a></p>
   </div>
 </div>
@@ -684,6 +696,34 @@
 </svg>
 
 
+<script src="js/session.js"></script>
+<script src="js/router.js"></script>
 <script src="js/app.js"></script>
+<script>
+  // Mock sign-in / sign-up submit handling for the landing-page modals.
+  // Frontend-only: no request leaves the page, but a real session object is
+  // stored (see js/session.js) so chat.html reflects the signed-in identity.
+  (function () {
+    "use strict";
+    function wireMockAuthForm(overlaySelector, nameFieldId) {
+      var overlay = document.querySelector(overlaySelector);
+      var form = overlay && overlay.querySelector("form.auth-form");
+      if (!form) return;
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var nameField = nameFieldId ? document.getElementById(nameFieldId) : null;
+        if (window.NemotronSession) {
+          window.NemotronSession.signIn(nameField && nameField.value.trim() ? { name: nameField.value.trim() } : {});
+        }
+        if (window.NemotronToast) {
+          window.NemotronToast("success", "Signed in", "This is a frontend demo — no data leaves this page.");
+        }
+        setTimeout(function () { window.location.href = "pages/chat.html"; }, 600);
+      });
+    }
+    wireMockAuthForm("#signinModal", null);
+    wireMockAuthForm("#signupModal", "suName");
+  })();
+</script>
 </body>
 </html>
