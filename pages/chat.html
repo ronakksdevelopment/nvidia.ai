@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Chat — Nemotron</title>
+<meta name="description" content="Chat with NVIDIA Nemotron — fast, open, efficient AI models." />
+<meta name="theme-color" content="#0A0A0A" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/logo/nemotron-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/logo/nemotron-16.png" />
+<link rel="icon" type="image/x-icon" href="../assets/favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/logo/apple-touch-icon.png" />
+<link rel="manifest" href="../site.webmanifest" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../css/design-system.css" />
+<link rel="stylesheet" href="../css/styles.css" />
+<link rel="stylesheet" href="../css/chat.css" />
+</head>
+<body class="chat-body">
+
+<a class="skip-link" href="#composerInput">Skip to composer</a>
+
+<!-- =========================================================
+     OFFLINE BANNER
+     ========================================================= -->
+<div class="offline-banner" id="offlineBanner" role="status">
+  <svg width="16" height="16"><use href="#icon-wifi-off"/></svg>
+  <span>You're offline. Some features may be unavailable.</span>
+</div>
+
+<div class="chat-shell" id="chatShell" data-sidebar="expanded">
+
+  <!-- =========================================================
+       SIDEBAR
+       ========================================================= -->
+  <aside class="sidebar" id="sidebar" aria-label="Conversation history">
+    <div class="sidebar__top">
+      <a class="sidebar__brand" href="../index.html" aria-label="Nemotron home">
+        <img src="../assets/logo/nemotron-48.png" alt="" width="26" height="26" />
+        <span class="sidebar__brand-text">Nemotron</span>
+      </a>
+      <button class="icon-btn sidebar__collapse-btn" id="sidebarCollapseBtn" type="button" aria-label="Collapse sidebar" aria-expanded="true" aria-controls="sidebar">
+        <svg width="18" height="18"><use href="#icon-panel-left"/></svg>
+      </button>
+    </div>
+
+    <div class="sidebar__actions">
+      <button class="btn btn--primary btn--full sidebar__new-chat" id="newChatBtn" type="button">
+        <svg width="18" height="18"><use href="#icon-plus"/></svg>
+        <span>New chat</span>
+      </button>
+      <button class="icon-btn sidebar__new-chat-icon" id="newChatIconBtn" type="button" aria-label="New chat" title="New chat (Ctrl+Shift+O)">
+        <svg width="18" height="18"><use href="#icon-plus"/></svg>
+      </button>
+    </div>
+
+    <div class="sidebar__search">
+      <div class="input-wrap">
+        <svg class="input-icon" width="16" height="16"><use href="#icon-search"/></svg>
+        <input class="input sidebar__search-input" type="search" id="historySearch" placeholder="Search conversations…" aria-label="Search conversations" autocomplete="off" />
+      </div>
+      <button class="icon-btn sidebar__search-icon-btn" id="searchIconBtn" type="button" aria-label="Search conversations" title="Search conversations">
+        <svg width="18" height="18"><use href="#icon-search"/></svg>
+      </button>
+    </div>
+
+    <nav class="sidebar__history" id="sidebarHistory" aria-label="Conversation history">
+      <!-- Groups + items injected by chat.js -->
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__usage" id="sidebarUsage" title="Token usage this session">
+        <div class="sidebar__usage-row">
+          <span class="sidebar__usage-label">Session tokens</span>
+          <span class="sidebar__usage-value" id="usageValueText">0 / 32K</span>
+        </div>
+        <div class="usage-bar">
+          <div class="usage-bar__fill" id="usageBarFill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <button class="account-menu-trigger" id="accountMenuTrigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu">
+        <span class="account-avatar" aria-hidden="true">DK</span>
+        <span class="account-menu-trigger__info">
+          <span class="account-menu-trigger__name">Dev Kumar</span>
+          <span class="account-menu-trigger__plan">Beta access</span>
+        </span>
+        <svg class="account-menu-trigger__chevron" width="16" height="16"><use href="#icon-chevron-up"/></svg>
+      </button>
+
+      <div class="account-menu" id="accountMenu" role="menu" aria-label="Account menu">
+        <div class="account-menu__header">
+          <span class="account-avatar account-avatar--lg" aria-hidden="true">DK</span>
+          <div>
+            <div class="account-menu__name">Dev Kumar</div>
+            <div class="account-menu__email">dev.kumar@example.com</div>
+          </div>
+        </div>
+        <div class="dropdown__divider"></div>
+        <button class="dropdown__item" role="menuitem" type="button" disabled>
+          <svg width="16" height="16"><use href="#icon-settings"/></svg>
+          Settings <span class="badge badge--neutral account-menu__soon">Soon</span>
+        </button>
+        <button class="dropdown__item" role="menuitem" type="button" id="shortcutsMenuBtn">
+          <svg width="16" height="16"><use href="#icon-keyboard"/></svg>
+          Keyboard shortcuts
+        </button>
+        <button class="dropdown__item" role="menuitem" type="button" disabled>
+          <svg width="16" height="16"><use href="#icon-user"/></svg>
+          Profile <span class="badge badge--neutral account-menu__soon">Soon</span>
+        </button>
+        <div class="dropdown__divider"></div>
+        <a class="dropdown__item" role="menuitem" href="../index.html">
+          <svg width="16" height="16"><use href="#icon-globe"/></svg>
+          Back to home
+        </a>
+        <button class="dropdown__item dropdown__item--danger" role="menuitem" type="button" id="logoutBtn">
+          <svg width="16" height="16"><use href="#icon-logout"/></svg>
+          Log out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Scrim for mobile / overlay sidebar -->
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+  <!-- =========================================================
+       MAIN COLUMN
+       ========================================================= -->
+  <div class="chat-main">
+
+    <!-- Topbar -->
+    <header class="chat-topbar">
+      <button class="icon-btn chat-topbar__menu-btn" id="mobileSidebarBtn" type="button" aria-label="Open conversation history" aria-expanded="false" aria-controls="sidebar">
+        <svg width="20" height="20"><use href="#icon-panel-left"/></svg>
+      </button>
+
+      <div class="dropdown model-dropdown" id="modelDropdown" data-open="false">
+        <button class="model-badge" id="modelDropdownTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <span class="model-badge__glyph"><svg width="14" height="14"><use href="#icon-nemotron-mark"/></svg></span>
+          <span class="model-badge__text">
+            <span class="model-badge__name">Nemotron Super</span>
+            <span class="model-badge__tag">BETA v1.0</span>
+          </span>
+          <svg class="model-badge__chevron" width="14" height="14"><use href="#icon-chevron-down"/></svg>
+        </button>
+        <div class="dropdown__menu model-dropdown__menu" role="listbox" aria-label="Choose model">
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nano">
+            <span class="model-option__main">
+              <span class="model-option__name">Nemotron Nano</span>
+              <span class="text-caption">Fastest · lightweight tasks</span>
+            </span>
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+          </button>
+          <button class="dropdown__item model-option" role="option" aria-selected="true" type="button" data-model="super">
+            <span class="model-option__main">
+              <span class="model-option__name">Nemotron Super</span>
+              <span class="text-caption">Balanced · everyday reasoning</span>
+            </span>
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+          </button>
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="ultra">
+            <span class="model-option__main">
+              <span class="model-option__name">Nemotron Ultra</span>
+              <span class="text-caption">Deepest · complex, long-context</span>
+            </span>
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="chat-topbar__actions">
+        <span class="badge badge--brand chat-topbar__usage-chip" id="topbarUsageChip" title="Session token usage">
+          <svg width="13" height="13"><use href="#icon-cpu"/></svg>
+          <span id="topbarUsageText">0 / 32K tokens</span>
+        </span>
+        <button class="icon-btn" id="shortcutsTopbarBtn" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
+          <svg width="18" height="18"><use href="#icon-keyboard"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scrollable message region -->
+    <main class="chat-scroll" id="chatScroll" aria-label="Conversation">
+      <div class="chat-scroll__inner" id="chatScrollInner">
+
+        <!-- Empty state (shown when no messages) -->
+        <div class="chat-empty" id="chatEmpty">
+          <img class="chat-empty__mark" src="../assets/logo/nemotron-192.png" alt="" width="56" height="56" />
+          <h1 class="chat-empty__title">What are we building today?</h1>
+          <p class="chat-empty__subtitle">Ask Nemotron to reason, write, debug, or explore an idea. Responses stream in real time.</p>
+
+          <div class="chat-suggestions" id="chatSuggestions">
+            <button class="chat-suggestion" type="button" data-prompt="Explain how transformer attention works, step by step.">
+              <svg width="18" height="18"><use href="#icon-cpu"/></svg>
+              <span>Explain how transformer attention works</span>
+            </button>
+            <button class="chat-suggestion" type="button" data-prompt="Write a Python function that merges two sorted lists efficiently, with tests.">
+              <svg width="18" height="18"><use href="#icon-bolt"/></svg>
+              <span>Write a Python merge-sort helper with tests</span>
+            </button>
+            <button class="chat-suggestion" type="button" data-prompt="Give me a table comparing Nemotron Nano, Super, and Ultra for common use cases.">
+              <svg width="18" height="18"><use href="#icon-layers"/></svg>
+              <span>Compare Nemotron Nano vs Super vs Ultra</span>
+            </button>
+            <button class="chat-suggestion" type="button" data-prompt="Draft a friendly onboarding email for new beta testers of an AI product.">
+              <svg width="18" height="18"><use href="#icon-spark"/></svg>
+              <span>Draft a beta-tester onboarding email</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Messages injected here by chat.js -->
+        <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+      </div>
+    </main>
+
+    <!-- Drag & drop overlay -->
+    <div class="dropzone-overlay" id="dropzoneOverlay" aria-hidden="true">
+      <div class="dropzone-overlay__card">
+        <svg width="32" height="32"><use href="#icon-upload"/></svg>
+        <div class="dropzone-overlay__title">Drop to attach</div>
+        <div class="dropzone-overlay__subtitle">Images and files will be added to your message</div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         COMPOSER (desktop centered / mobile bottom docked)
+         ========================================================= -->
+    <div class="composer-region" id="composerRegion">
+      <form class="composer" id="composerForm" novalidate>
+
+        <div class="composer__attachments" id="composerAttachments" hidden></div>
+
+        <div class="composer__field">
+          <button class="icon-btn composer__attach-btn" type="button" id="attachBtn" aria-label="Attach file" title="Attach file">
+            <svg width="20" height="20"><use href="#icon-paperclip"/></svg>
+          </button>
+          <input type="file" id="fileInput" class="visually-hidden" multiple accept="image/*,.pdf,.txt,.md,.csv,.json" />
+
+          <textarea
+            class="composer__input"
+            id="composerInput"
+            placeholder="Message Nemotron…"
+            aria-label="Message Nemotron"
+            rows="1"
+            maxlength="8000"
+          ></textarea>
+
+          <button class="composer__send-btn" id="sendBtn" type="submit" aria-label="Send message" disabled>
+            <svg width="18" height="18"><use href="#icon-arrow-up"/></svg>
+          </button>
+          <button class="composer__stop-btn" id="stopBtn" type="button" aria-label="Stop generating" hidden>
+            <svg width="16" height="16"><use href="#icon-stop"/></svg>
+          </button>
+        </div>
+
+        <div class="composer__meta">
+          <span class="composer__hint">
+            <kbd>Enter</kbd> to send · <kbd>Shift</kbd>+<kbd>Enter</kbd> for a new line
+          </span>
+          <span class="composer__char-count" id="composerCharCount">0 / 8000</span>
+        </div>
+      </form>
+      <p class="composer__disclaimer">Nemotron can make mistakes. Check important information.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========================================================
+     KEYBOARD SHORTCUTS MODAL
+     ========================================================= -->
+<div class="modal-overlay" id="shortcutsModal" data-modal-overlay>
+  <div class="modal shortcuts-modal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
+    <div class="modal__header">
+      <div>
+        <h2 class="modal__title" id="shortcutsTitle">Keyboard shortcuts</h2>
+        <p class="text-caption">Move faster around Nemotron chat</p>
+      </div>
+      <button class="modal__close" type="button" data-close-modal aria-label="Close">
+        <svg width="20" height="20"><use href="#icon-x"/></svg>
+      </button>
+    </div>
+    <div class="shortcuts-list">
+      <div class="shortcuts-list__row"><span>New chat</span><span class="key-combo"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>O</kbd></span></div>
+      <div class="shortcuts-list__row"><span>Focus composer</span><span class="key-combo"><kbd>/</kbd></span></div>
+      <div class="shortcuts-list__row"><span>Send message</span><span class="key-combo"><kbd>Enter</kbd></span></div>
+      <div class="shortcuts-list__row"><span>New line</span><span class="key-combo"><kbd>Shift</kbd>+<kbd>Enter</kbd></span></div>
+      <div class="shortcuts-list__row"><span>Stop generating</span><span class="key-combo"><kbd>Esc</kbd></span></div>
+      <div class="shortcuts-list__row"><span>Search history</span><span class="key-combo"><kbd>Ctrl</kbd>+<kbd>K</kbd></span></div>
+      <div class="shortcuts-list__row"><span>Toggle sidebar</span><span class="key-combo"><kbd>Ctrl</kbd>+<kbd>B</kbd></span></div>
+      <div class="shortcuts-list__row"><span>Show shortcuts</span><span class="key-combo"><kbd>Shift</kbd>+<kbd>?</kbd></span></div>
+    </div>
+    <div class="modal__actions">
+      <button class="btn btn--primary btn--full" type="button" data-close-modal>Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     DELETE CONVERSATION CONFIRM MODAL
+     ========================================================= -->
+<div class="modal-overlay" id="deleteConvoModal" data-modal-overlay>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteConvoTitle">
+    <div class="modal__icon modal__icon--danger">
+      <svg width="22" height="22"><use href="#icon-trash"/></svg>
+    </div>
+    <h2 class="modal__title" id="deleteConvoTitle">Delete this conversation?</h2>
+    <p class="modal__body">This will permanently remove <strong id="deleteConvoName">this chat</strong> and its messages. This can't be undone.</p>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" type="button" data-close-modal>Cancel</button>
+      <button class="btn btn--danger" type="button" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     TOAST REGION
+     ========================================================= -->
+<div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
+
+<!-- =========================================================
+     ICON SPRITE
+     ========================================================= -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/>
+  </symbol>
+  <symbol id="icon-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3 2 8l10 5 10-5-10-5z"/>
+    <path d="M2 13l10 5 10-5"/>
+  </symbol>
+  <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="6" width="12" height="12" rx="2"/>
+    <rect x="9.5" y="9.5" width="5" height="5" rx="1"/>
+    <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
+  </symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"/>
+    <path d="m9 12 2 2 4-4"/>
+  </symbol>
+  <symbol id="icon-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>
+  </symbol>
+  <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m6 9 6 6 6-6"/>
+  </symbol>
+  <symbol id="icon-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m18 15-6-6-6 6"/>
+  </symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m5 13 4 4L19 7"/>
+  </symbol>
+  <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="m8.5 12.5 2.3 2.3 4.7-5"/>
+  </symbol>
+  <symbol id="icon-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10.3 3.9 2.5 18a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.7 3.9a1.5 1.5 0 0 0-2.6 0z"/>
+    <path d="M12 9v4M12 16.5v.01"/>
+  </symbol>
+  <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 11v5.5M12 8v.01"/>
+  </symbol>
+  <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 6l12 12M18 6 6 18"/>
+  </symbol>
+  <symbol id="icon-x-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="m9 9 6 6M15 9l-6 6"/>
+  </symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 6h16M4 12h16M4 18h16"/>
+  </symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"/>
+    <path d="m20 20-3.5-3.5"/>
+  </symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="10" width="14" height="10" rx="2"/>
+    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+  </symbol>
+  <symbol id="icon-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 3-2M12 20h.01M19 12.5a10 10 0 0 0-2.7-2.1M16.7 6.6A15.9 15.9 0 0 0 12 6c-1 0-2 .1-2.9.3"/>
+  </symbol>
+  <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 12a9 9 0 0 1 15.3-6.4M21 12a9 9 0 0 1-15.3 6.4"/>
+    <path d="M18.7 3v4.6h-4.6M5.3 21v-4.6h4.6"/>
+  </symbol>
+  <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 7h16M9 7V4h6v3M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/>
+  </symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="12" height="12" rx="2"/>
+    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>
+  </symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5"/>
+    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+  </symbol>
+  <symbol id="icon-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+    <path d="m8.6 10.6 6.8-3.9M8.6 13.4l6.8 3.9"/>
+  </symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="4"/>
+    <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/>
+  </symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
+  </symbol>
+  <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    <path d="M16 17l5-5-5-5M21 12H9"/>
+  </symbol>
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 12h14M13 6l6 6-6 6"/>
+  </symbol>
+  <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M3 12h18M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/>
+  </symbol>
+  <symbol id="icon-nemotron-mark" viewBox="0 0 100 100" fill="none">
+    <path d="M50 8 90 30v40L50 92 10 70V30z" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="50" cy="30" r="6" fill="currentColor"/>
+    <circle cx="50" cy="70" r="6" fill="currentColor"/>
+    <circle cx="30" cy="42" r="6" fill="currentColor"/>
+    <circle cx="70" cy="42" r="6" fill="currentColor"/>
+    <circle cx="30" cy="58" r="6" fill="currentColor"/>
+    <circle cx="70" cy="58" r="6" fill="currentColor"/>
+    <circle cx="50" cy="50" r="9" fill="currentColor"/>
+    <path d="M50 30 30 42M50 30l20 12M30 42v16M70 42v16M30 58l20 12M70 58 50 70M50 30v40M30 42l40 16M70 42 30 58" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- Chat-specific icons -->
+  <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5v14M5 12h14"/>
+  </symbol>
+  <symbol id="icon-panel-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="16" rx="2"/>
+    <path d="M9.5 4v16"/>
+  </symbol>
+  <symbol id="icon-paperclip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 11.5 12.4 20a5 5 0 0 1-7-7l8.4-8.4a3.5 3.5 0 0 1 5 5L10.4 18a2 2 0 0 1-3-3l7.1-7.1"/>
+  </symbol>
+  <symbol id="icon-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </symbol>
+  <symbol id="icon-stop" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <rect x="6" y="6" width="12" height="12" rx="2"/>
+  </symbol>
+  <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 21V9m0 0 4.5 4.5M12 9 7.5 13.5"/>
+    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+  </symbol>
+  <symbol id="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="16" rx="2"/>
+    <circle cx="9" cy="10" r="1.5" fill="currentColor" stroke="none"/>
+    <path d="m4.5 18 5-5 3.5 3.5L17.5 12l3 3"/>
+  </symbol>
+  <symbol id="icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+    <path d="M14 3v5h5"/>
+  </symbol>
+  <symbol id="icon-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 20h9"/>
+    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+  </symbol>
+  <symbol id="icon-keyboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="6" width="20" height="12" rx="2"/>
+    <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h12"/>
+  </symbol>
+  <symbol id="icon-dots" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/>
+  </symbol>
+  <symbol id="icon-thumb-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 22V11M2 13v7a2 2 0 0 0 2 2h11.4a2 2 0 0 0 2-1.6l1.4-7A2 2 0 0 0 17 11h-4.5l1-4.5A1.7 1.7 0 0 0 11.8 4L7 11"/>
+  </symbol>
+  <symbol id="icon-thumb-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 2v11M22 11V4a2 2 0 0 0-2-2H8.6a2 2 0 0 0-2 1.6l-1.4 7A2 2 0 0 0 7 13h4.5l-1 4.5A1.7 1.7 0 0 0 12.2 20L17 13"/>
+  </symbol>
+</svg>
+
+<script src="../js/chat.js"></script>
+</body>
+</html>
