@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NVIDIA AI Studio — Enterprise DGX Cloud | Accelerated AI Workspace</title>
+  <meta name="description" content="NVIDIA AI Studio: Enterprise-grade AI workspace powered by DGX Cloud, TensorRT-LLM, and NeMo Guardrails. Access 8 free Nemotron models with GPU-accelerated inference.">
+  <meta name="keywords" content="NVIDIA, AI Studio, DGX Cloud, TensorRT-LLM, NeMo Guardrails, Nemotron, CUDA, GPU, AI, Machine Learning">
+  <meta name="author" content="NVIDIA Corporation">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NVIDIA AI Studio — Enterprise DGX Cloud">
+  <meta property="og:description" content="Enterprise-grade AI workspace powered by DGX Cloud with 8 free Nemotron models and GPU-accelerated inference.">
+  <meta property="og:url" content="https://nvidia-ai-studio.github.io">
+  <meta property="og:site_name" content="NVIDIA AI Studio">
+  <meta property="og:image" content="assets/og-image.png">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NVIDIA AI Studio — Enterprise DGX Cloud">
+  <meta name="twitter:description" content="Enterprise-grade AI workspace powered by DGX Cloud with 8 free Nemotron models.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
+  
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/animations.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+</head>
+<body>
+  <!-- Skip Navigation -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- NAVIGATION -->
+  <header class="navbar" id="navbar" role="banner">
+    <div class="navbar__container">
+      <!-- Brand -->
+      <a href="#" class="navbar__brand" aria-label="NVIDIA AI Studio Home">
+        <div class="navbar__logo">
+          <svg class="navbar__logo-icon" fill="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M8.9 4c-3.1 0-5.7 2.4-5.9 5.5v7.2c0 .2.2.4.4.4h2.2c.2 0 .4-.2.4-.4v-7.1c0-1.6 1.3-3 2.9-3 1.6 0 2.9 1.3 2.9 3v7.1c0 .2.2.4.4.4h2.2c.2 0 .4-.2.4-.4V9.5c-.2-3.1-2.8-5.5-5.9-5.5zm6.8 4c-.3 0-.5.2-.5.5v7.2c0 .2.2.4.4.4h2.2c.2 0 .4-.2.4-.4V8.5c0-.3-.2-.5-.5-.5h-2zm-13.6 3c-.3 0-.5.2-.5.5v4.2c0 .2.2.4.4.4h2.2c.2 0 .4-.2.4-.4v-4.2c0-.3-.2-.5-.5-.5H2.1z"></path>
+          </svg>
+        </div>
+        <div class="navbar__brand-text">
+          <span class="navbar__title">NVIDIA AI Studio</span>
+          <span class="navbar__subtitle">Enterprise DGX Cloud</span>
+        </div>
+      </a>
+      
+      <!-- Desktop Nav Links -->
+      <nav class="navbar__nav" role="navigation" aria-label="Main navigation">
+        <a href="#features" class="navbar__link">Features</a>
+        <a href="#models" class="navbar__link">Models</a>
+        <a href="#technology" class="navbar__link">Technology</a>
+        <a href="#pricing" class="navbar__link">Pricing</a>
+      </nav>
+      
+      <!-- Right Actions -->
+      <div class="navbar__actions">
+        <!-- Telemetry Badge -->
+        <div class="navbar__telemetry">
+          <span class="material-symbols-outlined navbar__telemetry-icon">speed</span>
+          <span class="navbar__telemetry-text">84 tps | 14ms</span>
+        </div>
+        
+        <!-- Theme Toggle -->
+        <button class="navbar__theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <span class="material-symbols-outlined" id="theme-icon">dark_mode</span>
+        </button>
+        
+        <!-- Deploy CTA -->
+        <a href="#get-started" class="btn btn--primary navbar__cta">
+          <span class="material-symbols-outlined btn__icon">rocket_launch</span>
+          <span>Deploy NIM</span>
+        </a>
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="navbar__menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="material-symbols-outlined" id="menu-icon">menu</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Navigation Drawer -->
+    <div class="navbar__mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+      <a href="#features" class="navbar__mobile-link">Features</a>
+      <a href="#models" class="navbar__mobile-link">Models</a>
+      <a href="#technology" class="navbar__mobile-link">Technology</a>
+      <a href="#pricing" class="navbar__mobile-link">Pricing</a>
+      <div class="navbar__mobile-divider"></div>
+      <a href="#get-started" class="btn btn--primary navbar__mobile-cta">
+        <span class="material-symbols-outlined btn__icon">rocket_launch</span>
+        <span>Get Started Free</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+    
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+      <!-- Ambient glow orbs -->
+      <div class="hero__glow hero__glow--top" aria-hidden="true"></div>
+      <div class="hero__glow hero__glow--bottom" aria-hidden="true"></div>
+      
+      <div class="hero__container">
+        <!-- Emblem -->
+        <div class="hero__emblem" aria-hidden="true">
+          <div class="hero__emblem-inner">
+            <svg class="hero__emblem-icon" fill="currentColor" viewBox="0 0 24 24" width="32" height="32">
+              <path d="M12 2L2 7l10 5 10-5-10-5zm0 8.5L4.4 7 12 3.2 19.6 7 12 10.5zm-10 2l10 5 10-5v2.8L12 21l-10-5.2v-2.8z"></path>
+            </svg>
+          </div>
+          <span class="hero__emblem-ping">
+            <span class="hero__emblem-ping-ring"></span>
+            <span class="hero__emblem-ping-dot"></span>
+          </span>
+        </div>
+        
+        <!-- Headline -->
+        <h1 class="hero__title">
+          Accelerate your <span class="hero__title-gradient">compute</span>
+        </h1>
+        <p class="hero__subtitle">
+          Harness NVIDIA NIM microservices, NeMo Guardrails, and bare-metal TensorRT-LLM kernels on DGX Cloud. Access 8 free Nemotron models with enterprise-grade GPU-accelerated inference.
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="hero__actions">
+          <a href="#get-started" class="btn btn--primary btn--lg">
+            <span class="material-symbols-outlined btn__icon">bolt</span>
+            <span>Start Building Free</span>
+          </a>
+          <a href="#models" class="btn btn--ghost btn--lg">
+            <span>Explore Models</span>
+            <span class="material-symbols-outlined btn__icon">arrow_forward</span>
+          </a>
+        </div>
+        
+        <!-- Stats Bar -->
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <span class="hero__stat-value">8</span>
+            <span class="hero__stat-label">Free Models</span>
+          </div>
+          <div class="hero__stat-divider" aria-hidden="true"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-value">84</span>
+            <span class="hero__stat-label">Tokens/sec</span>
+          </div>
+          <div class="hero__stat-divider" aria-hidden="true"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-value">14ms</span>
+            <span class="hero__stat-label">Latency</span>
+          </div>
+          <div class="hero__stat-divider" aria-hidden="true"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-value">1M</span>
+            <span class="hero__stat-label">Context Window</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="section features" id="features">
+      <div class="section__container">
+        <div class="section__header">
+          <span class="section__badge">
+            <span class="material-symbols-outlined section__badge-icon">deployed_code</span>
+            Enterprise Features
+          </span>
+          <h2 class="section__title">Built for production AI workflows</h2>
+          <p class="section__subtitle">From CUDA kernel optimization to production NIM deployment, every tool you need is integrated into one accelerated workspace.</p>
+        </div>
+        
+        <div class="features__grid">
+          <!-- Feature Card 1 -->
+          <article class="feature-card">
+            <div class="feature-card__icon">
+              <span class="material-symbols-outlined">terminal</span>
+            </div>
+            <h3 class="feature-card__title">CUDA Kernel Optimization</h3>
+            <p class="feature-card__description">Analyze Triton & CUDA kernels for H100 Tensor Cores with FP8 matrix gemm execution. Real-time profiling with Nsight integration.</p>
+            <div class="feature-card__footer">
+              <span class="feature-card__tag">TensorRT-LLM Builder</span>
+              <span class="material-symbols-outlined feature-card__arrow">arrow_forward</span>
+            </div>
+          </article>
+          
+          <!-- Feature Card 2 -->
+          <article class="feature-card">
+            <div class="feature-card__icon">
+              <span class="material-symbols-outlined">rocket_launch</span>
+            </div>
+            <h3 class="feature-card__title">Deploy NIM on DGX Cloud</h3>
+            <p class="feature-card__description">Generate Helm charts & Kubernetes manifests configured for multi-node FP8 inference. One-click deployment to production clusters.</p>
+            <div class="feature-card__footer">
+              <span class="feature-card__tag">Kubernetes · Helm</span>
+              <span class="material-symbols-outlined feature-card__arrow">arrow_forward</span>
+            </div>
+          </article>
+          
+          <!-- Feature Card 3 -->
+          <article class="feature-card">
+            <div class="feature-card__icon">
+              <span class="material-symbols-outlined">security</span>
+            </div>
+            <h3 class="feature-card__title">NeMo Guardrails & Safety</h3>
+            <p class="feature-card__description">Configure programmatic Colang 2.0 conversational guardrails against hallucination, prompt injection, and data leakage.</p>
+            <div class="feature-card__footer">
+              <span class="feature-card__tag">Colang 2.0 Policy</span>
+              <span class="material-symbols-outlined feature-card__arrow">arrow_forward</span>
+            </div>
+          </article>
+          
+          <!-- Feature Card 4 -->
+          <article class="feature-card">
+            <div class="feature-card__icon">
+              <span class="material-symbols-outlined">speed</span>
+            </div>
+            <h3 class="feature-card__title">Profile Memory with Nsight</h3>
+            <p class="feature-card__description">Diagnose PyTorch VRAM out-of-memory errors, NVLink bandwidth bottlenecks, and GPU stall cycles with integrated profiling.</p>
+            <div class="feature-card__footer">
+              <span class="feature-card__tag">Nsight Systems Profiler</span>
+              <span class="material-symbols-outlined feature-card__arrow">arrow_forward</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODELS SECTION -->
+    <section class="section models" id="models">
+      <div class="section__container">
+        <div class="section__header">
+          <span class="section__badge">
+            <span class="material-symbols-outlined section__badge-icon">memory</span>
+            Accelerated Model Catalog
+          </span>
+          <h2 class="section__title">8 Free Nemotron Models</h2>
+          <p class="section__subtitle">Zero-cost DGX Cloud inference via OpenRouter. Select an active neural architecture for real-time prompt acceleration.</p>
+        </div>
+        
+        <div class="models__grid">
+          <!-- Model 1 -->
+          <article class="model-card model-card--active">
+            <div class="model-card__header">
+              <div class="model-card__status">
+                <span class="model-card__dot model-card__dot--active"></span>
+                <span class="model-card__name">nemotron-3-ultra-550b-a55b</span>
+              </div>
+              <span class="model-card__badge model-card__badge--active">Active</span>
+            </div>
+            <p class="model-card__description">Flagship MoE Reasoning & Enterprise Synthesis with native multi-token prediction and system synthesis.</p>
+            <div class="model-card__specs">
+              <span class="model-card__spec">1M ctx</span>
+              <span class="model-card__spec model-card__spec--highlight">FP8 Matrix</span>
+              <span class="model-card__spec">DGX SuperPOD</span>
+              <span class="model-card__spec">~92 tok/s</span>
+            </div>
+          </article>
+          
+          <!-- Model 2 -->
+          <article class="model-card">
+            <div class="model-card__header">
+              <div class="model-card__status">
+                <span class="model-card__dot"></span>
+                <span class="model-card__name">nemotron-3.5-lightning</span>
+              </div>
+              <span class="model-card__badge">Free</span>
+            </div>
+            <p class="model-card__description">Ultra-low latency code generation, kernel optimization & high-frequency agentic execution loops.</p>
+            <div class="model-card__specs">
+              <span class="model-card__spec">128k ctx</span>
+              <span class="model-card__spec model-card__spec--highlight">Sub-15ms TTFT</span>
+              <span class="model-card__spec">CUDA Aware</span>
+              <span class="model-card__spec">~148 tok/s</span>
+            </div>
+          </article>
+          
+          <!-- Model 3 -->
+          <article class="model-card">
+            <div class="model-card__header">
+              <div class="model-card__status">
+                <span class="model-card__dot"></span>
+                <span class="model-card__name">nemotron-3-super-120b-a12b</span>
+              </div>
+              <span class="model-card__badge">Free</span>
+            </div>
+            <p class="model-card__description">Balanced high-throughput instruction following tuned for enterprise documentation and structured tool use.</p>
+            <div class="model-card__specs">
+              <span class="model-card__spec">128k ctx</span>
+              <span class="model-card__spec">FP8 Matrix</span>
+              <span class="model-card__spec">Dense Compute</span>
+              <span class="model-card__spec">~110 tok/s</span>
+            </div>
+          </article>
+          
+          <!-- Model 4 -->
+          <article class="model-card">
+            <div class="model-card__header">
+              <div class="model-card__status">
+                <span class="model-card__dot"></span>
+                <span class="model-card__name">nemotron-nano-omni-30b</span>
+              </div>
+              <span class="model-card__badge">Free</span>
+            </div>
+            <p class="model-card__description">Multimodal omni vision-language & Chain-of-Thought reasoning. Native diagram analysis & complex STEM steps.</p>
+            <div class="model-card__specs">
+              <span class="model-card__spec">64k ctx</span>
+              <span class="model-card__spec model-card__spec--highlight">Vision CoT</span>
+              <span class="model-card__spec">Multimodal</span>
+            </div>
+          </article>
+          
+          <!-- Model 5 -->
+          <article class="model-card">
+            <div class="model-card__header">
+              <div class="model-card__status">
+                <span class="model-card__dot"></span>
+                <span class="model-card__name">nemotron-rerank-vl-1b-v2</span>
+              </div>
+              <span class="model-card__badge">Free</span>
+            </div>
+            <p class="model-card__description">High-precision vision-language reranking for RAG pipelines and multimodal document chunk scoring.</p>
+            <div class="model-card__specs">
+              <span class="model-card__spec">32k ctx</span>
+              <span class="model-card__spec">Reranking</span>
+              <span class="model-card__spec">0.4ms overhead</span>
+            </div>
+          </article>
+          
+          <!-- Model 6 -->
+          <article class="model-card">
+            <div class="model-card__header">
+              <div class="model-card__status">
+                <span class="model-card__dot"></span>
+                <span class="model-card__name">nemotron-3.5-content-safety</span>
+              </div>
+              <span class="model-card__badge">Free</span>
+            </div>
+            <p class="model-card__description">Real-time NeMo Guardrails policy enforcement, jailbreak moderation & sensitive data classification.</p>
+            <div class="model-card__specs">
+              <span class="model-card__spec">16k ctx</span>
+              <span class="model-card__spec model-card__spec--highlight">NeMo Guardrails</span>
+              <span class="model-card__spec">Safety</span>
+            </div>
+          </article>
+          
+          <!-- Model 7 -->
+          <article class="model-card">
+            <div class="model-card__header">
+              <div class="model-card__status">
+                <span class="model-card__dot"></span>
+                <span class="model-card__name">nemotron-embed-vl-1b-v2</span>
+              </div>
+              <span class="model-card__badge">Free</span>
+            </div>
+            <p class="model-card__description">Multimodal dense vector embeddings for cross-modal similarity, charts, and technical documentation indexing.</p>
+            <div class="model-card__specs">
+              <span class="model-card__spec">4096 dim</span>
+              <span class="model-card__spec">Cross-Modal</span>
+              <span class="model-card__spec">MTEB Top Ranked</span>
+            </div>
+          </article>
+          
+          <!-- Model 8 -->
+          <article class="model-card">
+            <div class="model-card__header">
+              <div class="model-card__status">
+                <span class="model-card__dot"></span>
+                <span class="model-card__name">nemotron-3-embed-1b</span>
+              </div>
+              <span class="model-card__badge">Free</span>
+            </div>
+            <p class="model-card__description">Fast text embeddings & high-throughput semantic search indexer for enterprise code repositories.</p>
+            <div class="model-card__specs">
+              <span class="model-card__spec">2048 dim</span>
+              <span class="model-card__spec">Semantic Index</span>
+              <span class="model-card__spec">Ultra High Speed</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TECHNOLOGY SECTION -->
+    <section class="section technology" id="technology">
+      <div class="section__container">
+        <div class="section__header">
+          <span class="section__badge">
+            <span class="material-symbols-outlined section__badge-icon">dns</span>
+            Infrastructure
+          </span>
+          <h2 class="section__title">Enterprise DGX Cloud Stack</h2>
+          <p class="section__subtitle">Production-grade infrastructure for AI workloads at any scale.</p>
+        </div>
+        
+        <div class="technology__grid">
+          <!-- Tech Card 1 -->
+          <article class="tech-card">
+            <div class="tech-card__glow" aria-hidden="true"></div>
+            <div class="tech-card__icon">
+              <span class="material-symbols-outlined">memory</span>
+            </div>
+            <h3 class="tech-card__title">DGX H100 SuperPOD</h3>
+            <p class="tech-card__description">8x NVIDIA H100 SXM5 GPUs per node with 3.2 Tbps NVLink 4.0 interconnect and Quantum-2 InfiniBand fabric.</p>
+            <div class="tech-card__stats">
+              <div class="tech-card__stat">
+                <span class="tech-card__stat-value">80 GB</span>
+                <span class="tech-card__stat-label">VRAM per GPU</span>
+              </div>
+              <div class="tech-card__stat">
+                <span class="tech-card__stat-value">900 GB/s</span>
+                <span class="tech-card__stat-label">NVLink Speed</span>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Tech Card 2 -->
+          <article class="tech-card">
+            <div class="tech-card__glow" aria-hidden="true"></div>
+            <div class="tech-card__icon">
+              <span class="material-symbols-outlined">bolt</span>
+            </div>
+            <h3 class="tech-card__title">TensorRT-LLM Engine</h3>
+            <p class="tech-card__description">FP8 quantized inference with speculative decoding, multi-token prediction, and continuous batching for maximum throughput.</p>
+            <div class="tech-card__stats">
+              <div class="tech-card__stat">
+                <span class="tech-card__stat-value">84 tps</span>
+                <span class="tech-card__stat-label">Peak Throughput</span>
+              </div>
+              <div class="tech-card__stat">
+                <span class="tech-card__stat-value">14ms</span>
+                <span class="tech-card__stat-label">TTFT Latency</span>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Tech Card 3 -->
+          <article class="tech-card">
+            <div class="tech-card__glow" aria-hidden="true"></div>
+            <div class="tech-card__icon">
+              <span class="material-symbols-outlined">shield</span>
+            </div>
+            <h3 class="tech-card__title">NeMo Guardrails</h3>
+            <p class="tech-card__description">Colang 2.0 programmable safety policies with zero-latency enforcement. Enterprise content classification and jailbreak detection.</p>
+            <div class="tech-card__stats">
+              <div class="tech-card__stat">
+                <span class="tech-card__stat-value">0ms</span>
+                <span class="tech-card__stat-label">Safety Overhead</span>
+              </div>
+              <div class="tech-card__stat">
+                <span class="tech-card__stat-value">99.9%</span>
+                <span class="tech-card__stat-label">Uptime SLA</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING / GET STARTED SECTION -->
+    <section class="section cta-section" id="pricing">
+      <div class="section__container">
+        <div class="cta-section__card">
+          <div class="cta-section__glow" aria-hidden="true"></div>
+          <div class="section__header">
+            <span class="section__badge">
+              <span class="material-symbols-outlined section__badge-icon">bolt</span>
+              Get Started
+            </span>
+            <h2 class="section__title">Start accelerating for free</h2>
+            <p class="section__subtitle">Access all 8 Nemotron models at zero cost via OpenRouter. No credit card required. Deploy to production in minutes.</p>
+          </div>
+          
+          <div class="cta-section__features">
+            <div class="cta-section__feature">
+              <span class="material-symbols-outlined cta-section__feature-icon">check_circle</span>
+              <span>8 Free Nemotron models</span>
+            </div>
+            <div class="cta-section__feature">
+              <span class="material-symbols-outlined cta-section__feature-icon">check_circle</span>
+              <span>1M context window</span>
+            </div>
+            <div class="cta-section__feature">
+              <span class="material-symbols-outlined cta-section__feature-icon">check_circle</span>
+              <span>DGX Cloud GPU access</span>
+            </div>
+            <div class="cta-section__feature">
+              <span class="material-symbols-outlined cta-section__feature-icon">check_circle</span>
+              <span>NeMo Guardrails included</span>
+            </div>
+            <div class="cta-section__feature">
+              <span class="material-symbols-outlined cta-section__feature-icon">check_circle</span>
+              <span>TensorRT-LLM acceleration</span>
+            </div>
+            <div class="cta-section__feature">
+              <span class="material-symbols-outlined cta-section__feature-icon">check_circle</span>
+              <span>No credit card required</span>
+            </div>
+          </div>
+          
+          <div class="cta-section__actions" id="get-started">
+            <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--lg">
+              <span class="material-symbols-outlined btn__icon">vpn_key</span>
+              <span>Get Free API Key</span>
+            </a>
+            <a href="https://openrouter.ai/models" target="_blank" rel="noopener noreferrer" class="btn btn--ghost btn--lg">
+              <span>Browse Models</span>
+              <span class="material-symbols-outlined btn__icon">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__container">
+      <div class="footer__top">
+        <!-- Brand Column -->
+        <div class="footer__brand">
+          <div class="footer__logo">
+            <div class="navbar__logo">
+              <svg class="navbar__logo-icon" fill="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                <path d="M8.9 4c-3.1 0-5.7 2.4-5.9 5.5v7.2c0 .2.2.4.4.4h2.2c.2 0 .4-.2.4-.4v-7.1c0-1.6 1.3-3 2.9-3 1.6 0 2.9 1.3 2.9 3v7.1c0 .2.2.4.4.4h2.2c.2 0 .4-.2.4-.4V9.5c-.2-3.1-2.8-5.5-5.9-5.5zm6.8 4c-.3 0-.5.2-.5.5v7.2c0 .2.2.4.4.4h2.2c.2 0 .4-.2.4-.4V8.5c0-.3-.2-.5-.5-.5h-2zm-13.6 3c-.3 0-.5.2-.5.5v4.2c0 .2.2.4.4.4h2.2c.2 0 .4-.2.4-.4v-4.2c0-.3-.2-.5-.5-.5H2.1z"></path>
+              </svg>
+            </div>
+            <span class="footer__brand-name">NVIDIA AI Studio</span>
+          </div>
+          <p class="footer__tagline">Enterprise-grade AI workspace powered by DGX Cloud, TensorRT-LLM, and NeMo Guardrails.</p>
+          <!-- Cluster Status -->
+          <div class="footer__status">
+            <span class="footer__status-dot"></span>
+            <span class="footer__status-text">DGX Cluster: 8x H100 SXM5 — 99.8% Online</span>
+          </div>
+        </div>
+        
+        <!-- Links Columns -->
+        <div class="footer__links-group">
+          <div class="footer__links-column">
+            <h4 class="footer__links-title">Platform</h4>
+            <a href="#features" class="footer__link">Features</a>
+            <a href="#models" class="footer__link">Models</a>
+            <a href="#technology" class="footer__link">Technology</a>
+            <a href="#pricing" class="footer__link">Pricing</a>
+          </div>
+          <div class="footer__links-column">
+            <h4 class="footer__links-title">Resources</h4>
+            <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" class="footer__link">OpenRouter Auth</a>
+            <a href="https://openrouter.ai/models" target="_blank" rel="noopener noreferrer" class="footer__link">Model Directory</a>
+            <a href="#" class="footer__link">Documentation</a>
+            <a href="#" class="footer__link">API Reference</a>
+          </div>
+          <div class="footer__links-column">
+            <h4 class="footer__links-title">Enterprise</h4>
+            <a href="#" class="footer__link">Compliance</a>
+            <a href="#" class="footer__link">NGC Registry</a>
+            <a href="#" class="footer__link">Cluster Status</a>
+            <a href="#" class="footer__link">Support</a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer__bottom">
+        <span class="footer__copyright">© 2025 NVIDIA Corporation. Accelerated by TensorRT-LLM & NeMo Guardrails.</span>
+        <div class="footer__legal">
+          <a href="#" class="footer__legal-link">Privacy</a>
+          <a href="#" class="footer__legal-link">Terms</a>
+          <a href="#" class="footer__legal-link">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="scripts/theme.js" defer></script>
+  <script src="scripts/navigation.js" defer></script>
+  <script src="scripts/animations.js" defer></script>
+  <script src="scripts/main.js" defer></script>
+</body>
+</html>

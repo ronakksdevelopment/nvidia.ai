@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — NVIDIA AI Studio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0B0D0E;
+      color: #F2F5F8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 480px;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    .emblem {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #1E2328;
+      border: 1px solid #2A313A;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 25px -5px rgba(118, 185, 0, 0.18);
+    }
+    .emblem svg { color: #94da32; }
+    .code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 64px;
+      font-weight: 700;
+      color: #76B900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    p {
+      font-size: 14px;
+      color: #9EACB9;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #76B900;
+      color: #0B0D0E;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background 0.2s;
+      box-shadow: 0 0 25px -5px rgba(118, 185, 0, 0.18);
+    }
+    .btn:hover { background: #8BE300; }
+    .meta {
+      margin-top: 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #5E6C79;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="emblem">
+      <svg fill="currentColor" viewBox="0 0 24 24" width="28" height="28">
+        <path d="M12 2L2 7l10 5 10-5-10-5zm0 8.5L4.4 7 12 3.2 19.6 7 12 10.5zm-10 2l10 5 10-5v2.8L12 21l-10-5.2v-2.8z"></path>
+      </svg>
+    </div>
+    <div class="code">404</div>
+    <h1>Page Not Found</h1>
+    <p>The resource you requested could not be located on this DGX Cloud cluster. It may have been moved, deleted, or the URL may be incorrect.</p>
+    <a href="/" class="btn">
+      <span class="material-symbols-outlined" style="font-size: 16px;">arrow_back</span>
+      Return to Studio
+    </a>
+    <div class="meta">NVIDIA AI Studio · Enterprise DGX Cloud</div>
+  </div>
+</body>
+</html>
