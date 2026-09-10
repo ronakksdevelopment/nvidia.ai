@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>About — Nemotron</title>
+<meta name="description" content="About the NVIDIA Nemotron v1.0 Beta project." />
+<meta name="theme-color" content="#0A0A0A" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/logo/nemotron-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/logo/nemotron-16.png" />
+<link rel="icon" type="image/x-icon" href="../assets/favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/logo/apple-touch-icon.png" />
+<link rel="manifest" href="../site.webmanifest" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../css/design-system.css" />
+<link rel="stylesheet" href="../css/styles.css" />
+<link rel="stylesheet" href="../css/settings.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#settingsMain">Skip to content</a>
+
+<div class="offline-banner" id="offlineBanner" role="status">
+  <svg width="16" height="16"><use href="#icon-wifi-off"/></svg>
+  <span>You're offline. Some features may be unavailable.</span>
+</div>
+
+<div class="settings-shell">
+
+  <div class="settings-shell__mobile-topbar">
+    <button class="icon-btn" id="settingsNavToggle" type="button" aria-label="Open settings menu" aria-expanded="false" aria-controls="settingsNav">
+      <svg width="20" height="20"><use href="#icon-menu"/></svg>
+    </button>
+    <span class="settings-shell__brand">
+      <img src="../assets/logo/nemotron-32.png" alt="" width="20" height="20" />
+      About
+    </span>
+  </div>
+
+  <div class="settings-nav-scrim" id="settingsNavScrim"></div>
+
+  <aside class="settings-shell__nav" id="settingsNav" aria-label="Settings navigation">
+    <a class="settings-shell__brand" href="../index.html">
+      <img src="../assets/logo/nemotron-48.png" alt="" width="24" height="24" />
+      Nemotron
+    </a>
+
+    <nav class="settings-nav-group" aria-label="Settings sections">
+      <span class="settings-nav-group__label">Settings</span>
+      <a class="settings-nav-link" href="settings.html">
+        <svg width="18" height="18"><use href="#icon-settings"/></svg>
+        General &amp; OpenRouter
+      </a>
+      <a class="settings-nav-link" href="profile.html">
+        <svg width="18" height="18"><use href="#icon-user"/></svg>
+        Profile
+      </a>
+    </nav>
+
+    <nav class="settings-nav-group" aria-label="Resources">
+      <span class="settings-nav-group__label">Resources</span>
+      <a class="settings-nav-link" href="about.html" aria-current="page">
+        <svg width="18" height="18"><use href="#icon-info"/></svg>
+        About
+      </a>
+      <a class="settings-nav-link" href="help.html">
+        <svg width="18" height="18"><use href="#icon-help"/></svg>
+        Help &amp; FAQ
+      </a>
+      <a class="settings-nav-link" href="privacy.html">
+        <svg width="18" height="18"><use href="#icon-shield"/></svg>
+        Privacy Policy
+      </a>
+      <a class="settings-nav-link" href="terms.html">
+        <svg width="18" height="18"><use href="#icon-file"/></svg>
+        Terms of Service
+      </a>
+    </nav>
+
+    <div class="settings-shell__back">
+      <a class="settings-nav-link" href="chat.html">
+        <svg width="18" height="18"><use href="#icon-arrow-right" style="transform:rotate(180deg)"/></svg>
+        Back to chat
+      </a>
+    </div>
+  </aside>
+
+  <main class="settings-shell__main" id="settingsMain">
+    <div class="settings-shell__main-inner">
+
+      <div class="settings-page-header">
+        <span class="settings-page-header__eyebrow">
+          <svg width="14" height="14"><use href="#icon-info"/></svg>
+          About
+        </span>
+        <h1 class="settings-page-header__title">About Nemotron</h1>
+        <p class="settings-page-header__desc">What this project is, and what it isn't — yet.</p>
+      </div>
+
+      <div class="doc-content">
+        <h2>What this is</h2>
+        <p>
+          NVIDIA Nemotron v1.0 Beta is a frontend-only chat interface built to explore NVIDIA's open
+          Nemotron model family. This build lets you bring your own OpenRouter API key and talk directly
+          to any of the eight free NVIDIA Nemotron models currently available on OpenRouter — no backend,
+          no account system, and no server-side storage.
+        </p>
+
+        <h2>How it works</h2>
+        <p>
+          Your OpenRouter API key is saved only in this browser's <code class="text-mono">localStorage</code>.
+          When you send a test message or a chat, this page calls OpenRouter's API directly from your browser
+          using that key. Nothing passes through a Nemotron-owned server in this build.
+        </p>
+
+        <h2>Project status</h2>
+        <p>
+          This is an early beta focused on the Settings &amp; OpenRouter milestone: API key management, model
+          selection, theme preferences, and a live connection test. Routing between pages, a web app manifest,
+          deployment tooling, and final visual polish are tracked as later milestones and are intentionally
+          out of scope for this build.
+        </p>
+
+        <h2>Model family</h2>
+        <p>Eight free NVIDIA Nemotron models are wired into the model picker in Settings:</p>
+        <ul>
+          <li><strong>nvidia/nemotron-3-ultra-550b-a55b:free</strong> — frontier reasoning &amp; orchestration</li>
+          <li><strong>nvidia/nemotron-3.5-lightning:free</strong> — high-throughput agentic workloads</li>
+          <li><strong>nvidia/nemotron-3-super-120b-a12b:free</strong> — balanced multi-agent reasoning</li>
+          <li><strong>nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free</strong> — compact omni-modal reasoning</li>
+          <li><strong>nvidia/llama-nemotron-rerank-vl-1b-v2:free</strong> — multimodal reranking</li>
+          <li><strong>nvidia/nemotron-3.5-content-safety:free</strong> — content moderation &amp; guardrails</li>
+          <li><strong>nvidia/llama-nemotron-embed-vl-1b-v2:free</strong> — multimodal embeddings</li>
+          <li><strong>nvidia/nemotron-3-embed-1b:free</strong> — text embeddings</li>
+        </ul>
+
+        <h2>Built with</h2>
+        <p>Vanilla HTML, CSS, and JavaScript — no frameworks, no build step, no dependencies beyond Google Fonts.</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="icon-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 3-2M12 20h.01M19 12.5a10 10 0 0 0-2.7-2.1M16.7 6.6A15.9 15.9 0 0 0 12 6c-1 0-2 .1-2.9.3"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></symbol>
+  <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 8v.01"/></symbol>
+  <symbol id="icon-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.7 1.3c0 2-3 2.2-3 4.2"/><path d="M12 17.5h.01"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
+<script src="../js/app.js"></script>
+<script src="../js/settings-nav.js"></script>
+</body>
+</html>

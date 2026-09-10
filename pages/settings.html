@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Settings — Nemotron</title>
+<meta name="description" content="Configure your OpenRouter API key, choose a Nemotron model, and manage theme preferences." />
+<meta name="theme-color" content="#0A0A0A" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/logo/nemotron-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/logo/nemotron-16.png" />
+<link rel="icon" type="image/x-icon" href="../assets/favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/logo/apple-touch-icon.png" />
+<link rel="manifest" href="../site.webmanifest" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="../css/design-system.css" />
+<link rel="stylesheet" href="../css/styles.css" />
+<link rel="stylesheet" href="../css/settings.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#settingsMain">Skip to content</a>
+
+<div class="offline-banner" id="offlineBanner" role="status">
+  <svg width="16" height="16"><use href="#icon-wifi-off"/></svg>
+  <span>You're offline. Some features may be unavailable.</span>
+</div>
+
+<div class="settings-shell">
+
+  <!-- Mobile topbar -->
+  <div class="settings-shell__mobile-topbar">
+    <button class="icon-btn" id="settingsNavToggle" type="button" aria-label="Open settings menu" aria-expanded="false" aria-controls="settingsNav">
+      <svg width="20" height="20"><use href="#icon-menu"/></svg>
+    </button>
+    <span class="settings-shell__brand">
+      <img src="../assets/logo/nemotron-32.png" alt="" width="20" height="20" />
+      Settings
+    </span>
+  </div>
+
+  <div class="settings-nav-scrim" id="settingsNavScrim"></div>
+
+  <!-- =========================================================
+       SETTINGS NAV
+       ========================================================= -->
+  <aside class="settings-shell__nav" id="settingsNav" aria-label="Settings navigation">
+    <a class="settings-shell__brand" href="../index.html">
+      <img src="../assets/logo/nemotron-48.png" alt="" width="24" height="24" />
+      Nemotron
+    </a>
+
+    <nav class="settings-nav-group" aria-label="Settings sections">
+      <span class="settings-nav-group__label">Settings</span>
+      <a class="settings-nav-link" href="settings.html" aria-current="page">
+        <svg width="18" height="18"><use href="#icon-settings"/></svg>
+        General &amp; OpenRouter
+      </a>
+      <a class="settings-nav-link" href="profile.html">
+        <svg width="18" height="18"><use href="#icon-user"/></svg>
+        Profile
+      </a>
+    </nav>
+
+    <nav class="settings-nav-group" aria-label="Resources">
+      <span class="settings-nav-group__label">Resources</span>
+      <a class="settings-nav-link" href="about.html">
+        <svg width="18" height="18"><use href="#icon-info"/></svg>
+        About
+      </a>
+      <a class="settings-nav-link" href="help.html">
+        <svg width="18" height="18"><use href="#icon-help"/></svg>
+        Help &amp; FAQ
+      </a>
+      <a class="settings-nav-link" href="privacy.html">
+        <svg width="18" height="18"><use href="#icon-shield"/></svg>
+        Privacy Policy
+      </a>
+      <a class="settings-nav-link" href="terms.html">
+        <svg width="18" height="18"><use href="#icon-file"/></svg>
+        Terms of Service
+      </a>
+    </nav>
+
+    <div class="settings-shell__back">
+      <a class="settings-nav-link" href="chat.html">
+        <svg width="18" height="18"><use href="#icon-arrow-right" style="transform:rotate(180deg)"/></svg>
+        Back to chat
+      </a>
+    </div>
+  </aside>
+
+  <!-- =========================================================
+       MAIN
+       ========================================================= -->
+  <main class="settings-shell__main" id="settingsMain">
+    <div class="settings-shell__main-inner">
+
+      <div class="settings-page-header">
+        <span class="settings-page-header__eyebrow">
+          <svg width="14" height="14"><use href="#icon-cpu"/></svg>
+          Settings
+        </span>
+        <h1 class="settings-page-header__title">General &amp; OpenRouter</h1>
+        <p class="settings-page-header__desc">
+          Connect your own OpenRouter API key to run live requests against NVIDIA's free Nemotron
+          model family directly from this browser. Your key is stored only in this browser's
+          local storage and is never sent anywhere except OpenRouter.
+        </p>
+      </div>
+
+      <form id="settingsForm" novalidate>
+
+        <!-- ============ OpenRouter API key ============ -->
+        <section class="settings-section">
+          <div class="settings-section__head">
+            <h2 class="settings-section__title">
+              <svg width="18" height="18"><use href="#icon-key"/></svg>
+              OpenRouter API key
+            </h2>
+            <p class="settings-section__desc">
+              Get a free key from <a href="https://openrouter.ai/keys" target="_blank" rel="noopener" style="color:var(--nv-green); font-weight:var(--fw-medium);">openrouter.ai/keys</a>.
+              Keys typically start with <code class="text-mono">sk-or-v1-</code>.
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="apiKeyInput">API key <span class="optional">(required to send messages)</span></label>
+            <div class="input-wrap api-key-field">
+              <svg class="input-icon" width="18" height="18"><use href="#icon-key"/></svg>
+              <input
+                class="input"
+                id="apiKeyInput"
+                type="password"
+                name="apiKey"
+                placeholder="sk-or-v1-••••••••••••••••••••••••••••••••"
+                autocomplete="off"
+                spellcheck="false"
+                aria-describedby="apiKeyHint apiKeyError"
+              />
+              <div class="api-key-field__actions">
+                <button class="icon-btn" type="button" id="toggleKeyVisibility" aria-label="Show API key">
+                  <svg width="18" height="18"><use href="#icon-eye"/></svg>
+                </button>
+                <button class="icon-btn" type="button" id="pasteKeyBtn" aria-label="Paste from clipboard" title="Paste from clipboard">
+                  <svg width="18" height="18"><use href="#icon-copy"/></svg>
+                </button>
+              </div>
+            </div>
+            <span class="field__hint" id="apiKeyHint">Stored locally in this browser via <code class="text-mono">localStorage</code>. Never uploaded to Nemotron's servers.</span>
+            <span class="field__error" id="apiKeyError" hidden>
+              <svg width="14" height="14"><use href="#icon-alert-triangle"/></svg>
+              <span id="apiKeyErrorText">Enter a valid OpenRouter API key.</span>
+            </span>
+
+            <div class="key-status key-status--idle" id="keyStatus">
+              <svg width="14" height="14"><use href="#icon-info"/></svg>
+              <span id="keyStatusText">No key saved yet.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ Model selection ============ -->
+        <section class="settings-section">
+          <div class="settings-section__head">
+            <h2 class="settings-section__title">
+              <svg width="18" height="18"><use href="#icon-cpu"/></svg>
+              Default model
+            </h2>
+            <p class="settings-section__desc">
+              Choose which free NVIDIA Nemotron model on OpenRouter is used for new conversations and the connection test below.
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="modelSelect">NVIDIA free model</label>
+            <div class="select-wrap">
+              <select class="select" id="modelSelect" name="model">
+                <option value="nvidia/nemotron-3-ultra-550b-a55b:free">nvidia/nemotron-3-ultra-550b-a55b:free</option>
+                <option value="nvidia/nemotron-3.5-lightning:free">nvidia/nemotron-3.5-lightning:free</option>
+                <option value="nvidia/nemotron-3-super-120b-a12b:free" selected>nvidia/nemotron-3-super-120b-a12b:free</option>
+                <option value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free</option>
+                <option value="nvidia/llama-nemotron-rerank-vl-1b-v2:free">nvidia/llama-nemotron-rerank-vl-1b-v2:free</option>
+                <option value="nvidia/nemotron-3.5-content-safety:free">nvidia/nemotron-3.5-content-safety:free</option>
+                <option value="nvidia/llama-nemotron-embed-vl-1b-v2:free">nvidia/llama-nemotron-embed-vl-1b-v2:free</option>
+                <option value="nvidia/nemotron-3-embed-1b:free">nvidia/nemotron-3-embed-1b:free</option>
+              </select>
+              <svg class="select-chevron" width="16" height="16"><use href="#icon-chevron-down"/></svg>
+            </div>
+            <span class="field__hint">Exactly eight free NVIDIA models are available via OpenRouter.</span>
+          </div>
+
+          <div class="model-meta-card" id="modelMetaCard">
+            <div class="model-meta-card__icon"><svg width="18" height="18"><use href="#icon-nemotron-mark"/></svg></div>
+            <div>
+              <div class="model-meta-card__name" id="modelMetaName">Nemotron 3 Super</div>
+              <div class="model-meta-card__id" id="modelMetaId">nvidia/nemotron-3-super-120b-a12b:free</div>
+              <div class="model-meta-card__desc" id="modelMetaDesc">120B-parameter hybrid MoE model activating 12B parameters — tuned for complex multi-agent applications.</div>
+              <div class="model-meta-card__tags" id="modelMetaTags">
+                <span class="badge badge--brand">Free</span>
+                <span class="badge badge--neutral">Text</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ Theme ============ -->
+        <section class="settings-section">
+          <div class="settings-section__head">
+            <h2 class="settings-section__title">
+              <svg width="18" height="18"><use href="#icon-sun"/></svg>
+              Theme
+            </h2>
+            <p class="settings-section__desc">Choose how Nemotron looks on this device.</p>
+          </div>
+
+          <div class="theme-picker" id="themePicker" role="radiogroup" aria-label="Theme">
+            <label class="theme-option">
+              <input type="radio" name="theme" value="dark" checked />
+              <span class="theme-option__card">
+                <span class="theme-option__preview theme-option__preview--dark"><span></span><span></span></span>
+                <span class="theme-option__foot">
+                  <span class="theme-option__name">
+                    <svg width="14" height="14" style="vertical-align:-2px; margin-right:6px;"><use href="#icon-moon"/></svg>
+                    Dark
+                  </span>
+                  <span class="theme-option__check"><svg width="12" height="12"><use href="#icon-check"/></svg></span>
+                </span>
+              </span>
+            </label>
+
+            <label class="theme-option">
+              <input type="radio" name="theme" value="light" />
+              <span class="theme-option__card">
+                <span class="theme-option__preview theme-option__preview--light"><span></span><span></span></span>
+                <span class="theme-option__foot">
+                  <span class="theme-option__name">
+                    <svg width="14" height="14" style="vertical-align:-2px; margin-right:6px;"><use href="#icon-sun"/></svg>
+                    Light
+                  </span>
+                  <span class="theme-option__check"><svg width="12" height="12"><use href="#icon-check"/></svg></span>
+                </span>
+              </span>
+            </label>
+
+            <label class="theme-option">
+              <input type="radio" name="theme" value="system" />
+              <span class="theme-option__card">
+                <span class="theme-option__preview theme-option__preview--system"></span>
+                <span class="theme-option__foot">
+                  <span class="theme-option__name">
+                    <svg width="14" height="14" style="vertical-align:-2px; margin-right:6px;"><use href="#icon-monitor"/></svg>
+                    System
+                  </span>
+                  <span class="theme-option__check"><svg width="12" height="12"><use href="#icon-check"/></svg></span>
+                </span>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <!-- ============ Test connection ============ -->
+        <section class="settings-section">
+          <div class="settings-section__head">
+            <h2 class="settings-section__title">
+              <svg width="18" height="18"><use href="#icon-zap"/></svg>
+              Test connection
+            </h2>
+            <p class="settings-section__desc">
+              Send a tiny request to OpenRouter using your saved key and selected model to confirm everything works.
+            </p>
+          </div>
+
+          <div class="test-panel">
+            <div class="test-panel__row">
+              <button class="btn btn--secondary" type="button" id="testConnectionBtn">
+                <svg width="16" height="16"><use href="#icon-bolt"/></svg>
+                Send test message
+              </button>
+              <span class="key-status key-status--idle" id="testStatus">
+                <svg width="14" height="14"><use href="#icon-info"/></svg>
+                <span>Save a key first to run a test.</span>
+              </span>
+            </div>
+            <pre class="test-panel__output" id="testOutput"></pre>
+          </div>
+        </section>
+
+        <!-- ============ Danger zone ============ -->
+        <section class="settings-section">
+          <div class="settings-section__head">
+            <h2 class="settings-section__title">
+              <svg width="18" height="18"><use href="#icon-trash"/></svg>
+              Reset
+            </h2>
+            <p class="settings-section__desc">
+              Clear your saved API key, model choice, and theme preference from this browser.
+            </p>
+          </div>
+          <div class="settings-row" style="padding-top:0;">
+            <div class="settings-row__text">
+              <div class="settings-row__label">Reset all settings</div>
+              <div class="settings-row__hint">This removes everything saved on this device. This can't be undone.</div>
+            </div>
+            <button class="btn btn--danger" type="button" id="resetSettingsBtn">Reset settings</button>
+          </div>
+        </section>
+
+        <!-- ============ Save bar ============ -->
+        <div class="settings-savebar">
+          <span class="settings-savebar__status" id="saveStatus" hidden>
+            <svg width="14" height="14"><use href="#icon-check-circle"/></svg>
+            <span>Saved</span>
+          </span>
+          <button class="btn btn--secondary" type="button" id="discardBtn">Discard changes</button>
+          <button class="btn btn--primary" type="submit" id="saveSettingsBtn">
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            Save settings
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </main>
+</div>
+
+<!-- =========================================================
+     RESET CONFIRM MODAL
+     ========================================================= -->
+<div class="modal-overlay" id="resetConfirmModal" data-modal-overlay>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="resetConfirmTitle">
+    <div class="modal__icon modal__icon--danger">
+      <svg width="22" height="22"><use href="#icon-trash"/></svg>
+    </div>
+    <h2 class="modal__title" id="resetConfirmTitle">Reset all settings?</h2>
+    <p class="modal__body">Your API key, model selection, and theme preference will be removed from this browser. This can't be undone.</p>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" type="button" data-close-modal>Cancel</button>
+      <button class="btn btn--danger" type="button" id="confirmResetBtn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast region -->
+<div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
+
+<!-- =========================================================
+     ICON SPRITE
+     ========================================================= -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="icon-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 3-2M12 20h.01M19 12.5a10 10 0 0 0-2.7-2.1M16.7 6.6A15.9 15.9 0 0 0 12 6c-1 0-2 .1-2.9.3"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></symbol>
+  <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 8v.01"/></symbol>
+  <symbol id="icon-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.7 1.3c0 2-3 2.2-3 4.2"/><path d="M12 17.5h.01"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+  <symbol id="icon-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12 20 3M16 8l3 3M13 11l2.5 2.5"/></symbol>
+  <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.2 4.2M6.4 6.7C4 8.3 2 12 2 12s3.5 7 10 7c1.8 0 3.4-.5 4.7-1.2M9.9 5.2A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a15.6 15.6 0 0 1-2.2 3"/></symbol>
+  <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+  <symbol id="icon-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 2.5 18a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.7 3.9a1.5 1.5 0 0 0-2.6 0z"/><path d="M12 9v4M12 16.5v.01"/></symbol>
+  <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="icon-nemotron-mark" viewBox="0 0 100 100" fill="none"><path d="M50 8 90 30v40L50 92 10 70V30z" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/><circle cx="50" cy="30" r="6" fill="currentColor"/><circle cx="50" cy="70" r="6" fill="currentColor"/><circle cx="30" cy="42" r="6" fill="currentColor"/><circle cx="70" cy="42" r="6" fill="currentColor"/><circle cx="30" cy="58" r="6" fill="currentColor"/><circle cx="70" cy="58" r="6" fill="currentColor"/><circle cx="50" cy="50" r="9" fill="currentColor"/><path d="M50 30 30 42M50 30l20 12M30 42v16M70 42v16M30 58l20 12M70 58 50 70M50 30v40M30 42l40 16M70 42 30 58" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></symbol>
+  <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+  <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></symbol>
+  <symbol id="icon-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></symbol>
+  <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.3 2.3 4.7-5"/></symbol>
+  <symbol id="icon-x-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></symbol>
+  <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+  <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
+  <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></symbol>
+</svg>
+
+<script src="../js/app.js"></script>
+<script src="../js/settings.js"></script>
+</body>
+</html>
