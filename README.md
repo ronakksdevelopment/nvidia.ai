@@ -81,7 +81,7 @@ npx serve .
 
 Then open `http://localhost:8000`.
 
-Opening `index.html` directly via `file://` also works for a quick look, though a local server is recommended so root-relative paths (`/styles/main.css`, etc.) resolve exactly as they will in production.
+Opening `index.html` directly via `file://` also works for a quick look — all internal paths are relative, so the site works the same way locally, at a domain root, or under a GitHub Pages project subpath.
 
 ## Deploying to GitHub Pages
 
@@ -91,7 +91,7 @@ Opening `index.html` directly via `file://` also works for a quick look, though 
 4. Choose the branch (e.g. `main`) and the `/ (root)` folder, then save.
 5. GitHub Pages will publish the site at `https://<your-username>.github.io/<repo-name>/`.
 
-Because every internal link in this project uses root-relative paths (`/styles/main.css`, `/pages/pricing.html`, etc.), the site works cleanly at a custom domain or at `https://<username>.github.io/` (root). If you deploy under a **project subpath** instead (`https://<username>.github.io/<repo-name>/`), update the root-relative paths to be relative to that subpath, or add a `<base href="/<repo-name>/">` tag in the `<head>` of each page.
+Every internal link in this project uses **relative paths** (`styles/main.css` from the root, `../styles/main.css` from `pages/`), so the site works correctly no matter where it's deployed — a custom domain, `https://<username>.github.io/` (root), or a project subpath like `https://<username>.github.io/<repo-name>/`. No path rewriting is needed after cloning or forking.
 
 The root-level `404.html` is picked up automatically by GitHub Pages for unmatched routes.
 
