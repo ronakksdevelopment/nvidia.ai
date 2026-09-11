@@ -54,32 +54,14 @@
   }
 
   /* -----------------------------------------------------------------------
-     Captcha widget: checkbox -> spinner -> either instant auto-verify or a
-     simple math challenge, mirroring the familiar "I'm not a robot" pattern
-     without pretending to talk to any real verification service.
+     Captcha widget: checkbox -> spinner -> auto-verify, mirroring the
+     familiar "I'm not a robot" pattern without pretending to talk to any
+     real verification service.
      ----------------------------------------------------------------------- */
-  function randomMathChallenge() {
-    var a = 1 + Math.floor(Math.random() * 9);
-    var b = 1 + Math.floor(Math.random() * 9);
-    var ops = [
-      { sym: "+", fn: function (x, y) { return x + y; } },
-      { sym: "-", fn: function (x, y) { return x - y; } },
-    ];
-    var op = ops[Math.floor(Math.random() * ops.length)];
-    if (op.sym === "-" && b > a) { var t = a; a = b; b = t; } // keep it non-negative
-    return { question: "What is " + a + " " + op.sym + " " + b + "?", answer: op.fn(a, b) };
-  }
-
   function initCaptcha(root) {
     var checkbox = root.querySelector("[data-nv-captcha-checkbox]");
-    var challengeBox = root.querySelector("[data-nv-captcha-challenge]");
-    var questionEl = root.querySelector("[data-nv-captcha-question]");
-    var answerInput = root.querySelector("[data-nv-captcha-answer]");
-    var verifyBtn = root.querySelector("[data-nv-captcha-verify]");
     var statusEl = root.querySelector("[data-nv-captcha-status]");
     if (!checkbox) return;
-
-    var currentChallenge = null;
 
     function setStatus(text, visible) {
       if (!statusEl) return;
@@ -92,18 +74,7 @@
       root.setAttribute("data-verified", "true");
       checkbox.checked = true;
       checkbox.disabled = true;
-      if (challengeBox) challengeBox.hidden = true;
       setStatus("Verification complete.", true);
-    }
-
-    function showChallenge() {
-      currentChallenge = randomMathChallenge();
-      if (questionEl) questionEl.textContent = currentChallenge.question;
-      if (answerInput) { answerInput.value = ""; }
-      root.setAttribute("data-state", "challenge");
-      if (challengeBox) challengeBox.hidden = false;
-      setStatus("", false);
-      answerInput && answerInput.focus();
     }
 
     checkbox.addEventListener("change", function () {
@@ -120,28 +91,6 @@
       setTimeout(function () {
         markVerified();
       }, delay);
-    });
-
-    verifyBtn && verifyBtn.addEventListener("click", function () {
-      if (!currentChallenge || !answerInput) return;
-      var given = parseInt(answerInput.value, 10);
-      if (given === currentChallenge.answer) {
-        markVerified();
-      } else {
-        root.setAttribute("data-state", "error");
-        setStatus("That's not quite right, try again.", true);
-        currentChallenge = randomMathChallenge();
-        if (questionEl) questionEl.textContent = currentChallenge.question;
-        answerInput.value = "";
-        answerInput.focus();
-      }
-    });
-
-    answerInput && answerInput.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        verifyBtn && verifyBtn.click();
-      }
     });
 
     root.setAttribute("data-state", "idle");

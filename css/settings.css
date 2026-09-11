@@ -108,8 +108,8 @@
 }
 
 .settings-shell__main-inner {
-  max-width: 960px;
-  margin-inline: auto;
+  max-width: none;
+  width: 100%;
 }
 
 .settings-shell__mobile-topbar {

@@ -14,7 +14,8 @@ free Nemotron models.
   aligned columns across all 8 cards instead of drifting with text length.
 - **Captcha simplified** — the "I'm not a robot" checkbox on Sign In / Sign
   Up now always auto-verifies after a short spinner; the random math
-  challenge was removed.
+  challenge (and its dead markup/CSS/JS) was fully removed, keeping only
+  the checkbox and box.
 - **Selected text color fixed** — global `::selection` now uses white text
   on the green highlight everywhere (previously black, unreadable in the
   name field and elsewhere).

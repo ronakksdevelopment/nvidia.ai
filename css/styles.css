@@ -656,12 +656,8 @@ textarea.input { resize: vertical; min-height: 96px; }
 @keyframes nv-captcha-spin { to { transform: rotate(360deg); } }
 .nv-captcha__label { font-size: var(--fs-body-sm); color: var(--text-secondary); }
 .nv-captcha__badge { opacity: 0.7; border-radius: 4px; }
-.nv-captcha__challenge { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-3); flex-wrap: wrap; }
-.nv-captcha__question { font-size: var(--fs-body-sm); color: var(--text-primary); font-weight: var(--fw-medium); margin: 0; }
-.nv-captcha__challenge .input { width: 90px; flex: 0 0 auto; padding: var(--space-2) var(--space-3); }
 .nv-captcha__status { font-size: var(--fs-caption); margin: var(--space-2) 0 0; }
 .nv-captcha[data-state="verified"] .nv-captcha__status { color: var(--nv-green); }
-.nv-captcha[data-state="error"] .nv-captcha__status { color: var(--status-danger); }
 
 /* =========================================================================
    8. SWITCH
