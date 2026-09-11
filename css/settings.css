@@ -493,27 +493,30 @@
   position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-7);
 }
 .faq-search .nv-icon {
   position: absolute;
-  left: var(--space-4);
+  left: var(--space-5);
   color: var(--text-tertiary);
-  font-size: 0.95rem;
+  font-size: 1rem;
   pointer-events: none;
 }
 .faq-search__input {
   width: 100%;
-  background: var(--surface-sunken);
-  border: 1px solid var(--border-default);
+  background: var(--surface-raised);
+  border: 2px solid var(--border-default);
   color: var(--text-primary);
-  border-radius: var(--radius-sm);
-  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-9);
-  font-size: var(--fs-body-sm);
+  border-radius: var(--radius-full);
+  padding: var(--space-4) var(--space-5) var(--space-4) var(--space-11);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  box-shadow: var(--shadow-sm);
   transition: border-color var(--duration-base) var(--ease-standard),
               box-shadow var(--duration-base) var(--ease-standard);
 }
-.faq-search__input::placeholder { color: var(--text-disabled); }
+.faq-search__input::placeholder { color: var(--text-disabled); font-weight: var(--fw-regular); }
+.faq-search__input:hover { border-color: var(--border-strong); }
 .faq-search__input:focus-visible {
   outline: none;
   border-color: var(--nv-green);
@@ -523,36 +526,60 @@
   font-size: var(--fs-body-sm);
   color: var(--text-secondary);
   text-align: center;
-  padding: var(--space-8) var(--space-4);
+  padding: var(--space-10) var(--space-4);
 }
-.faq-empty a { color: var(--nv-green); font-weight: var(--fw-medium); }
+.faq-empty a { color: var(--nv-green); font-weight: var(--fw-semibold); }
 .faq-empty a:hover { text-decoration: underline; }
 .faq-empty[hidden] { display: none; }
 
-/* FAQ accordion */
-.faq-list { display: flex; flex-direction: column; gap: var(--space-3); }
+/* -------------------------------------------------------------------------
+   FAQ accordion — bold, rounded, theme-aware cards.
+   Each card gets real depth (shadow + thick border on open) instead of a
+   flat default box, a numbered/iconed badge that carries brand color when
+   open, and a colored left accent bar so an open card is unmistakable at a
+   glance in both light and dark themes.
+   ------------------------------------------------------------------------- */
+.faq-list { display: flex; flex-direction: column; gap: var(--space-4); }
 .faq-item {
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  position: relative;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--surface-raised);
+  box-shadow: var(--shadow-sm);
   transition: border-color var(--duration-base) var(--ease-standard),
-              box-shadow var(--duration-base) var(--ease-standard);
+              box-shadow var(--duration-base) var(--ease-standard),
+              transform var(--duration-base) var(--ease-standard);
 }
-.faq-item:hover { border-color: var(--border-default); }
+.faq-item::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--nv-green);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+.faq-item:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
 .faq-item[data-open="true"] {
-  border-color: var(--border-brand);
-  box-shadow: 0 0 0 1px rgba(118, 185, 0, 0.14);
+  border-color: var(--nv-green);
+  box-shadow: var(--shadow-lg), 0 0 0 4px var(--status-success-bg);
+  transform: translateY(-1px);
 }
+.faq-item[data-open="true"]::before { opacity: 1; }
+
 .faq-item__q {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
-  font-size: var(--fs-body-sm);
-  font-weight: var(--fw-medium);
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
   color: var(--text-primary);
   text-align: left;
   background: transparent;
@@ -560,10 +587,32 @@
 }
 .faq-item__q:hover { background: var(--surface-hover); }
 .faq-item[data-open="true"] .faq-item__q { color: var(--nv-green); }
-.faq-item__q-icon {
-  width: 28px; height: 28px;
+
+.faq-item__q-badge {
+  width: 40px; height: 40px;
   flex-shrink: 0;
-  border-radius: var(--radius-sm);
+  border-radius: 50%;
+  background: var(--surface-sunken);
+  border: 2px solid var(--border-subtle);
+  color: var(--text-tertiary);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: background-color var(--duration-base) var(--ease-standard),
+              border-color var(--duration-base) var(--ease-standard),
+              color var(--duration-base) var(--ease-standard);
+}
+.faq-item[data-open="true"] .faq-item__q-badge {
+  background: var(--nv-green);
+  border-color: var(--nv-green);
+  color: var(--nv-black);
+}
+
+.faq-item__q-text { flex: 1; min-width: 0; line-height: var(--lh-snug); }
+
+.faq-item__q-icon {
+  width: 32px; height: 32px;
+  flex-shrink: 0;
+  border-radius: 50%;
   background: var(--surface-sunken);
   color: var(--text-tertiary);
   display: inline-flex; align-items: center; justify-content: center;
@@ -576,20 +625,36 @@
   color: var(--nv-green);
   transform: rotate(180deg);
 }
-.faq-item__q-text { flex: 1; min-width: 0; }
+
 .faq-item__a {
-  padding: 0 var(--space-5);
+  padding: 0 var(--space-6);
+  margin-left: 56px;
   max-height: 0;
   overflow: hidden;
   transition: max-height var(--duration-slow) var(--ease-standard),
               padding var(--duration-slow) var(--ease-standard);
 }
 .faq-item[data-open="true"] .faq-item__a {
-  padding: 0 var(--space-5) var(--space-5);
+  padding: 0 var(--space-6) var(--space-6);
   max-height: 400px;
 }
-.faq-item__a p { font-size: var(--fs-body-sm); color: var(--text-secondary); margin: 0; line-height: var(--lh-relaxed); }
-.faq-item__a p + p { margin-top: var(--space-3); }
+.faq-item__a p {
+  font-size: var(--fs-body-sm);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: var(--lh-relaxed);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-4);
+}
+.faq-item__a p + p { margin-top: var(--space-3); border-top: none; padding-top: 0; }
+
+@media (max-width: 560px) {
+  .faq-item__q { padding: var(--space-4) var(--space-4); gap: var(--space-3); }
+  .faq-item__q-badge { width: 34px; height: 34px; font-size: 0.9rem; }
+  .faq-item__a { margin-left: 0; padding-inline: var(--space-4); }
+  .faq-item[data-open="true"] .faq-item__a { padding: 0 var(--space-4) var(--space-5); }
+}
+
 
 /* -------------------------------------------------------------------------
    10. Profile page
