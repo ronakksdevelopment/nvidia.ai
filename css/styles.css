@@ -497,6 +497,49 @@ p { color: var(--text-secondary); max-width: 62ch; }
 .input[aria-invalid="true"] { border-color: var(--status-danger); }
 .input[aria-invalid="true"]:focus-visible { box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.28); }
 
+/* Kill the browser's yellow/blue autofill background + font override on
+   every themed text field, so an autofilled email/API-key input still
+   reads as this app's surface color instead of flashing Chrome's default
+   pale-yellow fill — one of the most obvious "this wasn't designed"
+   browser tells. The 9999-step transition-delay trick forces Chrome to
+   keep the box-shadow "background paint" from ever visually landing. */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-primary);
+  -webkit-box-shadow: 0 0 0 1000px var(--surface-sunken) inset;
+  box-shadow: 0 0 0 1000px var(--surface-sunken) inset;
+  caret-color: var(--text-primary);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Neutralize native [type=search] chrome (WebKit's built-in gray clear-X
+   button and macOS's rounded-rect appearance) so search fields render with
+   the exact same flat, theme-controlled look as every other .input instead
+   of an inconsistent OS-styled variant. Pages that want a clear button
+   build their own (see .faq-search__input + faqSearchInput's JS-driven
+   clear affordance / .sidebar__search-input's custom icon). */
+.input[type="search"],
+input[type="search"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.input[type="search"]::-webkit-search-decoration,
+.input[type="search"]::-webkit-search-cancel-button,
+.input[type="search"]::-webkit-search-results-button,
+.input[type="search"]::-webkit-search-results-decoration,
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
 .input-wrap .input-icon {
   position: absolute;
   left: var(--space-4);
@@ -1276,6 +1319,59 @@ textarea.input { resize: vertical; min-height: 96px; }
 .onboarding__feature .nv-icon { font-size: 1.25rem; color: var(--nv-green); flex-shrink: 0; }
 .onboarding__feature-text { font-size: var(--fs-body-sm); color: var(--text-secondary); }
 
+/* Custom model-choice radio cards (replaces native radio buttons entirely —
+   the input stays in the DOM for semantics/keyboard/:checked support, but is
+   visually hidden; .model-choice__card and .model-choice__check are what the
+   person actually sees and never fall back to any default OS control). */
+.model-choice-group { display: flex; flex-direction: column; gap: var(--space-3); text-align: left; }
+.model-choice { display: block; cursor: pointer; }
+.model-choice__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  border: 1.5px solid var(--border-default);
+  transition: border-color var(--duration-base) var(--ease-standard),
+              background-color var(--duration-base) var(--ease-standard),
+              box-shadow var(--duration-base) var(--ease-standard);
+}
+.model-choice__card:hover { border-color: var(--border-strong); }
+.model-choice__input:focus-visible + .model-choice__card {
+  outline: none;
+  border-color: var(--nv-green);
+  box-shadow: var(--shadow-focus);
+}
+.model-choice__input:checked + .model-choice__card {
+  border-color: var(--nv-green);
+  background: var(--status-success-bg);
+}
+.model-choice__text { display: flex; flex-direction: column; gap: 2px; }
+.model-choice__name { font-size: var(--fs-body); color: var(--text-primary); font-weight: var(--fw-semibold); }
+.model-choice__desc { font-size: var(--fs-caption); color: var(--text-tertiary); }
+.model-choice__check {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface-sunken);
+  color: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  transition: background-color var(--duration-base) var(--ease-standard),
+              border-color var(--duration-base) var(--ease-standard),
+              color var(--duration-base) var(--ease-standard);
+}
+.model-choice__input:checked + .model-choice__card .model-choice__check {
+  background: var(--nv-green);
+  border-color: var(--nv-green);
+  color: var(--nv-black);
+}
+
 /* =========================================================================
    22. AUTH (sign-in page)
    ========================================================================= */
@@ -1368,3 +1464,37 @@ textarea.input { resize: vertical; min-height: 96px; }
 .gap-2 { gap: var(--space-2); }
 .gap-3 { gap: var(--space-3); }
 .hidden { display: none !important; }
+
+/* =========================================================================
+   Custom tooltip (replaces the native OS `title=` popup)
+   Controlled by js/app.js: any [title] element has its native attribute
+   moved to data-tooltip on first hover/focus so the browser never shows its
+   own gray tooltip, and this themed one renders instead — dark surface,
+   brand-consistent radius/shadow, small delay, keyboard-accessible via
+   focus-visible so it never feels like a bolted-on default control.
+   ========================================================================= */
+.nv-tooltip {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  background: var(--nv-graphite-900);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  box-shadow: var(--shadow-md);
+  max-width: 240px;
+  line-height: var(--lh-snug);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--duration-fast) var(--ease-standard),
+              transform var(--duration-fast) var(--ease-standard);
+}
+.nv-tooltip.is-visible { opacity: 1; transform: translateY(0); }
+:root[data-theme="light"] .nv-tooltip {
+  background: var(--nv-graphite-900);
+  color: var(--nv-white);
+  border-color: var(--nv-graphite-800);
+}

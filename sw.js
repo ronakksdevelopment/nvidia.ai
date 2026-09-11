@@ -13,7 +13,7 @@
    assets forever.
    ========================================================================= */
 
-var CACHE_VERSION = "nemotron-v1.5.0";
+var CACHE_VERSION = "nemotron-v2.0.0";
 var CACHE_NAME = "nemotron-shell-" + CACHE_VERSION;
 
 // Resolved relative to the service worker's own scope at install time.
@@ -28,6 +28,7 @@ var SHELL_PATHS = [
   "css/settings.css",
   "js/app.js",
   "js/router.js",
+  "js/tooltip.js",
   "js/session.js",
   "js/chat.js",
   "js/settings.js",

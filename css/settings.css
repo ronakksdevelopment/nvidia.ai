@@ -55,6 +55,21 @@
   margin-bottom: var(--space-1);
 }
 
+/* Category labels above groups of settings sections in the main content
+   column (Account, API & Model, Appearance, Data & Privacy) — same visual
+   language as the sidebar's group labels, so the grouping reads as one
+   consistent pattern instead of two different systems. */
+.settings-group-label {
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin: var(--space-8) 0 var(--space-3);
+}
+.settings-group-label:first-child { margin-top: 0; }
+
+
 .settings-nav-link {
   display: flex;
   align-items: center;
@@ -362,18 +377,54 @@
    bottom edge reaches the bottom of its scroll container, which is the
    standard, jump-free way to keep actions reachable without covering
    content (it can never overlap earlier sections, because sticky only
-   engages once nothing below it is left to show). */
+   engages once nothing below it is left to show).
+
+/* Sticky to the bottom of the *scrolling column* (.settings-shell__main),
+   not the viewport, and always sticky — never toggled between two
+   different layout modes. That's what previously made Discard/Save
+   visibly jump: switching from an in-flow bar to position:fixed on scroll
+   changes its containing block, box model, and padding in one frame. A
+   plain `position: sticky; bottom: 0` bar keeps the exact same box the
+   entire time; it simply stops moving with the content once its own
+   bottom edge reaches the bottom of its scroll container, which is the
+   standard, jump-free way to keep actions reachable without covering
+   content (it can never overlap earlier sections, because sticky only
+   engages once nothing below it is left to show).
+
+   .settings-shell__main's own generous var(--space-9) (40px) bottom
+   padding is correct for every *other* page sharing this shell (About,
+   Help, Privacy, Terms, Profile — plain reading content that should
+   never end flush against the viewport edge). But once the sticky
+   savebar reaches that padding and stops there, the same 40px reappears
+   a second time below the buttons with nothing in it, reading as a
+   dead, unfinished strip rather than intentional spacing. Reclaiming
+   that region below the bar (see the negative bottom margin) and giving
+   the bar its own small, deliberate padding instead keeps every other
+   page's spacing untouched while finishing this one flush and tight to
+   the edge, the same solid canvas color the whole shell already uses —
+   no gradient fade, no bare gap. */
 .settings-savebar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-3);
-  padding: var(--space-4) 0;
-  margin-top: var(--space-6);
   position: sticky;
-  bottom: 0;
-  background: linear-gradient(180deg, transparent, var(--surface-canvas) 24%);
+  bottom: calc(var(--space-9) * -1);
+  margin-top: var(--space-6);
+  margin-inline: calc(var(--space-8) * -1);
+  margin-bottom: calc(var(--space-9) * -1);
+  padding: var(--space-4) var(--space-8);
+  background: var(--surface-canvas);
+  border-top: 1px solid var(--border-subtle);
   z-index: var(--z-sticky);
+}
+@media (max-width: 860px) {
+  .settings-savebar {
+    bottom: calc(var(--space-11) * -1);
+    margin-inline: calc(var(--space-4) * -1);
+    margin-bottom: calc(var(--space-11) * -1);
+    padding-inline: var(--space-4);
+  }
 }
 .settings-savebar__status {
   margin-right: auto;
@@ -387,7 +438,8 @@
 .settings-savebar__status .nv-icon { font-size: 0.875rem; color: var(--status-success); }
 
 /* -------------------------------------------------------------------------
-   7. Model select (native, styled)
+   7. Model select (native, styled) — legacy fallback rules, kept for any
+   remaining plain <select class="select"> usage elsewhere.
    ------------------------------------------------------------------------- */
 .select-wrap { position: relative; display: flex; align-items: center; }
 .select {
@@ -416,6 +468,114 @@
   color: var(--text-tertiary);
   pointer-events: none;
 }
+
+/* -------------------------------------------------------------------------
+   7b. Custom dropdown (.nv-dropdown) — fully CSS-controlled replacement for
+   native <select>, so the open option list carries the same green brand
+   highlight as the rest of the UI in every browser/OS instead of the
+   unstyled native popup.
+   ------------------------------------------------------------------------- */
+.nv-dropdown { position: relative; }
+
+.nv-dropdown__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-body);
+  font-family: var(--font-family-mono);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--duration-base) var(--ease-standard),
+              box-shadow var(--duration-base) var(--ease-standard);
+}
+.nv-dropdown__trigger:hover { border-color: var(--border-strong); }
+.nv-dropdown__trigger:focus-visible,
+.nv-dropdown__trigger[aria-expanded="true"] {
+  outline: none;
+  border-color: var(--nv-green);
+  box-shadow: var(--shadow-focus);
+}
+.nv-dropdown__trigger-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nv-dropdown__chevron {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  transition: transform var(--duration-base) var(--ease-standard),
+              color var(--duration-base) var(--ease-standard);
+}
+.nv-dropdown__trigger[aria-expanded="true"] .nv-dropdown__chevron {
+  transform: rotate(180deg);
+  color: var(--nv-green);
+}
+
+.nv-dropdown__list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + var(--space-2));
+  z-index: var(--z-dropdown);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2);
+  max-height: 320px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+}
+.nv-dropdown__list[hidden] { display: none; }
+
+.nv-dropdown__option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-body-sm);
+  font-family: var(--font-family-mono);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard);
+}
+.nv-dropdown__option .nv-dropdown__check { opacity: 0; color: var(--nv-black); flex-shrink: 0; }
+
+/* Hover + keyboard-focused option: green highlight, like Claude's menus */
+.nv-dropdown__option:hover,
+.nv-dropdown__option.is-active {
+  background: var(--nv-green);
+  color: var(--text-on-brand);
+}
+.nv-dropdown__option:hover .nv-dropdown__check,
+.nv-dropdown__option.is-active .nv-dropdown__check { color: var(--text-on-brand); }
+
+/* Currently selected option: subtle green tint + visible check, even when
+   not hovered, so the active model is always identifiable at a glance. */
+.nv-dropdown__option.is-selected {
+  background: var(--status-success-bg);
+  color: var(--nv-green);
+  font-weight: var(--fw-semibold);
+}
+.nv-dropdown__option.is-selected .nv-dropdown__check { opacity: 1; color: var(--nv-green); }
+.nv-dropdown__option.is-selected:hover,
+.nv-dropdown__option.is-selected.is-active {
+  background: var(--nv-green);
+  color: var(--text-on-brand);
+}
+.nv-dropdown__option.is-selected:hover .nv-dropdown__check,
+.nv-dropdown__option.is-selected.is-active .nv-dropdown__check { color: var(--text-on-brand); opacity: 1; }
 
 .model-meta-card {
   display: flex;
@@ -542,8 +702,8 @@
 .faq-list { display: flex; flex-direction: column; gap: var(--space-4); }
 .faq-item {
   position: relative;
-  border: 2px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--surface-raised);
   box-shadow: var(--shadow-sm);
@@ -555,7 +715,7 @@
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
-  width: 4px;
+  width: 3px;
   background: var(--nv-green);
   opacity: 0;
   transition: opacity var(--duration-base) var(--ease-standard);
@@ -567,7 +727,7 @@
 }
 .faq-item[data-open="true"] {
   border-color: var(--nv-green);
-  box-shadow: var(--shadow-lg), 0 0 0 4px var(--status-success-bg);
+  box-shadow: var(--shadow-lg), 0 0 0 3px var(--status-success-bg);
   transform: translateY(-1px);
 }
 .faq-item[data-open="true"]::before { opacity: 1; }

@@ -585,6 +585,22 @@ body.chat-body {
   color: var(--nv-green);
 }
 
+/* File / path mentions (report.pdf, index.html, styles.css) inline in prose —
+   rendered as a small green monospace chip, matching inline code styling but
+   distinguishable so a person can spot "which file" at a glance while reading. */
+.file-mention {
+  font-family: var(--font-family-mono);
+  color: var(--nv-green);
+  font-weight: var(--fw-medium);
+  word-break: break-word;
+}
+.msg-attachment__name.file-mention,
+.attachment-chip__name.file-mention {
+  font-family: var(--font-family-mono);
+  color: var(--nv-green);
+  font-weight: var(--fw-medium);
+}
+
 /* Tables */
 .msg__bubble .table-wrap {
   overflow-x: auto;

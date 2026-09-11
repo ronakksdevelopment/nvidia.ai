@@ -1,4 +1,4 @@
-# NVIDIA Nemotron v1.5 - Chat with 8 free NVIDIA models via OpenRouter
+# NVIDIA Nemotron v2.0 - Chat with 8 free NVIDIA models via OpenRouter
 
 A complete, static, GitHub Pages-ready chat application for NVIDIA's open
 Nemotron model family. No frameworks, no build step, no backend server:

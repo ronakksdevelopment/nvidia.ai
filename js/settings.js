@@ -254,6 +254,116 @@
   }
 
   /* -----------------------------------------------------------------------
+     Custom model dropdown (.nv-dropdown)
+     Replaces the native <select> popup — which can't be themed and shows
+     as a plain OS list — with a fully CSS-controlled listbox so the open
+     menu carries the same green brand highlight as the rest of the UI.
+     The real <select id="modelSelect"> stays in the DOM (visually hidden)
+     as the single source of truth: this controller only reflects it and
+     writes back to it, dispatching a real "change" event so every other
+     place in the app that reads modelSelect.value keeps working untouched.
+     ----------------------------------------------------------------------- */
+  const modelDropdown = document.getElementById("modelDropdown");
+  const modelSelectTrigger = document.getElementById("modelSelectTrigger");
+  const modelSelectTriggerText = document.getElementById("modelSelectTriggerText");
+  const modelSelectListbox = document.getElementById("modelSelectListbox");
+  const modelDropdownOptions = modelSelectListbox
+    ? Array.from(modelSelectListbox.querySelectorAll(".nv-dropdown__option"))
+    : [];
+
+  function syncDropdownUI(value) {
+    if (!modelSelectTriggerText || !modelDropdownOptions.length) return;
+    const meta = MODELS[value];
+    modelSelectTriggerText.textContent = meta ? meta.name : friendlyModelName(value);
+    modelDropdownOptions.forEach((opt) => {
+      const isSelected = opt.getAttribute("data-value") === value;
+      opt.classList.toggle("is-selected", isSelected);
+      opt.setAttribute("aria-selected", isSelected ? "true" : "false");
+    });
+  }
+
+  function openDropdown() {
+    if (!modelSelectListbox) return;
+    modelSelectListbox.hidden = false;
+    modelSelectTrigger.setAttribute("aria-expanded", "true");
+    const active = modelSelectListbox.querySelector(".nv-dropdown__option.is-selected") || modelDropdownOptions[0];
+    modelDropdownOptions.forEach((o) => o.classList.remove("is-active"));
+    if (active) {
+      active.classList.add("is-active");
+      active.scrollIntoView({ block: "nearest" });
+    }
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("keydown", onDropdownKeydown);
+  }
+
+  function closeDropdown() {
+    if (!modelSelectListbox) return;
+    modelSelectListbox.hidden = true;
+    modelSelectTrigger.setAttribute("aria-expanded", "false");
+    document.removeEventListener("click", onDocClick);
+    document.removeEventListener("keydown", onDropdownKeydown);
+  }
+
+  function isDropdownOpen() {
+    return modelSelectListbox && !modelSelectListbox.hidden;
+  }
+
+  function chooseOption(optionEl) {
+    if (!optionEl) return;
+    const value = optionEl.getAttribute("data-value");
+    if (modelSelect.value !== value) {
+      modelSelect.value = value;
+      modelSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    syncDropdownUI(value);
+    closeDropdown();
+    modelSelectTrigger.focus();
+  }
+
+  function onDocClick(e) {
+    if (modelDropdown && !modelDropdown.contains(e.target)) closeDropdown();
+  }
+
+  function onDropdownKeydown(e) {
+    if (!isDropdownOpen()) return;
+    const activeIndex = modelDropdownOptions.findIndex((o) => o.classList.contains("is-active"));
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeDropdown();
+      modelSelectTrigger.focus();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const next = modelDropdownOptions[Math.min(activeIndex + 1, modelDropdownOptions.length - 1)];
+      modelDropdownOptions.forEach((o) => o.classList.remove("is-active"));
+      next.classList.add("is-active");
+      next.scrollIntoView({ block: "nearest" });
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prev = modelDropdownOptions[Math.max(activeIndex - 1, 0)];
+      modelDropdownOptions.forEach((o) => o.classList.remove("is-active"));
+      prev.classList.add("is-active");
+      prev.scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      chooseOption(modelDropdownOptions[activeIndex] || modelDropdownOptions[0]);
+    }
+  }
+
+  if (modelSelectTrigger && modelSelectListbox) {
+    modelSelectTrigger.addEventListener("click", () => {
+      if (isDropdownOpen()) closeDropdown();
+      else openDropdown();
+    });
+    modelDropdownOptions.forEach((opt) => {
+      opt.addEventListener("mouseenter", () => {
+        modelDropdownOptions.forEach((o) => o.classList.remove("is-active"));
+        opt.classList.add("is-active");
+      });
+      opt.addEventListener("click", () => chooseOption(opt));
+    });
+  }
+
+  /* -----------------------------------------------------------------------
      Populate form from storage
      ----------------------------------------------------------------------- */
   function populateForm(settings) {
@@ -262,6 +372,7 @@
       modelSelect.value = settings.model;
     }
     renderModelMeta(modelSelect.value);
+    syncDropdownUI(modelSelect.value);
 
     themeInputs.forEach((input) => {
       input.checked = input.value === settings.theme;
@@ -369,6 +480,7 @@
      ----------------------------------------------------------------------- */
   modelSelect.addEventListener("change", () => {
     renderModelMeta(modelSelect.value);
+    syncDropdownUI(modelSelect.value);
   });
 
   /* -----------------------------------------------------------------------
@@ -514,7 +626,7 @@
           "Content-Type": "application/json",
           "Authorization": "Bearer " + key,
           "HTTP-Referer": window.location.origin || "https://nemotron.local",
-          "X-Title": "NVIDIA Nemotron v1.5",
+          "X-Title": "NVIDIA Nemotron v2.0",
         },
         body: JSON.stringify({
           model: model,

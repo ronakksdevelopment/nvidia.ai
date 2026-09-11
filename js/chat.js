@@ -204,10 +204,44 @@
     return html;
   }
 
+  // Recognized file extensions for inline filename highlighting (kept to
+  // common, unambiguous ones so we don't false-positive on things like
+  // "v1.5" or "e.g." in ordinary sentences).
+  const FILE_EXT_PATTERN =
+    "html?|css|scss|sass|less|js|jsx|mjs|cjs|ts|tsx|json|jsonc|yaml|yml|xml|md|mdx|txt|csv|tsv|" +
+    "py|rb|php|java|kt|swift|go|rs|c|h|cpp|hpp|cs|sh|bash|zsh|ps1|sql|" +
+    "png|jpe?g|gif|svg|webp|ico|bmp|tiff?|" +
+    "pdf|docx?|xlsx?|pptx?|zip|rar|7z|tar|gz|" +
+    "mp3|wav|mp4|mov|avi|webm|" +
+    "env|gitignore|lock|toml|ini|cfg|conf|log";
+  const FILENAME_RE = new RegExp(
+    "\\b([\\w.\\-]+\\.(?:" + FILE_EXT_PATTERN + "))\\b",
+    "gi"
+  );
+
+  // Highlight bare filename mentions (report.pdf, index.html, styles.css) in
+  // plain prose, the way Claude renders file/path mentions in green — but
+  // only outside of code spans/links, so code samples keep their normal
+  // monospace styling instead of getting double-wrapped.
+  function highlightFileMentions(str) {
+    return str.replace(FILENAME_RE, (match) => `<span class="file-mention">${match}</span>`);
+  }
+
   function inlineMd(str) {
     let s = str;
-    // inline code (already escaped upstream, so `` `code` `` is safe)
-    s = s.replace(/`([^`]+)`/g, (_, c) => `<code>${c}</code>`);
+    // Pull out inline code spans first so filename highlighting never runs
+    // inside `` `code` `` — code already gets its own monospace treatment.
+    const inlineCodeSpans = [];
+    s = s.replace(/`([^`]+)`/g, (_, c) => {
+      const idx = inlineCodeSpans.length;
+      inlineCodeSpans.push(c);
+      return `\u0000INLINECODE${idx}\u0000`;
+    });
+
+    // filename mentions (e.g. index.html, report.pdf) — before bold/italic/
+    // links so a filename containing an underscore isn't mangled by *_* rules.
+    s = highlightFileMentions(s);
+
     // bold
     s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
     s = s.replace(/__([^_]+)__/g, "<strong>$1</strong>");
@@ -216,31 +250,115 @@
     s = s.replace(/(?<!_)_([^_]+)_(?!_)/g, "<em>$1</em>");
     // links [text](url)
     s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+    // restore inline code spans
+    s = s.replace(/\u0000INLINECODE(\d+)\u0000/g, (_, i) => `<code>${inlineCodeSpans[parseInt(i, 10)]}</code>`);
     return s;
   }
 
   /* -----------------------------------------------------------------------
-     Minimal syntax highlighter (token-regex based, language-agnostic-ish)
+     Minimal syntax highlighter (single-pass tokenizer, language-agnostic-ish)
+
+     This used to be five cascading `String.replace()` passes (comments,
+     then strings, then numbers, then function calls, then keywords), each
+     re-scanning the *entire* string left behind by the previous pass. That
+     meant later passes could match text sitting inside the HTML those
+     earlier passes had already emitted — e.g. the keyword pass matching
+     the literal word "class" inside a `<span class="tok-comment">` tag
+     the comment pass had just inserted, corrupting the markup. A
+     single left-to-right tokenizer sidesteps this entirely: each
+     character of the *original* source is consumed exactly once, classified
+     into exactly one token, escaped, and (if needed) wrapped — so nothing
+     already-emitted is ever re-matched by a later rule.
      ----------------------------------------------------------------------- */
-  const KEYWORDS = /\b(function|const|let|var|return|if|else|for|while|class|import|from|export|default|new|this|try|catch|finally|await|async|def|self|elif|None|True|False|end|do|then|public|private|static|void|int|string|bool|struct|impl|fn|match|switch|case|break|continue|null|undefined|True|False|None|lambda|yield|with|as|in|is|not|and|or|pass|raise|except)\b/g;
+  const KEYWORD_SET = new Set([
+    "function", "const", "let", "var", "return", "if", "else", "for", "while",
+    "class", "import", "from", "export", "default", "new", "this", "try",
+    "catch", "finally", "await", "async", "def", "self", "elif", "None",
+    "True", "False", "end", "do", "then", "public", "private", "static",
+    "void", "int", "string", "bool", "struct", "impl", "fn", "match",
+    "switch", "case", "break", "continue", "null", "undefined", "lambda",
+    "yield", "with", "as", "in", "is", "not", "and", "or", "pass", "raise",
+    "except",
+  ]);
 
   function highlightCode(code, lang) {
-    let s = escapeHtml(code);
-    // comments (line)
-    s = s.replace(/(^|[^:])\/\/(.*)$/gm, (m, pre, c) => `${pre}<span class="tok-comment">//${c}</span>`);
-    s = s.replace(/(#.*)$/gm, (m) => {
-      if (/^#(!\/)/.test(m)) return m; // shebang
-      return `<span class="tok-comment">${m}</span>`;
-    });
-    // strings
-    s = s.replace(/(&quot;.*?&quot;|&#39;.*?&#39;|`[^`]*`)/g, '<span class="tok-string">$1</span>');
-    // numbers
-    s = s.replace(/\b(\d+\.?\d*)\b/g, '<span class="tok-number">$1</span>');
-    // function calls: word(
-    s = s.replace(/\b([a-zA-Z_]\w*)(?=\()/g, '<span class="tok-function">$1</span>');
-    // keywords
-    s = s.replace(KEYWORDS, '<span class="tok-keyword">$1</span>');
-    return s;
+    const src = String(code);
+    let out = "";
+    let i = 0;
+    const n = src.length;
+
+    while (i < n) {
+      const ch = src[i];
+      const two = src.slice(i, i + 2);
+
+      // Line comments: // ... and # ... (but not a #! shebang at line start)
+      if (two === "//") {
+        let j = i;
+        while (j < n && src[j] !== "\n") j++;
+        out += `<span class="tok-comment">${escapeHtml(src.slice(i, j))}</span>`;
+        i = j;
+        continue;
+      }
+      if (ch === "#") {
+        const atLineStart = i === 0 || src[i - 1] === "\n";
+        const isShebang = atLineStart && src[i + 1] === "!";
+        if (!isShebang) {
+          let j = i;
+          while (j < n && src[j] !== "\n") j++;
+          out += `<span class="tok-comment">${escapeHtml(src.slice(i, j))}</span>`;
+          i = j;
+          continue;
+        }
+      }
+
+      // Strings: "...", '...', `...` (stop at closing quote or end of line)
+      if (ch === '"' || ch === "'" || ch === "`") {
+        const quote = ch;
+        let j = i + 1;
+        while (j < n && src[j] !== quote && src[j] !== "\n") {
+          if (src[j] === "\\" && j + 1 < n) j++; // skip escaped char
+          j++;
+        }
+        if (j < n && src[j] === quote) j++; // include closing quote
+        out += `<span class="tok-string">${escapeHtml(src.slice(i, j))}</span>`;
+        i = j;
+        continue;
+      }
+
+      // Numbers
+      if (/[0-9]/.test(ch) && !/[a-zA-Z_]/.test(src[i - 1] || "")) {
+        let j = i;
+        while (j < n && /[0-9.]/.test(src[j])) j++;
+        out += `<span class="tok-number">${escapeHtml(src.slice(i, j))}</span>`;
+        i = j;
+        continue;
+      }
+
+      // Identifiers: word, keyword, or function call (word immediately
+      // followed by an opening paren)
+      if (/[a-zA-Z_]/.test(ch)) {
+        let j = i;
+        while (j < n && /[a-zA-Z0-9_]/.test(src[j])) j++;
+        const word = src.slice(i, j);
+        const escaped = escapeHtml(word);
+        if (src[j] === "(") {
+          out += `<span class="tok-function">${escaped}</span>`;
+        } else if (KEYWORD_SET.has(word)) {
+          out += `<span class="tok-keyword">${escaped}</span>`;
+        } else {
+          out += escaped;
+        }
+        i = j;
+        continue;
+      }
+
+      // Everything else: copy through escaped, one char at a time
+      out += escapeHtml(ch);
+      i++;
+    }
+
+    return out;
   }
 
   function renderCodeBlock(lang, code) {
@@ -736,7 +854,7 @@
     return `
       <div class="msg-attachment">
         <i class="fa-regular fa-file nv-icon" aria-hidden="true"></i>
-        <span class="msg-attachment__name">${escapeHtml(att.name)}</span>
+        <span class="msg-attachment__name file-mention">${escapeHtml(att.name)}</span>
       </div>`;
   }
 
@@ -969,7 +1087,7 @@
       return `
         <div class="attachment-chip" data-attachment-id="${a.id}">
           <i class="fa-regular fa-file nv-icon" aria-hidden="true"></i>
-          <span class="attachment-chip__name">${escapeHtml(a.name)}</span>
+          <span class="attachment-chip__name file-mention">${escapeHtml(a.name)}</span>
           <button class="attachment-chip__remove" type="button" data-remove-attachment="${a.id}" aria-label="Remove attachment">
             <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
           </button>
@@ -1092,10 +1210,16 @@
     };
     msgs.push(userMsg);
 
-    // Update conversation title from first message
+    // Provisional title from the first message (instant, no network round-trip).
+    // Once the assistant replies, generateChatTitle() below replaces this with
+    // a short, model-generated summary of the whole exchange — the same way
+    // Claude and ChatGPT title new conversations — so history doesn't just
+    // show a raw truncated prompt forever.
     const convo = state.conversations.find((c) => c.id === state.activeConvoId);
-    if (convo && (convo.title === "New chat" || !convo.title)) {
+    const isFirstMessage = convo && (convo.title === "New chat" || !convo.title);
+    if (isFirstMessage) {
       convo.title = text.slice(0, 60) || "New chat";
+      convo.titleGenerated = false;
     }
     if (convo) convo.updatedAt = Date.now();
 
@@ -1200,6 +1324,13 @@
       renderMessages();
       renderHistory(historySearch.value);
       persistHistory();
+
+      // Auto-title: once the first exchange in a chat completes successfully,
+      // ask the model for a short conversation title (like Claude/ChatGPT do)
+      // instead of leaving the raw truncated first message as the title.
+      if (!errored && convo && !convo.titleGenerated && placeholder.text.trim()) {
+        generateChatTitle(convoId);
+      }
     }
 
     fetch(OPENROUTER_ENDPOINT, {
@@ -1282,6 +1413,88 @@
         showToast("danger", "Generation failed", message);
         finalizeMessage(true);
       });
+  }
+
+  /* -----------------------------------------------------------------------
+     Auto-generated chat titles
+     After the first assistant reply in a conversation, ask the model for a
+     short (3-6 word) title summarizing what the chat is about, and use it
+     to replace the provisional "first 60 chars of the prompt" title. Best
+     effort: on any failure the provisional title just stays as-is.
+     ----------------------------------------------------------------------- */
+  function generateChatTitle(convoId) {
+    const convo = state.conversations.find((c) => c.id === convoId);
+    if (!convo) return;
+    convo.titleGenerated = true; // mark attempted so we only ever try once
+
+    const apiKey = getApiKey();
+    if (!apiKey) return;
+
+    const msgs = getMessages(convoId).filter((m) => !m.streaming && m.text);
+    const firstUser = msgs.find((m) => m.role === "user");
+    const firstAssistant = msgs.find((m) => m.role === "assistant");
+    if (!firstUser) return;
+
+    const titlePrompt =
+      "Summarize the topic of this conversation in a short title of 3 to 6 words. " +
+      "Do not use quotation marks, a trailing period, or the words \"title\" or \"conversation\". " +
+      "Reply with only the title text and nothing else.\n\n" +
+      "User: " + firstUser.text.slice(0, 600) +
+      (firstAssistant ? "\nAssistant: " + firstAssistant.text.slice(0, 600) : "");
+
+    fetch(OPENROUTER_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + apiKey,
+        "HTTP-Referer": window.location.origin || "https://nemotron.local",
+        "X-Title": "NVIDIA Nemotron",
+      },
+      body: JSON.stringify({
+        model: getActiveModel(),
+        messages: [{ role: "user", content: titlePrompt }],
+        stream: false,
+        max_tokens: 24,
+        temperature: 0.3,
+      }),
+    })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        const raw = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        if (!raw) return;
+        const cleaned = sanitizeGeneratedTitle(raw);
+        if (!cleaned) return;
+        const current = state.conversations.find((c) => c.id === convoId);
+        if (!current) return;
+        current.title = cleaned;
+        renderHistory(historySearch.value);
+        persistHistory();
+      })
+      .catch(() => {
+        // Silent failure: the provisional title (first message excerpt) stands.
+      })
+      .finally(() => {
+        // Persist the titleGenerated=true flag set above regardless of
+        // outcome, so a failed attempt doesn't silently revert to "never
+        // tried" on the next reload (persistHistory() earlier in
+        // finalizeMessage() ran before this attempt started, so without
+        // this the in-memory-only flag would be lost the moment the page
+        // reloads, and a reload between messages would trigger a second,
+        // possibly redundant, title-generation request).
+        persistHistory();
+      });
+  }
+
+  function sanitizeGeneratedTitle(raw) {
+    let t = String(raw || "").trim();
+    // Strip wrapping quotes/backticks and any stray markdown emphasis.
+    t = t.replace(/^["'`*_\s]+|["'`*_\s]+$/g, "");
+    // Keep it to a single line.
+    t = t.split("\n")[0].trim();
+    // Drop a trailing period some models add despite instructions.
+    t = t.replace(/[.]+$/, "").trim();
+    if (!t) return "";
+    return t.length > 60 ? t.slice(0, 60).trim() : t;
   }
 
   function stopGeneration() {
