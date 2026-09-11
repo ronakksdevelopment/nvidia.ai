@@ -150,16 +150,20 @@
         transparent training data, and inference tuned for real hardware. Free to try today.
       </p>
       <div class="hero__actions">
-        <button class="btn btn--primary btn--lg" type="button" data-open-modal="signupModal">
+        <button class="btn btn--primary btn--lg" type="button" data-open-modal="signupModal" data-signed-out-only>
           Start building
           <i class="fa-solid fa-arrow-right nv-icon" aria-hidden="true"></i>
         </button>
+        <a class="btn btn--primary btn--lg" href="pages/chat.html" data-signed-in-only hidden>
+          Go to chat
+          <i class="fa-solid fa-arrow-right nv-icon" aria-hidden="true"></i>
+        </a>
         <a class="btn btn--secondary btn--lg" href="pages/about.html">
           <i class="fa-solid fa-circle-info nv-icon" aria-hidden="true"></i>
           Learn more
         </a>
       </div>
-      <span class="hero__note">No credit card required · Free OpenRouter API key required</span>
+      <span class="hero__note" data-signed-out-only>No credit card required · Free OpenRouter API key required</span>
     </div>
   </section>
 
@@ -356,11 +360,16 @@
     <div class="container">
       <div class="cta-band">
         <img src="assets/logo/nemotron-48.png" alt="" width="40" height="40" />
-        <h2>Ready to build with Nemotron?</h2>
-        <p>Create a free account, add your own OpenRouter API key, and start chatting today.</p>
-        <div class="hero__actions">
+        <h2 data-signed-out-only>Ready to build with Nemotron?</h2>
+        <p data-signed-out-only>Create a free account, add your own OpenRouter API key, and start chatting today.</p>
+        <div class="hero__actions" data-signed-out-only>
           <button class="btn btn--primary btn--lg" type="button" data-open-modal="signupModal">Create free account</button>
           <button class="btn btn--ghost btn--lg" type="button" data-open-modal="signinModal">I already have an account</button>
+        </div>
+        <h2 data-signed-in-only hidden>Ready to keep building?</h2>
+        <p data-signed-in-only hidden>Jump back into chat with your saved API key and model preferences.</p>
+        <div class="hero__actions" data-signed-in-only hidden>
+          <a class="btn btn--primary btn--lg" href="pages/chat.html">Go to chat</a>
         </div>
       </div>
     </div>
