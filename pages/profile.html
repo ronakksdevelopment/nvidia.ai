@@ -137,20 +137,29 @@
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
-            <div class="settings-row__label">Name</div>
+            <div class="settings-row__label">
+              <i class="fa-solid fa-signature nv-icon nv-icon--sm" aria-hidden="true"></i>
+              Name
+            </div>
             <div class="settings-row__hint" data-account-name>Account</div>
           </div>
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
-            <div class="settings-row__label">Email</div>
+            <div class="settings-row__label">
+              <i class="fa-solid fa-envelope nv-icon nv-icon--sm" aria-hidden="true"></i>
+              Email
+            </div>
             <div class="settings-row__hint" data-account-email>–</div>
           </div>
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
-            <div class="settings-row__label">Plan</div>
-            <div class="settings-row__hint">Nemotron v1.0 Beta, free access</div>
+            <div class="settings-row__label">
+              <i class="fa-solid fa-star nv-icon nv-icon--sm" aria-hidden="true"></i>
+              Plan
+            </div>
+            <div class="settings-row__hint">Nemotron v1.5, free access</div>
           </div>
         </div>
       </section>
@@ -165,14 +174,20 @@
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
-            <div class="settings-row__label">Default model</div>
-            <div class="settings-row__hint" id="rowModel">...</div>
+            <div class="settings-row__label">
+              <i class="fa-solid fa-microchip nv-icon nv-icon--sm" aria-hidden="true"></i>
+              Default model
+            </div>
+            <div class="settings-row__hint" id="rowModel" title="">...</div>
           </div>
           <a class="btn btn--secondary btn--sm" href="settings.html">Change</a>
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
-            <div class="settings-row__label">OpenRouter API key</div>
+            <div class="settings-row__label">
+              <i class="fa-solid fa-key nv-icon nv-icon--sm" aria-hidden="true"></i>
+              OpenRouter API key
+            </div>
             <div class="settings-row__hint" id="rowKey">Not saved</div>
           </div>
           <a class="btn btn--secondary btn--sm" href="settings.html">Manage</a>
@@ -205,6 +220,7 @@
 <script src="../js/session.js"></script>
 <script src="../js/router.js"></script>
 <script src="../js/app.js"></script>
+<script src="../js/settings.js"></script>
 <script>
 (function () {
   "use strict";
@@ -220,11 +236,20 @@
   var hasKey = !!s.apiKey;
   var theme = s.theme || "dark";
 
-  var shortModel = model.replace("nvidia/", "").replace(":free", "");
-  document.getElementById("statModel").textContent = shortModel;
+  // Show the human-readable model name everywhere (e.g. "Nemotron 3 Super"),
+  // never the raw OpenRouter id (e.g. "nvidia/nemotron-3-super-120b-a12b:free").
+  // Falls back to a cleaned-up version of the id only if it's an unknown model.
+  var modelMap = (window.NemotronSettings && window.NemotronSettings.MODELS) || {};
+  var friendlyModel = (modelMap[model] && modelMap[model].name)
+    || model.replace("nvidia/", "").replace(":free", "");
+
+  document.getElementById("statModel").textContent = friendlyModel;
   document.getElementById("statKey").textContent = hasKey ? "Saved" : "Not set";
   document.getElementById("statTheme").textContent = theme.charAt(0).toUpperCase() + theme.slice(1);
-  document.getElementById("rowModel").textContent = model;
+
+  var rowModelEl = document.getElementById("rowModel");
+  rowModelEl.textContent = friendlyModel;
+  rowModelEl.title = model; // full id still available on hover for anyone who wants it
   document.getElementById("rowKey").textContent = hasKey
     ? "sk-or-v1-" + "•".repeat(12)
     : "Not saved";

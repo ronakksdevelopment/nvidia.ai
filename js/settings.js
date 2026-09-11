@@ -13,10 +13,17 @@
   const STORAGE_KEY = "nemotron.settings";
   const OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
 
+  const DEFAULT_CUSTOM_INSTRUCTIONS =
+    "Be concise and direct. Skip filler like \u201cGreat question!\u201d and get straight to the answer. " +
+    "Prefer plain language over jargon, and explain technical terms the first time you use them. " +
+    "When giving code, include brief comments only where the logic isn't obvious. " +
+    "If a request is ambiguous, make a reasonable assumption and say what you assumed rather than stopping to ask.";
+
   const DEFAULT_SETTINGS = {
     apiKey: "",
     model: "nvidia/nemotron-3-super-120b-a12b:free",
     theme: "dark",
+    customInstructions: DEFAULT_CUSTOM_INSTRUCTIONS,
   };
 
   /* -----------------------------------------------------------------------
@@ -68,44 +75,7 @@
   const API_KEY_PATTERN = /^sk-or-v1-[A-Za-z0-9]{20,}$/;
 
   /* -----------------------------------------------------------------------
-     Elements
-     ----------------------------------------------------------------------- */
-  const form = document.getElementById("settingsForm");
-  const apiKeyInput = document.getElementById("apiKeyInput");
-  const apiKeyError = document.getElementById("apiKeyError");
-  const apiKeyErrorText = document.getElementById("apiKeyErrorText");
-  const toggleKeyVisibility = document.getElementById("toggleKeyVisibility");
-  const pasteKeyBtn = document.getElementById("pasteKeyBtn");
-  const keyStatus = document.getElementById("keyStatus");
-  const keyStatusText = document.getElementById("keyStatusText");
-
-  const modelSelect = document.getElementById("modelSelect");
-  const modelMetaName = document.getElementById("modelMetaName");
-  const modelMetaId = document.getElementById("modelMetaId");
-  const modelMetaDesc = document.getElementById("modelMetaDesc");
-  const modelMetaTags = document.getElementById("modelMetaTags");
-
-  const themeInputs = document.querySelectorAll('input[name="theme"]');
-
-  const testConnectionBtn = document.getElementById("testConnectionBtn");
-  const testStatus = document.getElementById("testStatus");
-  const testOutput = document.getElementById("testOutput");
-
-  const resetSettingsBtn = document.getElementById("resetSettingsBtn");
-  const confirmResetBtn = document.getElementById("confirmResetBtn");
-  const discardBtn = document.getElementById("discardBtn");
-  const saveStatus = document.getElementById("saveStatus");
-
-  const settingsNavToggle = document.getElementById("settingsNavToggle");
-  const settingsNav = document.getElementById("settingsNav");
-  const settingsNavScrim = document.getElementById("settingsNavScrim");
-
-  function toast(type, title, message) {
-    if (window.NemotronToast) window.NemotronToast(type, title, message);
-  }
-
-  /* -----------------------------------------------------------------------
-     Storage helpers
+     Storage helpers (needed by every page, not just the settings form)
      ----------------------------------------------------------------------- */
   function loadSettings() {
     try {
@@ -136,8 +106,14 @@
     }
   }
 
+  function friendlyModelName(modelId) {
+    return (MODELS[modelId] && MODELS[modelId].name) || modelId.replace("nvidia/", "").replace(":free", "");
+  }
+
   /* -----------------------------------------------------------------------
-     Theme application (Dark / Light / System)
+     Theme application (Dark / Light / System) — runs on every page that
+     includes this script, since the chosen theme has to apply everywhere,
+     not only on the settings form itself.
      ----------------------------------------------------------------------- */
   const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)");
 
@@ -156,6 +132,68 @@
           if (current.theme === "system") applyTheme("system");
         })
       : null;
+  }
+
+  /* Always expose shared data/helpers, even on pages without the full
+     settings form (e.g. profile.html needs MODELS to show a friendly
+     model name instead of the raw OpenRouter id). */
+  window.NemotronSettings = {
+    load: loadSettings,
+    save: persistSettings,
+    clear: clearSettings,
+    applyTheme: applyTheme,
+    friendlyModelName: friendlyModelName,
+    MODELS: MODELS,
+    DEFAULT_SETTINGS: DEFAULT_SETTINGS,
+    DEFAULT_CUSTOM_INSTRUCTIONS: DEFAULT_CUSTOM_INSTRUCTIONS,
+  };
+
+  /* The rest of this file wires up the settings FORM itself. Pages that
+     only need the shared data/theme helpers above (like profile.html)
+     don't include #settingsForm, so bail out here rather than throwing
+     on null element lookups. */
+  const form = document.getElementById("settingsForm");
+  if (!form) return;
+
+  /* -----------------------------------------------------------------------
+     Elements
+     ----------------------------------------------------------------------- */
+  const apiKeyInput = document.getElementById("apiKeyInput");
+  const apiKeyError = document.getElementById("apiKeyError");
+  const apiKeyErrorText = document.getElementById("apiKeyErrorText");
+  const toggleKeyVisibility = document.getElementById("toggleKeyVisibility");
+  const pasteKeyBtn = document.getElementById("pasteKeyBtn");
+  const saveKeyBtn = document.getElementById("saveKeyBtn");
+  const keyStatus = document.getElementById("keyStatus");
+  const keyStatusText = document.getElementById("keyStatusText");
+
+  const modelSelect = document.getElementById("modelSelect");
+  const modelMetaName = document.getElementById("modelMetaName");
+  const modelMetaId = document.getElementById("modelMetaId");
+  const modelMetaDesc = document.getElementById("modelMetaDesc");
+  const modelMetaTags = document.getElementById("modelMetaTags");
+
+  const themeInputs = document.querySelectorAll('input[name="theme"]');
+
+  const testConnectionBtn = document.getElementById("testConnectionBtn");
+  const testStatus = document.getElementById("testStatus");
+  const testOutput = document.getElementById("testOutput");
+
+  const resetSettingsBtn = document.getElementById("resetSettingsBtn");
+  const confirmResetBtn = document.getElementById("confirmResetBtn");
+  const discardBtn = document.getElementById("discardBtn");
+  const saveStatus = document.getElementById("saveStatus");
+
+  const settingsNavToggle = document.getElementById("settingsNavToggle");
+  const settingsNav = document.getElementById("settingsNav");
+  const settingsNavScrim = document.getElementById("settingsNavScrim");
+
+  const customInstructionsInput = document.getElementById("customInstructionsInput");
+  const customInstructionsCount = document.getElementById("customInstructionsCount");
+  const restoreDefaultInstructionsBtn = document.getElementById("restoreDefaultInstructionsBtn");
+
+  function toast(type, title, message) {
+    if (window.NemotronToast) window.NemotronToast(type, title, message);
   }
 
   /* -----------------------------------------------------------------------
@@ -230,6 +268,11 @@
     });
     applyTheme(settings.theme);
 
+    if (customInstructionsInput) {
+      customInstructionsInput.value = settings.customInstructions || "";
+      updateInstructionsCount();
+    }
+
     if (settings.apiKey) {
       const result = validateApiKey(settings.apiKey);
       if (result.valid) {
@@ -243,6 +286,29 @@
       setKeyStatus("idle", "No key saved yet.");
       testStatus.querySelector("span").textContent = "Save a key first to run a test.";
     }
+  }
+
+  /* -----------------------------------------------------------------------
+     Custom instructions: character counter + restore default
+     ----------------------------------------------------------------------- */
+  const INSTRUCTIONS_MAX = 1500;
+  function updateInstructionsCount() {
+    if (!customInstructionsInput || !customInstructionsCount) return;
+    const len = customInstructionsInput.value.length;
+    customInstructionsCount.textContent = len + " / " + INSTRUCTIONS_MAX;
+    customInstructionsCount.classList.toggle("is-over", len > INSTRUCTIONS_MAX);
+  }
+  if (customInstructionsInput) {
+    customInstructionsInput.setAttribute("maxlength", String(INSTRUCTIONS_MAX));
+    customInstructionsInput.addEventListener("input", updateInstructionsCount);
+  }
+  if (restoreDefaultInstructionsBtn) {
+    restoreDefaultInstructionsBtn.addEventListener("click", () => {
+      customInstructionsInput.value = DEFAULT_CUSTOM_INSTRUCTIONS;
+      updateInstructionsCount();
+      customInstructionsInput.focus();
+      toast("info", "Default restored", "Custom instructions reset to the suggested default. Save to apply.");
+    });
   }
 
   /* -----------------------------------------------------------------------
@@ -315,11 +381,10 @@
   });
 
   /* -----------------------------------------------------------------------
-     Save
+     Save (shared by the form submit and the inline API-key Save button)
      ----------------------------------------------------------------------- */
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
+  function saveAllSettings(options) {
+    const opts = options || {};
     const rawKey = apiKeyInput.value.trim();
     const result = validateApiKey(rawKey);
 
@@ -327,7 +392,7 @@
       setFieldError(result.message);
       apiKeyInput.focus();
       toast("danger", "Couldn't save", "Fix the API key field before saving.");
-      return;
+      return false;
     }
     setFieldError(null);
 
@@ -337,6 +402,7 @@
       apiKey: rawKey,
       model: modelSelect.value,
       theme: selectedTheme ? selectedTheme.value : "dark",
+      customInstructions: customInstructionsInput ? customInstructionsInput.value.slice(0, INSTRUCTIONS_MAX) : "",
     };
 
     const ok = persistSettings(newSettings);
@@ -351,12 +417,28 @@
         setKeyStatus("idle", "No key saved yet.");
       }
       applyTheme(newSettings.theme);
-      toast("success", "Settings saved", "Your OpenRouter key, model, and theme are stored on this device.");
+      if (opts.scope === "key") {
+        toast("success", "API key saved", "Your OpenRouter key is stored on this device.");
+      } else {
+        toast("success", "Settings saved", "Your OpenRouter key, model, and theme are stored on this device.");
+      }
       flashSaveStatus();
-    } else {
-      toast("danger", "Couldn't save", "Local storage may be full or disabled in this browser.");
+      return true;
     }
+    toast("danger", "Couldn't save", "Local storage may be full or disabled in this browser.");
+    return false;
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    saveAllSettings({ scope: "all" });
   });
+
+  if (saveKeyBtn) {
+    saveKeyBtn.addEventListener("click", () => {
+      saveAllSettings({ scope: "key" });
+    });
+  }
 
   function flashSaveStatus() {
     saveStatus.hidden = false;
@@ -432,7 +514,7 @@
           "Content-Type": "application/json",
           "Authorization": "Bearer " + key,
           "HTTP-Referer": window.location.origin || "https://nemotron.local",
-          "X-Title": "NVIDIA Nemotron v1.0 Beta",
+          "X-Title": "NVIDIA Nemotron v1.5",
         },
         body: JSON.stringify({
           model: model,
@@ -514,60 +596,6 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeNav();
     });
-  }
-
-  /* -----------------------------------------------------------------------
-     Save bar: floats fixed only once the user has scrolled near the
-     bottom of the page. Fixes a bug where position: sticky snapped the
-     bar over mid-page content (e.g. the model meta card) immediately on
-     load, before any scrolling — sticky was resolving against the
-     document since .settings-shell__main-inner has no bounded scrolling
-     ancestor of its own. Keeping the bar in normal flow by default (see
-     .settings-savebar in settings.css) means it can only ever overlap
-     content once we deliberately pull it out of flow here, and we only
-     do that once the bar is already at/near the true bottom of the page,
-     so nothing above it is ever covered.
-     ----------------------------------------------------------------------- */
-  const settingsSavebar = document.getElementById("settingsSavebar");
-  if (settingsSavebar) {
-    const savebarSpacer = document.createElement("div");
-    savebarSpacer.setAttribute("aria-hidden", "true");
-    savebarSpacer.style.display = "none";
-    settingsSavebar.insertAdjacentElement("afterend", savebarSpacer);
-
-    let isFloating = false;
-    function updateSavebarFloat() {
-      const docHeight = document.documentElement.scrollHeight;
-      const viewportBottom = window.scrollY + window.innerHeight;
-      // Threshold: once the viewport's bottom edge is within one bar-height
-      // (plus a little breathing room) of the true end of the page, there's
-      // no more content below to hide, so floating is safe.
-      const barHeight = settingsSavebar.offsetHeight || 64;
-      const threshold = barHeight + 24;
-      const nearBottom = docHeight - viewportBottom <= threshold;
-      // Also float whenever the whole page already fits in the viewport,
-      // since there's nothing to scroll past in the first place.
-      const pageFitsViewport = docHeight <= window.innerHeight + threshold;
-      const shouldFloat = nearBottom || pageFitsViewport;
-
-      if (shouldFloat === isFloating) return;
-      isFloating = shouldFloat;
-      if (shouldFloat) {
-        savebarSpacer.style.display = "block";
-        savebarSpacer.style.height = settingsSavebar.offsetHeight + "px";
-        settingsSavebar.classList.add("settings-savebar--floating");
-      } else {
-        settingsSavebar.classList.remove("settings-savebar--floating");
-        savebarSpacer.style.display = "none";
-      }
-    }
-
-    updateSavebarFloat();
-    window.addEventListener("scroll", updateSavebarFloat, { passive: true });
-    window.addEventListener("resize", updateSavebarFloat);
-    if (window.ResizeObserver) {
-      new ResizeObserver(updateSavebarFloat).observe(document.body);
-    }
   }
 
   /* Expose for other pages that may want to read the saved model/key */

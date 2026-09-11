@@ -15,15 +15,32 @@ body.chat-body {
   flex-direction: column;
 }
 
+/* height: 100svh combined with fixed-px children (topbar/composer padding)
+   rounds sub-pixel differently depending on the browser's zoom factor. At
+   fractional zoom levels (90%, 110%...) the browser's own layout rounding
+   happens to absorb the difference; at exactly 100% zoom on some
+   displays/OS pixel ratios the grid's row can end up ~1px taller than the
+   viewport, and because overflow:hidden is set above, that 1px of excess
+   silently clips instead of scrolling — cutting off the bottom of the
+   sidebar/composer. dvh tracks the *actual* rendered viewport (already
+   accounting for zoom/UI chrome) rather than svh's fixed "smallest
+   possible" assumption, and the extra height:100% / min-height:0 pairing
+   below stops grid/flex children from ever computing a size larger than
+   their track regardless of rounding. */
 .chat-shell {
   --sidebar-w: 272px;
   --sidebar-w-collapsed: 0px;
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr;
-  height: 100svh;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
   width: 100%;
+  min-height: 0;
   transition: grid-template-columns var(--duration-slow) var(--ease-standard);
 }
+.chat-shell > * { min-height: 0; }
 .chat-shell[data-sidebar="collapsed"] {
   grid-template-columns: 0px 1fr;
 }

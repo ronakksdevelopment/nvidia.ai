@@ -40,4 +40,22 @@
       item.setAttribute("data-open", isOpen ? "false" : "true");
     });
   });
+
+  // FAQ search (only present on help.html, harmless no-op elsewhere)
+  var faqSearchInput = document.getElementById("faqSearchInput");
+  var faqEmpty = document.getElementById("faqEmpty");
+  if (faqSearchInput) {
+    var faqItems = Array.prototype.slice.call(document.querySelectorAll(".faq-item"));
+    faqSearchInput.addEventListener("input", function () {
+      var q = faqSearchInput.value.trim().toLowerCase();
+      var visibleCount = 0;
+      faqItems.forEach(function (item) {
+        var text = item.textContent.toLowerCase();
+        var matches = !q || text.indexOf(q) !== -1;
+        item.hidden = !matches;
+        if (matches) visibleCount++;
+      });
+      if (faqEmpty) faqEmpty.hidden = visibleCount !== 0;
+    });
+  }
 })();

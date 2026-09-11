@@ -103,12 +103,17 @@
         <p class="settings-page-header__desc">Answers to common questions about setting up your OpenRouter key and choosing a model.</p>
       </div>
 
+      <div class="faq-search">
+        <i class="fa-solid fa-magnifying-glass nv-icon" aria-hidden="true"></i>
+        <input class="faq-search__input" type="search" id="faqSearchInput" placeholder="Search help topics" aria-label="Search help topics" />
+      </div>
+
       <div class="faq-list" id="faqList">
 
         <div class="faq-item" data-open="true">
           <button class="faq-item__q" type="button">
-            Where do I get an OpenRouter API key?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">Where do I get an OpenRouter API key?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>Create a free account at openrouter.ai, then generate a key from the Keys page. Paste it into Settings → General &amp; OpenRouter and click Save.</p>
@@ -117,8 +122,8 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            Is my API key sent to Nemotron's servers?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">Is my API key sent to Nemotron's servers?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>No. Your key is saved only in this browser's local storage. Requests using your key go straight from your browser to OpenRouter's API. There is no backend in between.</p>
@@ -127,8 +132,8 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            Why does Save say my key is invalid?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">Why does Save say my key is invalid?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>OpenRouter keys start with <code class="text-mono">sk-or-v1-</code> followed by a long string of characters. Check for extra spaces or a partially copied key, then try again.</p>
@@ -137,8 +142,8 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            Which of the eight models should I pick?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">Which of the eight models should I pick?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>For general chat, Nemotron 3 Super or Nemotron 3 Ultra work well. Nemotron 3.5 Lightning is fastest for lightweight tasks. The rerank, embed, and content-safety models are specialized for retrieval and moderation pipelines rather than open-ended chat.</p>
@@ -147,8 +152,8 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            The test connection button shows an error. What now?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">The test connection button shows an error. What now?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>Read the error text below the button. It comes directly from OpenRouter's API response. Common causes are an invalid or expired key, a rate limit on the free tier, or a temporary outage for that specific model.</p>
@@ -157,8 +162,8 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            How do I remove my key and start over?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">How do I remove my key and start over?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>Go to Settings → General &amp; OpenRouter and use Reset settings in the Reset section. This clears your saved key, model choice, and theme from this browser.</p>
@@ -167,8 +172,8 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            Does the theme setting change my system appearance?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">Does the theme setting change my system appearance?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>No. It only changes how this site looks. Choosing System follows your OS's light/dark preference automatically.</p>
@@ -177,8 +182,8 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            Is my chat history saved?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">Is my chat history saved?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>If you're signed in, your conversations are saved in this browser's local storage so they're still there next time you visit. Guest sessions save nothing: your chats disappear as soon as you close the tab.</p>
@@ -187,13 +192,15 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            Why did my message fail to send?
-            <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+            <span class="faq-item__q-text">Why did my message fail to send?</span>
+            <span class="faq-item__q-icon"><i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i></span>
           </button>
           <div class="faq-item__a">
             <p>The most common causes are a missing or invalid API key (add one in Settings), a rate limit on the free tier of the model you picked, or a temporary outage on OpenRouter's side. Try again in a moment, or switch to a different free model.</p>
           </div>
         </div>
+
+        <p class="faq-empty" id="faqEmpty" hidden>No help topics match your search. Try a different word, or <a href="mailto:support@nemotron.local">contact support</a>.</p>
 
       </div>
 

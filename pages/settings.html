@@ -150,6 +150,10 @@
                 <button class="icon-btn" type="button" id="pasteKeyBtn" aria-label="Paste from clipboard" title="Paste from clipboard">
                   <i class="fa-regular fa-copy nv-icon" aria-hidden="true"></i>
                 </button>
+                <button class="btn btn--primary btn--sm api-key-field__save" type="button" id="saveKeyBtn" title="Save API key">
+                  <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
+                  Save
+                </button>
               </div>
             </div>
             <span class="field__hint" id="apiKeyHint">Stored locally in this browser via <code class="text-mono">localStorage</code>. Never uploaded to Nemotron's servers.</span>
@@ -209,6 +213,40 @@
           </div>
         </section>
 
+        <!-- ============ Custom instructions ============ -->
+        <section class="settings-section">
+          <div class="settings-section__head">
+            <h2 class="settings-section__title">
+              <i class="fa-solid fa-sliders nv-icon" aria-hidden="true"></i>
+              Custom instructions
+            </h2>
+            <p class="settings-section__desc">
+              Tell Nemotron how you'd like it to respond. This is sent with every new conversation
+              alongside your message, so keep it short and specific.
+            </p>
+          </div>
+
+          <div class="field">
+            <div class="field__label-row">
+              <label class="field__label" for="customInstructionsInput">How should Nemotron respond?</label>
+              <button class="link-btn" type="button" id="restoreDefaultInstructionsBtn">Restore default</button>
+            </div>
+            <textarea
+              class="input textarea"
+              id="customInstructionsInput"
+              name="customInstructions"
+              rows="5"
+              placeholder="e.g. Keep answers short. Use bullet points for lists. Explain reasoning before giving a final answer."
+              spellcheck="true"
+              aria-describedby="customInstructionsHint"
+            ></textarea>
+            <div class="field__foot">
+              <span class="field__hint" id="customInstructionsHint">Applies to every new conversation. Stored locally, same as the rest of this page.</span>
+              <span class="char-count" id="customInstructionsCount">0 / 1500</span>
+            </div>
+          </div>
+        </section>
+
         <!-- ============ Theme ============ -->
         <section class="settings-section">
           <div class="settings-section__head">
@@ -251,7 +289,7 @@
             <label class="theme-option">
               <input type="radio" name="theme" value="system" />
               <span class="theme-option__card">
-                <span class="theme-option__preview theme-option__preview--system"></span>
+                <span class="theme-option__preview theme-option__preview--system"><span></span><span></span></span>
                 <span class="theme-option__foot">
                   <span class="theme-option__name">
                     <i class="fa-solid fa-display nv-icon nv-icon--sm" aria-hidden="true"></i>

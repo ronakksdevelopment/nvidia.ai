@@ -1131,10 +1131,21 @@
      excluding the in-progress placeholder. */
   function buildApiMessages(convoId) {
     const msgs = getMessages(convoId).filter((m) => !m.streaming);
-    return msgs.map((m) => ({
+    const apiMessages = msgs.map((m) => ({
       role: m.role === "assistant" ? "assistant" : "user",
       content: m.text || "",
     }));
+
+    // Prepend the user's custom instructions (Settings → Custom instructions)
+    // as a system message, when set, so every conversation actually respects
+    // the tone/format preferences saved there rather than just displaying
+    // them back on the settings page.
+    const settings = (window.NemotronSettings && window.NemotronSettings.load) ? window.NemotronSettings.load() : null;
+    const customInstructions = settings && settings.customInstructions ? settings.customInstructions.trim() : "";
+    if (customInstructions) {
+      apiMessages.unshift({ role: "system", content: customInstructions });
+    }
+    return apiMessages;
   }
 
   function friendlyErrorMessage(status, apiMessage) {
