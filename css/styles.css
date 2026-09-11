@@ -13,6 +13,22 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
   accent-color: var(--nv-green);
+  scrollbar-width: thin;
+  scrollbar-color: #FFFFFF transparent;
+}
+html:hover, html:active { scrollbar-color: var(--nv-green) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #FFFFFF;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: var(--nv-green);
+  background-clip: padding-box;
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -122,8 +138,19 @@ p { color: var(--text-secondary); max-width: 62ch; }
   font-size: 1.125rem;
   line-height: 1;
   flex-shrink: 0;
+  color: var(--icon-default);
   transition: transform var(--duration-fast) var(--ease-standard),
               color var(--duration-fast) var(--ease-standard);
+}
+/* Normal (uncolored) icons turn NVIDIA green on hover, keyboard focus, or
+   active/click of whatever interactive element they sit inside — nav
+   links, buttons, icon buttons, list items, etc. Icons that already carry
+   a deliberate semantic color (status/danger/brand contexts) are styled by
+   their own more specific selectors and are unaffected. */
+a:hover .nv-icon, a:focus-visible .nv-icon, a:active .nv-icon,
+button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
+.nv-icon:hover, .nv-icon:focus-visible {
+  color: var(--nv-green);
 }
 .nv-icon--xs { font-size: 0.75rem; }
 .nv-icon--sm { font-size: 0.875rem; }
@@ -240,6 +267,9 @@ p { color: var(--text-secondary); max-width: 62ch; }
   gap: var(--space-6);
 }
 .navbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   color: var(--text-secondary);
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);
@@ -247,6 +277,8 @@ p { color: var(--text-secondary); max-width: 62ch; }
   position: relative;
   transition: color var(--duration-base) var(--ease-standard);
 }
+.navbar__link .nv-icon { font-size: 0.9em; }
+.nav-drawer__links a { display: flex; align-items: center; gap: var(--space-3); }
 .navbar__link:hover { color: var(--text-primary); }
 .navbar__link[aria-current="page"] { color: var(--text-primary); }
 .navbar__link[aria-current="page"]::after {
@@ -497,6 +529,18 @@ p { color: var(--text-secondary); max-width: 62ch; }
 .input[aria-invalid="true"] { border-color: var(--status-danger); }
 .input[aria-invalid="true"]:focus-visible { box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.28); }
 
+/* Name / Email auth fields: white text while unfocused, NVIDIA green text
+   and caret while focused (sign-in, sign-up, and the auth.html page). */
+.input--auth-field {
+  color: #FFFFFF;
+  caret-color: #FFFFFF;
+}
+.input--auth-field:focus,
+.input--auth-field:focus-visible {
+  color: var(--nv-green);
+  caret-color: var(--nv-green);
+}
+
 /* Kill the browser's yellow/blue autofill background + font override on
    every themed text field, so an autofilled email/API-key input still
    reads as this app's surface color instead of flashing Chrome's default
@@ -563,6 +607,61 @@ input[type="search"]::-webkit-search-results-decoration {
 .input-wrap .input-toggle:hover { color: var(--text-primary); }
 
 textarea.input { resize: vertical; min-height: 96px; }
+
+.field__error {
+  color: var(--status-danger);
+  font-size: var(--fs-caption);
+  margin-top: var(--space-2);
+}
+
+/* -------------------------------------------------------------------------
+   NVIDIA-style captcha widget (Sign In / Sign Up / auth.html)
+   ------------------------------------------------------------------------- */
+.nv-captcha {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-2) 0 var(--space-1);
+}
+.nv-captcha__row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.nv-captcha__check { display: flex; align-items: center; gap: var(--space-3); cursor: pointer; user-select: none; }
+.nv-captcha__check input[type="checkbox"] { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.nv-captcha__box {
+  position: relative;
+  width: 22px; height: 22px;
+  border-radius: 4px;
+  border: 2px solid var(--border-strong);
+  background: var(--surface-raised);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard);
+}
+.nv-captcha__tick { font-size: 12px; color: #fff; opacity: 0; transform: scale(0.6); transition: opacity var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard); }
+.nv-captcha[data-state="verified"] .nv-captcha__box { background: var(--nv-green); border-color: var(--nv-green); }
+.nv-captcha[data-state="verified"] .nv-captcha__tick { opacity: 1; transform: scale(1); }
+.nv-captcha__spinner {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--nv-green);
+  opacity: 0;
+  animation: nv-captcha-spin 0.7s linear infinite;
+}
+.nv-captcha[data-state="checking"] .nv-captcha__spinner { opacity: 1; }
+.nv-captcha[data-state="checking"] .nv-captcha__box { border-color: var(--nv-green); }
+@keyframes nv-captcha-spin { to { transform: rotate(360deg); } }
+.nv-captcha__label { font-size: var(--fs-body-sm); color: var(--text-secondary); }
+.nv-captcha__badge { opacity: 0.7; border-radius: 4px; }
+.nv-captcha__challenge { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-3); flex-wrap: wrap; }
+.nv-captcha__question { font-size: var(--fs-body-sm); color: var(--text-primary); font-weight: var(--fw-medium); margin: 0; }
+.nv-captcha__challenge .input { width: 90px; flex: 0 0 auto; padding: var(--space-2) var(--space-3); }
+.nv-captcha__status { font-size: var(--fs-caption); margin: var(--space-2) 0 0; }
+.nv-captcha[data-state="verified"] .nv-captcha__status { color: var(--nv-green); }
+.nv-captcha[data-state="error"] .nv-captcha__status { color: var(--status-danger); }
 
 /* =========================================================================
    8. SWITCH
@@ -1151,8 +1250,9 @@ textarea.input { resize: vertical; min-height: 96px; }
   border: 1px solid var(--border-subtle);
   background: var(--surface-raised);
   flex-wrap: wrap;
+  min-height: 88px;
 }
-.model-row__meta { display: flex; align-items: center; gap: var(--space-4); }
+.model-row__meta { display: flex; align-items: center; gap: var(--space-4); align-self: center; }
 .model-row__glyph {
   width: 40px; height: 40px;
   border-radius: var(--radius-sm);
@@ -1162,14 +1262,71 @@ textarea.input { resize: vertical; min-height: 96px; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  align-self: center;
 }
 .model-row__glyph .nv-icon { font-size: 1.25rem; }
 .model-row__name { font-weight: var(--fw-semibold); font-size: var(--fs-body); }
 .model-row__desc { font-size: var(--fs-caption); color: var(--text-tertiary); }
-.model-row__specs { display: flex; gap: var(--space-6); }
-.model-row__spec { text-align: right; }
-.model-row__spec-val { font-family: var(--font-family-mono); font-size: var(--fs-body-sm); color: var(--text-primary); font-weight: var(--fw-medium); }
-.model-row__spec-label { font-size: 11px; color: var(--text-tertiary); }
+.model-row__specs { display: flex; flex-direction: row; align-items: center; gap: var(--space-6); align-self: center; }
+.model-row__spec { text-align: right; display: flex; flex-direction: column; justify-content: center; }
+.model-row__spec-val { font-family: var(--font-family-mono); font-size: var(--fs-body-sm); color: var(--text-primary); font-weight: var(--fw-medium); line-height: 1.3; }
+.model-row__spec-label { font-size: 11px; color: var(--text-tertiary); line-height: 1.3; }
+
+/* -------------------------------------------------------------------------
+   Navbar account menu (logged-in state on index.html)
+   ------------------------------------------------------------------------- */
+.navbar-account-dropdown { position: relative; }
+.navbar-account-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-1);
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: 1px solid var(--border-default);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+.navbar-account-trigger:hover { background: var(--surface-hover); }
+.navbar-account-trigger[aria-expanded="true"] { background: var(--surface-active); }
+.navbar-account-trigger .account-avatar { width: 26px; height: 26px; font-size: 11px; }
+.navbar-account-trigger .account-menu-trigger__name {
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.navbar-account-menu {
+  position: absolute;
+  right: 0;
+  left: auto;
+  top: calc(100% + var(--space-2));
+  min-width: 200px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2);
+  z-index: var(--z-dropdown);
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out);
+}
+.navbar-account-dropdown[data-open="true"] .navbar-account-menu {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+/* Home logo is inert (non-clickable) while signed in, per the account-menu
+   replacing the primary "go back to marketing home" affordance. */
+.navbar__brand[data-nav-disabled="true"],
+.nav-drawer__header .navbar__brand[data-nav-disabled="true"] {
+  pointer-events: none;
+  cursor: default;
+}
 
 /* -------------------------------------------------------------------------
    CTA band
@@ -1213,9 +1370,31 @@ textarea.input { resize: vertical; min-height: 96px; }
 }
 .footer__brand { display: flex; align-items: center; gap: var(--space-2); color: var(--text-tertiary); font-size: var(--fs-body-sm); }
 .footer__brand img { height: 20px; width: 20px; opacity: 0.9; }
-.footer__links { display: flex; gap: var(--space-5); }
-.footer__links a { font-size: var(--fs-body-sm); color: var(--text-tertiary); }
+.footer__links { display: flex; gap: var(--space-5); flex-wrap: wrap; }
+.footer__links a { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-body-sm); color: var(--text-tertiary); }
 .footer__links a:hover { color: var(--text-primary); }
+.footer__social { display: flex; align-items: center; gap: var(--space-4); }
+.footer__social a { color: var(--text-tertiary); font-size: 1.1rem; display: inline-flex; }
+.footer__legal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+  font-size: var(--fs-caption);
+  color: var(--text-tertiary);
+}
+.footer__legal a { color: var(--text-tertiary); text-decoration: underline; }
+.footer__legal a:hover { color: var(--nv-green); }
+.footer__legal-sep { opacity: 0.6; }
+@media (max-width: 640px) {
+  .footer__inner { justify-content: center; text-align: center; }
+  .footer__legal { flex-direction: column; gap: var(--space-1); }
+}
 
 /* =========================================================================
    20. SPLASH SCREEN

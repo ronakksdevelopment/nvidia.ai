@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>NVIDIA Nemotron - Open, Efficient AI Models</title>
-<meta name="description" content="Nemotron v2.0: build, chat, and reason with NVIDIA's open Nemotron model family. Fast, efficient, and built for developers." />
+<meta name="description" content="Nemotron v2.5: build, chat, and reason with NVIDIA's open Nemotron model family. Fast, efficient, and built for developers." />
 <meta name="theme-color" content="#0A0A0A" />
 
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/nemotron-32.png" />
@@ -15,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="css/design-system.css" />
@@ -48,22 +48,46 @@
      ========================================================= -->
 <header class="navbar">
   <div class="container navbar__inner">
-    <a class="navbar__brand" href="#main">
+    <a class="navbar__brand" href="#main" id="navbarBrand">
       <img src="assets/logo/nemotron-48.png" alt="Nemotron" width="32" height="32" />
       <span>Nemotron</span>
-      <span class="navbar__brand-beta">v2.0</span>
+      <span class="navbar__brand-beta">v2.5</span>
     </a>
 
     <nav class="navbar__links" aria-label="Primary">
-      <a class="navbar__link" href="#main" aria-current="page">Home</a>
-      <a class="navbar__link" href="#features">Features</a>
-      <a class="navbar__link" href="#models">Models</a>
-      <a class="navbar__link" href="https://developer.nvidia.com" target="_blank" rel="noopener">Docs</a>
+      <a class="navbar__link" href="#main" aria-current="page"><i class="fa-solid fa-house nv-icon nv-icon--sm" aria-hidden="true"></i> Home</a>
+      <a class="navbar__link" href="#features"><i class="fa-solid fa-star nv-icon nv-icon--sm" aria-hidden="true"></i> Features</a>
+      <a class="navbar__link" href="#models"><i class="fa-solid fa-cube nv-icon nv-icon--sm" aria-hidden="true"></i> Models</a>
+      <a class="navbar__link" href="https://developer.nvidia.com" target="_blank" rel="noopener"><i class="fa-solid fa-book nv-icon nv-icon--sm" aria-hidden="true"></i> Docs</a>
     </nav>
 
     <div class="navbar__actions">
-      <button class="btn btn--ghost btn--sm" type="button" data-open-modal="signinModal">Sign in</button>
-      <button class="btn btn--primary btn--sm" type="button" data-open-modal="signupModal">Get started</button>
+      <button class="btn btn--ghost btn--sm" type="button" data-open-modal="signinModal" data-signed-out-only>Sign in</button>
+      <button class="btn btn--primary btn--sm" type="button" data-open-modal="signupModal" data-signed-out-only>Get started</button>
+
+      <div class="navbar-account-dropdown" id="navbarAccountDropdown" data-open="false" data-signed-in-only hidden>
+        <button class="account-menu-trigger navbar-account-trigger" id="navbarAccountTrigger" type="button" aria-haspopup="menu" aria-expanded="false">
+          <span class="account-avatar" aria-hidden="true" data-account-initials>?</span>
+          <span class="account-menu-trigger__name" data-account-name>Account</span>
+          <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown__menu navbar-account-menu" role="menu" aria-label="Account menu">
+          <a class="dropdown__item" role="menuitem" href="pages/chat.html">
+            <i class="fa-solid fa-comments nv-icon nv-icon--sm" aria-hidden="true"></i>
+            Back to Chat
+          </a>
+          <a class="dropdown__item" role="menuitem" href="pages/settings.html">
+            <i class="fa-solid fa-gear nv-icon nv-icon--sm" aria-hidden="true"></i>
+            Settings
+          </a>
+          <div class="dropdown__divider"></div>
+          <button class="dropdown__item dropdown__item--danger" role="menuitem" type="button" id="navbarLogoutBtn">
+            <i class="fa-solid fa-arrow-right-from-bracket nv-icon nv-icon--sm" aria-hidden="true"></i>
+            Logout
+          </button>
+        </div>
+      </div>
+
       <button class="navbar__menu-btn" type="button" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
         <i class="fa-solid fa-bars nv-icon nv-icon--lg" aria-hidden="true"></i>
       </button>
@@ -76,20 +100,34 @@
   <div class="nav-drawer__scrim" data-close-drawer></div>
   <div class="nav-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
     <div class="nav-drawer__header">
-      <span class="navbar__brand"><img src="assets/logo/nemotron-48.png" alt="" width="28" height="28" />Nemotron</span>
+      <span class="navbar__brand" id="navDrawerBrand"><img src="assets/logo/nemotron-48.png" alt="" width="28" height="28" />Nemotron</span>
       <button class="modal__close" type="button" data-close-drawer aria-label="Close menu">
         <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
       </button>
     </div>
     <nav class="nav-drawer__links" aria-label="Mobile">
-      <a href="#main" aria-current="page">Home</a>
-      <a href="#features">Features</a>
-      <a href="#models">Models</a>
-      <a href="https://developer.nvidia.com" target="_blank" rel="noopener">Docs</a>
+      <a href="#main" aria-current="page"><i class="fa-solid fa-house nv-icon nv-icon--sm" aria-hidden="true"></i> Home</a>
+      <a href="#features"><i class="fa-solid fa-star nv-icon nv-icon--sm" aria-hidden="true"></i> Features</a>
+      <a href="#models"><i class="fa-solid fa-cube nv-icon nv-icon--sm" aria-hidden="true"></i> Models</a>
+      <a href="https://developer.nvidia.com" target="_blank" rel="noopener"><i class="fa-solid fa-book nv-icon nv-icon--sm" aria-hidden="true"></i> Docs</a>
     </nav>
-    <div class="stack gap-3" style="margin-top:auto;">
+    <div class="stack gap-3" style="margin-top:auto;" data-signed-out-only>
       <button class="btn btn--secondary btn--full" type="button" data-open-modal="signinModal">Sign in</button>
       <button class="btn btn--primary btn--full" type="button" data-open-modal="signupModal">Get started</button>
+    </div>
+    <div class="stack gap-3" style="margin-top:auto;" data-signed-in-only hidden>
+      <a class="btn btn--secondary btn--full" href="pages/chat.html">
+        <i class="fa-solid fa-comments nv-icon" aria-hidden="true"></i>
+        Back to Chat
+      </a>
+      <a class="btn btn--secondary btn--full" href="pages/settings.html">
+        <i class="fa-solid fa-gear nv-icon" aria-hidden="true"></i>
+        Settings
+      </a>
+      <button class="btn btn--ghost btn--full" type="button" id="navDrawerLogoutBtn">
+        <i class="fa-solid fa-arrow-right-from-bracket nv-icon" aria-hidden="true"></i>
+        Logout
+      </button>
     </div>
   </div>
 </div>
@@ -104,7 +142,7 @@
       <img class="hero__logo-mark" src="assets/logo/nemotron-192.png" alt="" width="72" height="72" />
       <span class="hero__eyebrow badge badge--brand">
         <i class="fa-solid fa-sparkles nv-icon nv-icon--xs" aria-hidden="true"></i>
-        Nemotron v2.0 is here
+        Nemotron v2.5 is here
       </span>
       <h1 class="hero__title text-display">Open, efficient AI, built by NVIDIA</h1>
       <p class="hero__subtitle text-body-lg">
@@ -168,7 +206,7 @@
         </article>
 
         <article class="card card--interactive">
-          <span class="card__icon"><i class="fa-solid fa-sparkles nv-icon" aria-hidden="true"></i></span>
+          <span class="card__icon"><i class="fa-solid fa-brain nv-icon" aria-hidden="true"></i></span>
           <h3 class="card__title">Reasoning-tuned</h3>
           <p class="card__body">Post-trained on multi-step reasoning and tool-use traces, so Nemotron plans before it answers on complex tasks.</p>
         </article>
@@ -235,7 +273,7 @@
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><i class="fa-solid fa-sparkles nv-icon" aria-hidden="true"></i></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-eye nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Nemotron 3 Nano Omni</div>
               <div class="model-row__desc">Compact multimodal reasoning, text and image input</div>
@@ -334,14 +372,28 @@
   <div class="container footer__inner">
     <span class="footer__brand">
       <img src="assets/logo/nemotron-32.png" alt="" width="20" height="20" />
-      Nemotron v2.0, an NVIDIA project
+      Nemotron v2.5, an NVIDIA project
     </span>
     <nav class="footer__links" aria-label="Footer">
-      <a href="https://developer.nvidia.com" target="_blank" rel="noopener">Docs</a>
-      <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
-      <a href="pages/privacy.html">Privacy</a>
-      <a href="pages/terms.html">Terms</a>
+      <a href="https://developer.nvidia.com" target="_blank" rel="noopener"><i class="fa-solid fa-book nv-icon nv-icon--sm" aria-hidden="true"></i> Docs</a>
+      <a href="https://github.com/ronakksdevelopment/nvidia.ai" target="_blank" rel="noopener"><i class="fa-brands fa-github nv-icon nv-icon--sm" aria-hidden="true"></i> GitHub</a>
+      <a href="https://developer.nvidia.com/contact" target="_blank" rel="noopener"><i class="fa-solid fa-envelope nv-icon nv-icon--sm" aria-hidden="true"></i> Contact</a>
+      <a href="pages/privacy.html"><i class="fa-solid fa-shield-halved nv-icon nv-icon--sm" aria-hidden="true"></i> Privacy</a>
+      <a href="pages/terms.html"><i class="fa-solid fa-file-contract nv-icon nv-icon--sm" aria-hidden="true"></i> Terms</a>
     </nav>
+    <nav class="footer__social" aria-label="NVIDIA AI social links">
+      <a href="https://www.facebook.com/NVIDIAAI" target="_blank" rel="noopener" aria-label="NVIDIA AI on Facebook"><i class="fa-brands fa-facebook nv-icon" aria-hidden="true"></i></a>
+      <a href="https://x.com/NVIDIAAI" target="_blank" rel="noopener" aria-label="NVIDIA AI on X"><i class="fa-brands fa-x-twitter nv-icon" aria-hidden="true"></i></a>
+      <a href="https://www.instagram.com/nvidia" target="_blank" rel="noopener" aria-label="NVIDIA AI on Instagram"><i class="fa-brands fa-instagram nv-icon" aria-hidden="true"></i></a>
+      <a href="https://www.linkedin.com/company/nvidia" target="_blank" rel="noopener" aria-label="NVIDIA AI on LinkedIn"><i class="fa-brands fa-linkedin nv-icon" aria-hidden="true"></i></a>
+      <a href="https://www.youtube.com/nvidia" target="_blank" rel="noopener" aria-label="NVIDIA AI on YouTube"><i class="fa-brands fa-youtube nv-icon" aria-hidden="true"></i></a>
+      <a href="https://github.com/NVIDIA" target="_blank" rel="noopener" aria-label="NVIDIA on GitHub"><i class="fa-brands fa-github nv-icon" aria-hidden="true"></i></a>
+    </nav>
+    <div class="footer__legal">
+      <span>Copyright &copy; 2026 NVIDIA Corporation</span>
+      <span class="footer__legal-sep" aria-hidden="true">·</span>
+      <span>Collaboration with <a href="https://github.com/ronakksdevelopment" target="_blank" rel="noopener">@ronakksdevelopment</a></span>
+    </div>
   </div>
 </footer>
 
@@ -366,15 +418,32 @@
         <label class="field__label" for="siName">Name</label>
         <div class="input-wrap">
           <i class="fa-solid fa-user nv-icon input-icon" aria-hidden="true"></i>
-          <input class="input" id="siName" type="text" placeholder="Your name" autocomplete="name" />
+          <input class="input input--auth-field" id="siName" type="text" placeholder="Your name" autocomplete="name" />
         </div>
       </div>
       <div class="field">
         <label class="field__label" for="siEmail">Email</label>
         <div class="input-wrap">
           <i class="fa-solid fa-envelope nv-icon input-icon" aria-hidden="true"></i>
-          <input class="input" id="siEmail" type="email" placeholder="you@company.com" autocomplete="email" />
+          <input class="input input--auth-field" id="siEmail" type="email" placeholder="you@company.com" autocomplete="email" />
         </div>
+        <p class="field__error" id="siEmailError" hidden>Enter valid email id</p>
+      </div>
+      <div class="nv-captcha" data-nv-captcha>
+        <div class="nv-captcha__row" data-nv-captcha-checkrow>
+          <label class="nv-captcha__check">
+            <input type="checkbox" data-nv-captcha-checkbox />
+            <span class="nv-captcha__box"><span class="nv-captcha__spinner" aria-hidden="true"></span><i class="fa-solid fa-check nv-captcha__tick" aria-hidden="true"></i></span>
+            <span class="nv-captcha__label">I'm not a robot</span>
+          </label>
+          <img class="nv-captcha__badge" src="assets/logo/nemotron-32.png" alt="" width="28" height="28" />
+        </div>
+        <div class="nv-captcha__challenge" data-nv-captcha-challenge hidden>
+          <p class="nv-captcha__question" data-nv-captcha-question></p>
+          <input class="input" type="text" inputmode="numeric" placeholder="Your answer" data-nv-captcha-answer />
+          <button class="btn btn--secondary btn--sm" type="button" data-nv-captcha-verify>Verify</button>
+        </div>
+        <p class="nv-captcha__status" data-nv-captcha-status hidden></p>
       </div>
       <button class="btn btn--primary btn--full" type="submit">Sign in</button>
     </form>
@@ -405,15 +474,32 @@
         <label class="field__label" for="suName">Full name</label>
         <div class="input-wrap">
           <i class="fa-solid fa-user nv-icon input-icon" aria-hidden="true"></i>
-          <input class="input" id="suName" type="text" placeholder="Your name" autocomplete="name" />
+          <input class="input input--auth-field" id="suName" type="text" placeholder="Your name" autocomplete="name" />
         </div>
       </div>
       <div class="field">
         <label class="field__label" for="suEmail">Email</label>
         <div class="input-wrap">
           <i class="fa-solid fa-envelope nv-icon input-icon" aria-hidden="true"></i>
-          <input class="input" id="suEmail" type="email" placeholder="you@company.com" autocomplete="email" />
+          <input class="input input--auth-field" id="suEmail" type="email" placeholder="you@company.com" autocomplete="email" />
         </div>
+        <p class="field__error" id="suEmailError" hidden>Enter valid email id</p>
+      </div>
+      <div class="nv-captcha" data-nv-captcha>
+        <div class="nv-captcha__row" data-nv-captcha-checkrow>
+          <label class="nv-captcha__check">
+            <input type="checkbox" data-nv-captcha-checkbox />
+            <span class="nv-captcha__box"><span class="nv-captcha__spinner" aria-hidden="true"></span><i class="fa-solid fa-check nv-captcha__tick" aria-hidden="true"></i></span>
+            <span class="nv-captcha__label">I'm not a robot</span>
+          </label>
+          <img class="nv-captcha__badge" src="assets/logo/nemotron-32.png" alt="" width="28" height="28" />
+        </div>
+        <div class="nv-captcha__challenge" data-nv-captcha-challenge hidden>
+          <p class="nv-captcha__question" data-nv-captcha-question></p>
+          <input class="input" type="text" inputmode="numeric" placeholder="Your answer" data-nv-captcha-answer />
+          <button class="btn btn--secondary btn--sm" type="button" data-nv-captcha-verify>Verify</button>
+        </div>
+        <p class="nv-captcha__status" data-nv-captcha-status hidden></p>
       </div>
       <button class="btn btn--primary btn--full" type="submit">Create account</button>
     </form>
@@ -452,6 +538,7 @@
 <script src="js/router.js"></script>
 <script src="js/tooltip.js"></script>
 <script src="js/app.js"></script>
+<script src="js/captcha.js"></script>
 <script>
   // Sign-in / sign-up handling for the landing-page modals. There is no
   // backend: the account (name, email, avatar initials) is a real identity
@@ -486,6 +573,65 @@
     }
     wireAuthForm("#signinModal", "siName", "siEmail");
     wireAuthForm("#signupModal", "suName", "suEmail");
+
+    /* -----------------------------------------------------------------------
+       Logged-in navbar state: when a session exists, hide Sign in/Get
+       started and show the account menu (Back to Chat, Settings, Logout)
+       on both desktop and mobile nav, and make the Home logo inert instead
+       of a clickable link back to the marketing hero.
+       ----------------------------------------------------------------------- */
+    function paintNavAuthState() {
+      var signedIn = !!(window.NemotronSession && window.NemotronSession.isSignedIn());
+      document.querySelectorAll("[data-signed-in-only]").forEach(function (el) { el.hidden = !signedIn; });
+      document.querySelectorAll("[data-signed-out-only]").forEach(function (el) { el.hidden = signedIn; });
+      var brand = document.getElementById("navbarBrand");
+      if (brand) {
+        if (signedIn) {
+          brand.setAttribute("data-nav-disabled", "true");
+          brand.setAttribute("aria-disabled", "true");
+          brand.setAttribute("tabindex", "-1");
+        } else {
+          brand.removeAttribute("data-nav-disabled");
+          brand.removeAttribute("aria-disabled");
+          brand.removeAttribute("tabindex");
+        }
+      }
+    }
+    document.addEventListener("DOMContentLoaded", paintNavAuthState);
+
+    var navbarAccountDropdown = document.getElementById("navbarAccountDropdown");
+    var navbarAccountTrigger = document.getElementById("navbarAccountTrigger");
+    if (navbarAccountDropdown && navbarAccountTrigger) {
+      navbarAccountTrigger.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var open = navbarAccountDropdown.getAttribute("data-open") !== "true";
+        navbarAccountDropdown.setAttribute("data-open", String(open));
+        navbarAccountTrigger.setAttribute("aria-expanded", String(open));
+      });
+      document.addEventListener("click", function (e) {
+        if (!navbarAccountDropdown.contains(e.target)) {
+          navbarAccountDropdown.setAttribute("data-open", "false");
+          navbarAccountTrigger.setAttribute("aria-expanded", "false");
+        }
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          navbarAccountDropdown.setAttribute("data-open", "false");
+          navbarAccountTrigger.setAttribute("aria-expanded", "false");
+        }
+      });
+    }
+
+    function doLogout() {
+      if (window.NemotronSession) window.NemotronSession.signOut();
+      paintNavAuthState();
+      if (window.NemotronSession) window.NemotronSession.paintAccountUI();
+      if (window.NemotronToast) window.NemotronToast("info", "Logged out", "You've been signed out on this device.");
+    }
+    var navbarLogoutBtn = document.getElementById("navbarLogoutBtn");
+    navbarLogoutBtn && navbarLogoutBtn.addEventListener("click", doLogout);
+    var navDrawerLogoutBtn = document.getElementById("navDrawerLogoutBtn");
+    navDrawerLogoutBtn && navDrawerLogoutBtn.addEventListener("click", doLogout);
   })();
 </script>
 </body>

@@ -1,17 +1,61 @@
-# NVIDIA Nemotron v2.0 - Chat with 8 free NVIDIA models via OpenRouter
+# NVIDIA Nemotron v2.5 - Chat with free NVIDIA models via OpenRouter
 
 A complete, static, GitHub Pages-ready chat application for NVIDIA's open
 Nemotron model family. No frameworks, no build step, no backend server:
 plain HTML, CSS, and vanilla JavaScript, from the landing page to the live
 chat experience to offline support. Chat runs on real OpenRouter API calls
-using your own free API key, with real streaming responses from any of the
-eight free NVIDIA Nemotron models.
+using your own free API key, with real streaming responses from NVIDIA's
+free Nemotron models.
+
+## What's new in v2.5
+
+- **Redesigned FAQ cards** — bold 2.5px borders, thicker accent bars,
+  larger rounded corners (`--radius-lg`), and a cleaner grid-based layout,
+  fully responsive down to mobile widths.
+- **Renamed Settings sidebar** — the six sections are now simply General,
+  Profile, About, FAQ, Privacy, and Terms.
+- **Fixed the invisible suggestion icon** — the "Draft a friendly
+  onboarding email" chat suggestion now shows a visible envelope icon
+  (it previously used an invalid Font Awesome icon name and rendered
+  blank).
+- **Live session & weekly usage tracking** — the sidebar's token usage bar
+  now shows a real, ticking reset countdown (`resets in Hh Mm`), and the
+  chat topbar shows two live pills: `Session X% · resets Hh Mm` and
+  `Weekly Y% · resets Dd`. Both windows persist across reloads and roll
+  over automatically once elapsed. (Previously the topbar pills were
+  wired to DOM IDs that didn't exist and were hard-hidden by CSS.)
+- **Fast character-by-character reply animation** — assistant replies now
+  visibly "type" onto the screen at a fast, smooth pace. Network chunks
+  are buffered and revealed a few characters per frame, so the animation
+  stays smooth and sentence-coherent even when the underlying stream
+  arrives in bursts.
+- **Live generation timer** — a `Generating... X.Xs` readout appears
+  under each in-progress assistant reply and is swapped for the final
+  `Generated in X.Xs` once the response completes.
+- **Barlow as the default typeface** — replaces Inter as the NVIDIA-style
+  UI font across every page. JetBrains Mono is unchanged and still used
+  for all code, model IDs, and other monospace content.
+- **Consistent icon states everywhere** — every normal icon (nav, footer,
+  settings, profile, about, help, onboarding) is white by default and
+  turns NVIDIA green on hover, keyboard focus, and click. Icons that
+  carry deliberate semantic color (success/selected/brand states) are
+  unaffected and unchanged. Icon color is now theme-aware, so it also
+  stays legible if Light theme is selected.
+- **Credits & Attribution section** (About page) — credits OpenRouter for
+  model access and NVIDIA Nemotron models for generating responses, with
+  a prominent **Browse NVIDIA Models on OpenRouter** button linking to
+  `openrouter.ai/models?q=nvidia&variant=free`, and a short disclaimer
+  that availability, rate limits, and performance depend on OpenRouter
+  and the selected model.
+- **Models section** (About page) — the free NVIDIA model catalog is now
+  organized into three category cards: Text Models (5), Embedding Models
+  (2), and Rerank Models (1). See the table below for the full list.
 
 ## What this is
 
 - Bring your own free [OpenRouter](https://openrouter.ai/keys) API key.
-- Chat with real-time streaming responses from any of 8 free NVIDIA
-  Nemotron models, switchable per conversation from the model picker.
+- Chat with real-time streaming responses from NVIDIA's free Nemotron
+  models, switchable per conversation from the model picker.
 - Sign in with a local, on-device identity (name and email, no password,
   no server) or use guest mode, where nothing is saved at all.
 - Conversation history persists in your browser for signed-in sessions and
@@ -28,21 +72,47 @@ directly from your browser using your own API key, and everything the app
 remembers (your identity, your API key, your model and theme choice, and
 your chat history) is stored only in your browser's local storage.
 
-## The 8 free models
+## Credits & Attribution
 
-| Model | ID | Best for |
-|---|---|---|
-| Nemotron 3 Ultra | `nvidia/nemotron-3-ultra-550b-a55b:free` | Frontier reasoning, long-running agents, 1M context |
-| Nemotron 3 Super | `nvidia/nemotron-3-super-120b-a12b:free` | Balanced everyday reasoning, 1M context |
-| Nemotron 3.5 Lightning | `nvidia/nemotron-3.5-lightning:free` | Fastest, high-throughput agentic workloads |
-| Nemotron 3 Nano Omni (Reasoning) | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free` | Compact multimodal reasoning, text and image input |
-| Nemotron 3.5 Content Safety | `nvidia/nemotron-3.5-content-safety:free` | Prompt and response moderation, guardrails |
-| Llama Nemotron Rerank VL 1B v2 | `nvidia/llama-nemotron-rerank-vl-1b-v2:free` | Multimodal document reranking for RAG |
-| Llama Nemotron Embed VL 1B v2 | `nvidia/llama-nemotron-embed-vl-1b-v2:free` | Multimodal embeddings |
-| Nemotron 3 Embed 1B | `nvidia/nemotron-3-embed-1b:free` | High-throughput text embeddings |
+This project uses **NVIDIA Nemotron models**, accessed through
+**OpenRouter**, to generate every AI response in chat. Model access,
+routing, and free-tier availability are provided by OpenRouter — credit
+to OpenRouter for making these models reachable with a single API key.
+Model availability, rate limits, and performance depend on OpenRouter and
+on the specific NVIDIA model selected, and may change at any time. See
+About → Credits & Attribution in the app for the same information with a
+direct link to browse NVIDIA's models on OpenRouter.
 
-All eight are free on OpenRouter and available directly from the model
-picker in chat, or as the default model in Settings.
+## Model categories
+
+**Text Models (5)**
+
+| Model | Notes |
+|---|---|
+| NVIDIA: Llama 3.1 Nemotron 70B Instruct | free |
+| NVIDIA: Llama 3.3 Nemotron Super 49B V1 | free |
+| NVIDIA: Llama 3.3 Nemotron Super 49B V1: Reasoning | free |
+| NVIDIA: Nemotron Nano 9B V2 | free |
+| NVIDIA: Nemotron 3 Nano Omni 4B V1 | free |
+
+**Embedding Models (2)**
+
+| Model | Notes |
+|---|---|
+| NVIDIA: NV-Embed-v2 | free |
+| NVIDIA: NV-EmbedQA-E5-v5 | free |
+
+**Rerank Models (1)**
+
+| Model | Notes |
+|---|---|
+| NVIDIA: Llama Nemotron Rerank VL 1B V2 | free |
+
+All of the above are free on OpenRouter. The chat model picker in
+`pages/chat.html` and `pages/settings.html` ships with its own default
+Nemotron chat-model lineup independent of this catalog; see
+`js/settings.js` for that list if you want to point it at a different set
+of OpenRouter model IDs.
 
 ## Folder structure
 
@@ -95,15 +165,17 @@ picker in chat, or as the default model in Settings.
 
 ## Dependencies
 
-This is a no-build, vanilla HTML/CSS/JS project with exactly one external
-dependency: [Font Awesome 6](https://fontawesome.com/) (free icon set),
-loaded via the `cdnjs` CDN on every page for UI icons (nav, buttons,
-status indicators, and so on). It's the only third-party script or
-stylesheet the app loads; everything else — layout, theming, chat
-streaming, storage — is hand-written with no framework and no package
-manager. If you deploy somewhere that blocks third-party CDNs, icons will
-silently fail to render but the app otherwise keeps working, since no
-functionality depends on Font Awesome loading successfully.
+This is a no-build, vanilla HTML/CSS/JS project with two external
+dependencies, both loaded via CDN on every page: [Font Awesome 6](https://fontawesome.com/)
+(free icon set) for UI icons (nav, buttons, status indicators, and so on),
+and [Google Fonts](https://fonts.google.com/) for Barlow (the NVIDIA-style
+UI typeface) and JetBrains Mono (used for code, model IDs, and other
+monospace content). These are the only third-party assets the app loads;
+everything else — layout, theming, chat streaming, storage — is
+hand-written with no framework and no package manager. If you deploy
+somewhere that blocks third-party CDNs, icons and custom fonts will
+silently fall back to the system default but the app otherwise keeps
+working, since no functionality depends on either loading successfully.
 
 ## How chat works
 

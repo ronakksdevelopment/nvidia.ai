@@ -421,6 +421,76 @@
   const HISTORY_KEY = "nemotron.chatHistory";
   const DEFAULT_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
 
+  /* -----------------------------------------------------------------------
+     Usage windows (session token bar + topbar pills)
+     Session usage resets hourly; weekly usage resets every 7 days. Both
+     windows persist their token counts and reset timestamps in
+     localStorage so the countdown and percentage survive a reload and
+     roll over automatically once their window has elapsed.
+     ----------------------------------------------------------------------- */
+  const SESSION_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+  const WEEKLY_WINDOW_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+  const WEEKLY_TOKEN_LIMIT = MAX_TOKENS * 40; // generous free-tier-style weekly ceiling
+  const USAGE_WINDOWS_KEY = "nemotron.usageWindows";
+
+  function loadUsageWindows() {
+    const now = Date.now();
+    let parsed = null;
+    try {
+      const raw = localStorage.getItem(USAGE_WINDOWS_KEY);
+      if (raw) parsed = JSON.parse(raw);
+    } catch (e) { parsed = null; }
+    if (!parsed || typeof parsed !== "object") parsed = {};
+
+    if (!parsed.sessionResetAt || parsed.sessionResetAt <= now) {
+      parsed.sessionTokens = 0;
+      parsed.sessionResetAt = now + SESSION_WINDOW_MS;
+    }
+    if (!parsed.weeklyResetAt || parsed.weeklyResetAt <= now) {
+      parsed.weeklyTokens = 0;
+      parsed.weeklyResetAt = now + WEEKLY_WINDOW_MS;
+    }
+    parsed.sessionTokens = parsed.sessionTokens || 0;
+    parsed.weeklyTokens = parsed.weeklyTokens || 0;
+    return parsed;
+  }
+
+  function saveUsageWindows() {
+    try {
+      localStorage.setItem(USAGE_WINDOWS_KEY, JSON.stringify(usageWindows));
+    } catch (e) { /* storage unavailable: countdown still works in-memory */ }
+  }
+
+  const usageWindows = loadUsageWindows();
+
+  function addUsageTokens(n) {
+    // Re-check for rollover first, in case a window elapsed while idle.
+    const now = Date.now();
+    if (usageWindows.sessionResetAt <= now) {
+      usageWindows.sessionTokens = 0;
+      usageWindows.sessionResetAt = now + SESSION_WINDOW_MS;
+    }
+    if (usageWindows.weeklyResetAt <= now) {
+      usageWindows.weeklyTokens = 0;
+      usageWindows.weeklyResetAt = now + WEEKLY_WINDOW_MS;
+    }
+    usageWindows.sessionTokens = Math.min(MAX_TOKENS, usageWindows.sessionTokens + n);
+    usageWindows.weeklyTokens = Math.min(WEEKLY_TOKEN_LIMIT, usageWindows.weeklyTokens + n);
+    saveUsageWindows();
+  }
+
+  function formatCountdown(msRemaining, unit) {
+    const remaining = Math.max(0, msRemaining);
+    if (unit === "days") {
+      const d = Math.max(1, Math.ceil(remaining / (24 * 60 * 60 * 1000)));
+      return `${d}d`;
+    }
+    const totalMinutes = Math.max(0, Math.round(remaining / 60000));
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return `${h}h ${String(m).padStart(2, "0")}m`;
+  }
+
   const isGuestSession = () => !!(window.NemotronSession && window.NemotronSession.isGuestActive());
   const isIncognitoSession = () => !!(window.NemotronSession && window.NemotronSession.isIncognitoActive());
 
@@ -507,6 +577,7 @@
   const sidebar = $("#sidebar");
   const sidebarScrim = $("#sidebarScrim");
   const sidebarCollapseBtn = $("#sidebarCollapseBtn");
+  const reopenSidebarBtn = $("#reopenSidebarBtn");
   const mobileSidebarBtn = $("#mobileSidebarBtn");
   const newChatBtn = $("#newChatBtn");
   const newChatIconBtn = $("#newChatIconBtn");
@@ -533,8 +604,14 @@
 
   const usageBarFill = $("#usageBarFill");
   const usageValueText = $("#usageValueText");
-  const topbarUsageChip = $("#topbarUsageChip");
-  const topbarUsageText = $("#topbarUsageText");
+  const sidebarUsagePercent = $("#sidebarUsagePercent");
+  const sidebarUsageReset = $("#sidebarUsageReset");
+  const topbarSessionUsageChip = $("#topbarSessionUsageChip");
+  const topbarSessionUsageText = $("#topbarSessionUsageText");
+  const topbarSessionResetText = $("#topbarSessionResetText");
+  const topbarWeeklyUsageChip = $("#topbarWeeklyUsageChip");
+  const topbarWeeklyUsageText = $("#topbarWeeklyUsageText");
+  const topbarWeeklyResetText = $("#topbarWeeklyResetText");
 
   const incognitoBadge = $("#incognitoBadge");
   const incognitoToggleBtn = $("#incognitoToggleBtn");
@@ -582,6 +659,7 @@
   }
 
   sidebarCollapseBtn && sidebarCollapseBtn.addEventListener("click", () => setSidebarState(!isSidebarOpen()));
+  reopenSidebarBtn && reopenSidebarBtn.addEventListener("click", () => setSidebarState(true));
   mobileSidebarBtn && mobileSidebarBtn.addEventListener("click", () => setSidebarState(!isSidebarOpen()));
   sidebarScrim && sidebarScrim.addEventListener("click", () => setSidebarState(false));
 
@@ -898,6 +976,19 @@
       }
     }
 
+    let genTimerEl = null;
+    if (msg.role === "assistant" && (msg.streaming || typeof msg.genElapsedSec === "number")) {
+      genTimerEl = document.createElement("div");
+      genTimerEl.className = "msg__gen-timer";
+      if (msg.streaming) {
+        const secs = typeof msg.genElapsedSec === "number" ? msg.genElapsedSec : 0;
+        genTimerEl.textContent = `Generating... ${secs.toFixed(1)}s`;
+      } else {
+        genTimerEl.classList.add("msg__gen-timer--done");
+        genTimerEl.textContent = `Generated in ${msg.genElapsedSec.toFixed(1)}s`;
+      }
+    }
+
     const actions = document.createElement("div");
     actions.className = "msg__actions";
     if (msg.role === "user") {
@@ -926,6 +1017,7 @@
 
     col.appendChild(roleRow);
     col.appendChild(bubble);
+    if (genTimerEl) col.appendChild(genTimerEl);
     if (actions.innerHTML) col.appendChild(actions);
 
     wrap.appendChild(avatar);
@@ -1210,15 +1302,14 @@
     };
     msgs.push(userMsg);
 
-    // Provisional title from the first message (instant, no network round-trip).
-    // Once the assistant replies, generateChatTitle() below replaces this with
-    // a short, model-generated summary of the whole exchange — the same way
-    // Claude and ChatGPT title new conversations — so history doesn't just
-    // show a raw truncated prompt forever.
+    // Immediate short title (2-5 words, local/offline, no network round-trip)
+    // so a conversation is never left titled "New chat". generateChatTitle()
+    // below still tries to replace it with a model-generated summary once
+    // the assistant replies, the same way Claude and ChatGPT title chats.
     const convo = state.conversations.find((c) => c.id === state.activeConvoId);
     const isFirstMessage = convo && (convo.title === "New chat" || !convo.title);
     if (isFirstMessage) {
-      convo.title = text.slice(0, 60) || "New chat";
+      convo.title = quickLocalTitle(text);
       convo.titleGenerated = false;
     }
     if (convo) convo.updatedAt = Date.now();
@@ -1235,14 +1326,78 @@
     return Math.max(1, Math.round(String(str || "").split(/\s+/).filter(Boolean).length * 1.3));
   }
 
+  /* -----------------------------------------------------------------------
+     Instant local title: 2-5 meaningful words pulled from the first
+     message, stripped of filler/stopwords and sentence punctuation, title
+     cased. Used the moment a chat starts, before any network round-trip;
+     generateChatTitle() may later upgrade it to a model-written summary.
+     ----------------------------------------------------------------------- */
+  const TITLE_STOPWORDS = new Set([
+    "a", "an", "the", "is", "are", "was", "were", "be", "been", "being",
+    "to", "of", "in", "on", "at", "for", "with", "and", "or", "but",
+    "please", "can", "you", "i", "me", "my", "we", "our", "your",
+    "it", "this", "that", "do", "does", "did", "how", "what", "why",
+    "help", "just", "would", "could", "should", "like", "want", "need",
+  ]);
+  function quickLocalTitle(text) {
+    const clean = String(text || "").replace(/[`*_#>\-]/g, " ").trim();
+    if (!clean) return "New chat";
+    const words = clean.split(/\s+/).filter(Boolean);
+    const meaningful = words.filter((w) => {
+      const bare = w.replace(/[^\w'-]/g, "").toLowerCase();
+      return bare.length > 1 && !TITLE_STOPWORDS.has(bare);
+    });
+    let picked = (meaningful.length >= 2 ? meaningful : words).slice(0, 5);
+    if (picked.length < 2) picked = words.slice(0, Math.max(2, Math.min(5, words.length)));
+    if (!picked.length) return "New chat";
+    const titled = picked.map((w) => {
+      const bare = w.replace(/[^\w'-]/g, "");
+      if (!bare) return w;
+      return bare.length <= 3 && bare === bare.toLowerCase()
+        ? bare.charAt(0).toUpperCase() + bare.slice(1)
+        : bare.charAt(0).toUpperCase() + bare.slice(1);
+    });
+    return titled.join(" ").slice(0, 60);
+  }
+
   function updateUsageUI() {
+    const kLabel = (n) => (n >= 1000 ? (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + "K" : String(n));
+
+    // Sidebar session token bar (per-conversation-session estimate)
     const pct = Math.min(100, (state.tokensUsed / MAX_TOKENS) * 100);
     usageBarFill.style.width = pct + "%";
     usageBarFill.classList.toggle("is-high", pct > 75);
-    const kLabel = (n) => (n >= 1000 ? (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + "K" : String(n));
     usageValueText.textContent = `${kLabel(state.tokensUsed)} / ${kLabel(MAX_TOKENS)}`;
-    topbarUsageText.textContent = `${kLabel(state.tokensUsed)} / ${kLabel(MAX_TOKENS)} tokens`;
+
+    // Rolling session/weekly usage windows (topbar pills + sidebar reset line)
+    const now = Date.now();
+    if (usageWindows.sessionResetAt <= now) {
+      usageWindows.sessionTokens = 0;
+      usageWindows.sessionResetAt = now + SESSION_WINDOW_MS;
+      saveUsageWindows();
+    }
+    if (usageWindows.weeklyResetAt <= now) {
+      usageWindows.weeklyTokens = 0;
+      usageWindows.weeklyResetAt = now + WEEKLY_WINDOW_MS;
+      saveUsageWindows();
+    }
+
+    const sessionPct = Math.round(Math.min(100, (usageWindows.sessionTokens / MAX_TOKENS) * 100));
+    const weeklyPct = Math.round(Math.min(100, (usageWindows.weeklyTokens / WEEKLY_TOKEN_LIMIT) * 100));
+
+    if (sidebarUsagePercent) sidebarUsagePercent.textContent = `${sessionPct}% used`;
+    if (sidebarUsageReset) sidebarUsageReset.textContent = `resets in ${formatCountdown(usageWindows.sessionResetAt - now, "hours")}`;
+
+    if (topbarSessionUsageText) topbarSessionUsageText.textContent = `Session ${sessionPct}%`;
+    if (topbarSessionResetText) topbarSessionResetText.textContent = `resets ${formatCountdown(usageWindows.sessionResetAt - now, "hours")}`;
+    if (topbarSessionUsageChip) topbarSessionUsageChip.classList.toggle("is-near-limit", sessionPct >= 90);
+
+    if (topbarWeeklyUsageText) topbarWeeklyUsageText.textContent = `Weekly ${weeklyPct}%`;
+    if (topbarWeeklyResetText) topbarWeeklyResetText.textContent = `resets ${formatCountdown(usageWindows.weeklyResetAt - now, "days")}`;
   }
+
+  // Keep both countdowns ticking live even when no tokens are being added.
+  setInterval(updateUsageUI, 30000);
 
   function setGeneratingUI(isGenerating) {
     state.isGenerating = isGenerating;
@@ -1298,9 +1453,65 @@
     setGeneratingUI(true);
 
     const placeholderEl = () => chatMessages.querySelector(`[data-msg-id="${placeholder.id}"] .msg__bubble`);
+    const timerEl = () => chatMessages.querySelector(`[data-msg-id="${placeholder.id}"] .msg__gen-timer`);
     const bubbleEl = placeholderEl();
     if (bubbleEl) {
       bubbleEl.innerHTML = `<div class="typing-indicator" role="status" aria-label="Nemotron is thinking"><span></span><span></span><span></span></div>`;
+    }
+
+    /* -----------------------------------------------------------------------
+       Live "Generating... X.Xs" timer
+       Ticks every 100ms from the moment the request starts until the stream
+       finalizes, then is replaced in-place with the final elapsed time.
+       ----------------------------------------------------------------------- */
+    const genStartedAt = performance.now();
+    placeholder.genElapsedSec = 0;
+    placeholder.genDone = false;
+    const timerInterval = setInterval(() => {
+      const el = timerEl();
+      if (!el) return;
+      const secs = (performance.now() - genStartedAt) / 1000;
+      el.textContent = `Generating... ${secs.toFixed(1)}s`;
+    }, 100);
+
+    /* -----------------------------------------------------------------------
+       Fast character-by-character reveal
+       Network chunks arrive in bursts, not evenly, so we don't render them
+       straight to the DOM. Instead each chunk extends a `targetText` buffer,
+       and a fast reveal loop chases that buffer a few characters at a time
+       on every animation frame. This keeps the on-screen text advancing at a
+       smooth, fast, readable pace and keeps sentence/word boundaries intact
+       (never mid-tag) regardless of how bursty the underlying network is.
+       ----------------------------------------------------------------------- */
+    let targetText = "";
+    let revealedLength = 0;
+    let revealRafId = null;
+    const CHARS_PER_FRAME = 3; // fast, but still visibly "typing"
+
+    function renderRevealed() {
+      placeholder.text = targetText.slice(0, revealedLength);
+      const el = placeholderEl();
+      if (el) {
+        el.innerHTML = renderMarkdown(placeholder.text) + (placeholder.streaming ? '<span class="streaming-caret"></span>' : "");
+      }
+      if (isNearBottom()) scrollToBottom(false);
+    }
+
+    function revealTick() {
+      if (revealedLength < targetText.length) {
+        revealedLength = Math.min(targetText.length, revealedLength + CHARS_PER_FRAME);
+        renderRevealed();
+        revealRafId = requestAnimationFrame(revealTick);
+      } else {
+        revealRafId = null;
+        // All buffered text has been shown; if the stream already finished
+        // and there's nothing left to catch up on, wrap up now.
+        if (placeholder.genDone) finishAfterReveal();
+      }
+    }
+
+    function ensureRevealing() {
+      if (revealRafId === null) revealRafId = requestAnimationFrame(revealTick);
     }
 
     const abortController = new AbortController();
@@ -1309,12 +1520,20 @@
       cancel: () => { stoppedByUser = true; abortController.abort(); },
     };
 
+    function finishAfterReveal() {
+      clearInterval(timerInterval);
+      const finalSecs = (performance.now() - genStartedAt) / 1000;
+      placeholder.genElapsedSec = finalSecs;
+      finalizeMessage(placeholder.errored === true);
+    }
+
     function finalizeMessage(errored) {
       placeholder.streaming = false;
       placeholder.thinking = false;
       if (!errored) {
         const tokensAdded = estimateTokens(placeholder.text);
         state.tokensUsed = Math.min(MAX_TOKENS, state.tokensUsed + tokensAdded);
+        addUsageTokens(tokensAdded);
         updateUsageUI();
       }
       const convo = state.conversations.find((c) => c.id === convoId);
@@ -1357,7 +1576,9 @@
         }
         placeholder.thinking = false;
         const el = placeholderEl();
-        if (el) el.innerHTML = '<span class="streaming-caret"></span>';
+        if (el) {
+          el.innerHTML = '<span class="streaming-caret"></span>';
+        }
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
@@ -1366,7 +1587,10 @@
         function readChunk() {
           return reader.read().then(({ done, value }) => {
             if (done) {
-              finalizeMessage(false);
+              placeholder.genDone = true;
+              if (revealRafId === null && revealedLength >= targetText.length) {
+                finishAfterReveal();
+              }
               return;
             }
             buffer += decoder.decode(value, { stream: true });
@@ -1387,12 +1611,8 @@
               const delta = json && json.choices && json.choices[0] && json.choices[0].delta;
               const deltaText = delta && (delta.content || delta.reasoning_content || "");
               if (deltaText) {
-                placeholder.text += deltaText;
-                const el2 = placeholderEl();
-                if (el2) {
-                  el2.innerHTML = renderMarkdown(placeholder.text) + '<span class="streaming-caret"></span>';
-                }
-                if (isNearBottom()) scrollToBottom(false);
+                targetText += deltaText;
+                ensureRevealing();
               }
             }
             return readChunk();
@@ -1401,16 +1621,26 @@
         return readChunk();
       })
       .catch((err) => {
+        clearInterval(timerInterval);
+        if (revealRafId !== null) { cancelAnimationFrame(revealRafId); revealRafId = null; }
         if (stoppedByUser) {
-          if (!placeholder.text) placeholder.text = "_Generation stopped._";
-          else placeholder.text += "\n\n_(Generation stopped by user.)_";
+          targetText = targetText || "_Generation stopped._";
+          if (placeholder.text) targetText = placeholder.text + "\n\n_(Generation stopped by user.)_";
+          revealedLength = targetText.length;
+          renderRevealed();
+          const finalSecs = (performance.now() - genStartedAt) / 1000;
+          placeholder.genElapsedSec = finalSecs;
           finalizeMessage(false);
           return;
         }
         const message = (err && err.message) || "Something went wrong reaching OpenRouter.";
-        placeholder.text = placeholder.text || `_${message}_`;
+        targetText = targetText || `_${message}_`;
+        revealedLength = targetText.length;
+        renderRevealed();
         placeholder.errored = true;
         showToast("danger", "Generation failed", message);
+        const finalSecs = (performance.now() - genStartedAt) / 1000;
+        placeholder.genElapsedSec = finalSecs;
         finalizeMessage(true);
       });
   }

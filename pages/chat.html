@@ -15,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="../css/design-system.css" />
@@ -88,6 +88,10 @@
         <div class="usage-bar">
           <div class="usage-bar__fill" id="usageBarFill" style="width: 0%"></div>
         </div>
+        <div class="sidebar__usage-row sidebar__usage-row--meta">
+          <span class="sidebar__usage-percent" id="sidebarUsagePercent">0% used</span>
+          <span class="sidebar__usage-reset" id="sidebarUsageReset">resets in 1h 00m</span>
+        </div>
       </div>
 
       <button class="account-menu-trigger" id="accountMenuTrigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu">
@@ -117,7 +121,7 @@
         </a>
         <button class="dropdown__item" role="menuitem" type="button" id="shortcutsMenuBtn">
           <i class="fa-solid fa-keyboard nv-icon nv-icon--sm" aria-hidden="true"></i>
-          Keyboard shortcuts
+          Shortcuts
         </button>
         <a class="dropdown__item" role="menuitem" href="profile.html">
           <i class="fa-solid fa-user nv-icon nv-icon--sm" aria-hidden="true"></i>
@@ -126,7 +130,7 @@
         <div class="dropdown__divider"></div>
         <a class="dropdown__item" role="menuitem" href="../index.html">
           <i class="fa-solid fa-globe nv-icon nv-icon--sm" aria-hidden="true"></i>
-          Back to home
+          Go to home
         </a>
         <button class="dropdown__item dropdown__item--danger" role="menuitem" type="button" id="logoutBtn">
           <i class="fa-solid fa-arrow-right-from-bracket nv-icon nv-icon--sm" aria-hidden="true"></i>
@@ -146,6 +150,9 @@
 
     <!-- Topbar -->
     <header class="chat-topbar">
+      <button class="icon-btn chat-topbar__reopen-sidebar-btn" id="reopenSidebarBtn" type="button" aria-label="Open sidebar" title="Open sidebar" hidden>
+        <i class="fa-solid fa-table-columns nv-icon" aria-hidden="true"></i>
+      </button>
       <button class="icon-btn chat-topbar__menu-btn" id="mobileSidebarBtn" type="button" aria-label="Open conversation history" aria-expanded="false" aria-controls="sidebar">
         <i class="fa-solid fa-table-columns nv-icon" aria-hidden="true"></i>
       </button>
@@ -224,14 +231,20 @@
           <i class="fa-solid fa-user-secret nv-icon nv-icon--sm" aria-hidden="true"></i>
           <span>Incognito</span>
         </span>
-        <span class="badge badge--brand chat-topbar__usage-chip" id="topbarUsageChip" title="Session token usage">
+        <span class="badge badge--brand chat-topbar__usage-chip" id="topbarSessionUsageChip" title="Session usage, resets hourly">
           <i class="fa-solid fa-microchip nv-icon nv-icon--sm" aria-hidden="true"></i>
-          <span id="topbarUsageText">0 / 32K tokens</span>
+          <span id="topbarSessionUsageText">Session 0%</span>
+          <span class="chat-topbar__usage-reset" id="topbarSessionResetText">resets in 1h 00m</span>
+        </span>
+        <span class="badge badge--neutral chat-topbar__usage-chip" id="topbarWeeklyUsageChip" title="Weekly usage, resets daily">
+          <i class="fa-solid fa-calendar-days nv-icon nv-icon--sm" aria-hidden="true"></i>
+          <span id="topbarWeeklyUsageText">Weekly 0%</span>
+          <span class="chat-topbar__usage-reset" id="topbarWeeklyResetText">resets in 24h 00m</span>
         </span>
         <button class="icon-btn incognito-toggle" id="incognitoToggleBtn" type="button" aria-pressed="false" aria-label="Turn on Incognito Mode" title="Incognito Mode: this chat won't be saved">
           <i class="fa-solid fa-user-secret nv-icon" aria-hidden="true"></i>
         </button>
-        <button class="icon-btn" id="shortcutsTopbarBtn" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
+        <button class="icon-btn" id="shortcutsTopbarBtn" type="button" aria-label="Shortcuts" title="Shortcuts (?)">
           <i class="fa-solid fa-keyboard nv-icon" aria-hidden="true"></i>
         </button>
       </div>
@@ -267,7 +280,7 @@
               <span>Compare Nemotron Nano vs Super vs Ultra</span>
             </button>
             <button class="chat-suggestion" type="button" data-prompt="Draft a friendly onboarding email for new beta testers of an AI product.">
-              <i class="fa-solid fa-sparkles nv-icon" aria-hidden="true"></i>
+              <i class="fa-solid fa-envelope nv-icon" aria-hidden="true"></i>
               <span>Draft a beta-tester onboarding email</span>
             </button>
           </div>
@@ -339,7 +352,7 @@
   <div class="modal shortcuts-modal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
     <div class="modal__header">
       <div>
-        <h2 class="modal__title" id="shortcutsTitle">Keyboard shortcuts</h2>
+        <h2 class="modal__title" id="shortcutsTitle">Shortcuts</h2>
         <p class="text-caption">Move faster around Nemotron chat</p>
       </div>
       <button class="modal__close" type="button" data-close-modal aria-label="Close">

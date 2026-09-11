@@ -295,7 +295,7 @@
     if (!document.body || !document.body.hasAttribute("data-requires-session")) return;
     if (getAccount()) return;
     var inPagesDir = window.location.pathname.indexOf("/pages/") !== -1;
-    window.location.replace(inPagesDir ? "auth.html" : "pages/auth.html");
+    window.location.replace(inPagesDir ? "../index.html" : "index.html");
   }
   enforceSessionGuard();
 

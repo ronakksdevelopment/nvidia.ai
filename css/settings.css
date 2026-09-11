@@ -223,6 +223,21 @@
   max-width: 100%;
 }
 
+/* Account details: Name / Email / Plan side by side in one row. */
+.account-details-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+  padding: var(--space-4) 0;
+  flex-wrap: wrap;
+}
+.account-details-row__item { min-width: 0; flex: 1 1 0; }
+.account-details-row__item .settings-row__hint { white-space: normal; word-break: break-word; }
+@media (max-width: 640px) {
+  .account-details-row { flex-direction: column; gap: var(--space-4); }
+  .account-details-row__item { width: 100%; }
+}
+
 /* -------------------------------------------------------------------------
    4. API key field
    ------------------------------------------------------------------------- */
@@ -648,6 +663,130 @@
 .doc-content strong { color: var(--text-primary); }
 .doc-meta { font-size: var(--fs-caption); color: var(--text-tertiary); margin-bottom: var(--space-7); }
 
+/* -------------------------------------------------------------------------
+   Model category cards (About → Models) — bold-bordered, rounded cards
+   matching the FAQ redesign language, grouped in a responsive grid.
+   ------------------------------------------------------------------------- */
+.model-category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin: var(--space-5) 0 var(--space-7);
+}
+.model-category-card {
+  border: 2.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-base) var(--ease-standard),
+              box-shadow var(--duration-base) var(--ease-standard),
+              transform var(--duration-base) var(--ease-standard);
+}
+.model-category-card:hover {
+  border-color: var(--nv-green);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.model-category-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.model-category-card__icon {
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--status-success-bg);
+  border: 2.5px solid var(--nv-green);
+  color: var(--nv-green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.05rem;
+}
+.model-category-card__title { font-size: var(--fs-body); font-weight: var(--fw-semibold); color: var(--text-primary); }
+.model-category-card__count { font-size: var(--fs-caption); color: var(--text-tertiary); font-family: var(--font-family-mono); }
+.model-category-card__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.model-category-card__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--fs-body-sm);
+  color: var(--text-secondary);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.model-category-card__list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+@media (max-width: 960px) {
+  .model-category-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .model-category-grid { grid-template-columns: 1fr; }
+  .model-category-card__list li { flex-wrap: wrap; }
+}
+
+/* -------------------------------------------------------------------------
+   Credits & Attribution (About) — same bold-border / rounded-corner card
+   language as the model category cards, plus a prominent CTA button and a
+   small disclaimer line.
+   ------------------------------------------------------------------------- */
+.credits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+  margin: var(--space-5) 0 var(--space-6);
+}
+.credits-card {
+  border: 2.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-base) var(--ease-standard),
+              box-shadow var(--duration-base) var(--ease-standard),
+              transform var(--duration-base) var(--ease-standard);
+}
+.credits-card:hover {
+  border-color: var(--nv-green);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.credits-card__icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--status-success-bg);
+  border: 2.5px solid var(--nv-green);
+  color: var(--nv-green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.05rem;
+  margin-bottom: var(--space-4);
+}
+.credits-card__title { font-size: var(--fs-body); font-weight: var(--fw-semibold); color: var(--text-primary); margin-bottom: var(--space-2); }
+.credits-card__desc { font-size: var(--fs-body-sm); color: var(--text-secondary); margin: 0; line-height: var(--lh-relaxed); }
+
+.credits-cta {
+  display: inline-flex;
+  margin-bottom: var(--space-4);
+}
+.credits-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--fs-caption);
+  color: var(--text-tertiary);
+  max-width: 68ch;
+  margin-bottom: var(--space-7);
+}
+.credits-disclaimer .nv-icon { margin-top: 2px; }
+
+@media (max-width: 640px) {
+  .credits-grid { grid-template-columns: 1fr; }
+  .credits-cta { width: 100%; justify-content: center; }
+}
+
+
 /* FAQ search */
 .faq-search {
   position: relative;
@@ -693,17 +832,20 @@
 .faq-empty[hidden] { display: none; }
 
 /* -------------------------------------------------------------------------
-   FAQ accordion — bold, rounded, theme-aware cards.
-   Each card gets real depth (shadow + thick border on open) instead of a
-   flat default box, a numbered/iconed badge that carries brand color when
-   open, and a colored left accent bar so an open card is unmistakable at a
-   glance in both light and dark themes.
+   FAQ accordion — v2.5 redesign: bold-bordered, thick-stroke, large-radius
+   cards with a cleaner custom layout. Badge sits above the question text on
+   its own row inside a bordered header block, giving each card a distinct,
+   poster-like structure instead of a single inline row. Fully responsive.
    ------------------------------------------------------------------------- */
-.faq-list { display: flex; flex-direction: column; gap: var(--space-4); }
+.faq-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
 .faq-item {
   position: relative;
-  border: 1.5px solid var(--border-default);
-  border-radius: var(--radius-md);
+  border: 2.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--surface-raised);
   box-shadow: var(--shadow-sm);
@@ -715,48 +857,54 @@
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
-  width: 3px;
+  width: 5px;
   background: var(--nv-green);
   opacity: 0;
   transition: opacity var(--duration-base) var(--ease-standard);
 }
 .faq-item:hover {
-  border-color: var(--border-strong);
+  border-color: var(--nv-green);
   box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 .faq-item[data-open="true"] {
   border-color: var(--nv-green);
   box-shadow: var(--shadow-lg), 0 0 0 3px var(--status-success-bg);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 .faq-item[data-open="true"]::before { opacity: 1; }
 
 .faq-item__q {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 52px 1fr 32px;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-5) var(--space-6);
+  padding: var(--space-5);
   font-size: var(--fs-body);
   font-weight: var(--fw-semibold);
   color: var(--text-primary);
   text-align: left;
   background: transparent;
-  transition: background-color var(--duration-fast) var(--ease-standard);
+  border-bottom: 2.5px solid transparent;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-base) var(--ease-standard);
 }
 .faq-item__q:hover { background: var(--surface-hover); }
-.faq-item[data-open="true"] .faq-item__q { color: var(--nv-green); }
+.faq-item[data-open="true"] .faq-item__q {
+  color: var(--nv-green);
+  border-bottom-color: var(--border-default);
+}
 
 .faq-item__q-badge {
-  width: 40px; height: 40px;
+  width: 44px; height: 44px;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-md);
   background: var(--surface-sunken);
-  border: 2px solid var(--border-subtle);
+  border: 2.5px solid var(--border-strong);
   color: var(--text-tertiary);
   display: inline-flex; align-items: center; justify-content: center;
-  font-size: 1rem;
+  font-size: 1.05rem;
   transition: background-color var(--duration-base) var(--ease-standard),
               border-color var(--duration-base) var(--ease-standard),
               color var(--duration-base) var(--ease-standard);
@@ -772,30 +920,32 @@
 .faq-item__q-icon {
   width: 32px; height: 32px;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
   background: var(--surface-sunken);
+  border: 2px solid var(--border-default);
   color: var(--text-tertiary);
   display: inline-flex; align-items: center; justify-content: center;
   transition: background-color var(--duration-base) var(--ease-standard),
+              border-color var(--duration-base) var(--ease-standard),
               color var(--duration-base) var(--ease-standard),
               transform var(--duration-base) var(--ease-standard);
 }
 .faq-item[data-open="true"] .faq-item__q-icon {
   background: var(--status-success-bg);
+  border-color: var(--nv-green);
   color: var(--nv-green);
   transform: rotate(180deg);
 }
 
 .faq-item__a {
-  padding: 0 var(--space-6);
-  margin-left: 56px;
+  padding: 0 var(--space-5);
   max-height: 0;
   overflow: hidden;
   transition: max-height var(--duration-slow) var(--ease-standard),
               padding var(--duration-slow) var(--ease-standard);
 }
 .faq-item[data-open="true"] .faq-item__a {
-  padding: 0 var(--space-6) var(--space-6);
+  padding: var(--space-4) var(--space-5) var(--space-6) calc(52px + var(--space-4) + var(--space-5));
   max-height: 400px;
 }
 .faq-item__a p {
@@ -803,16 +953,22 @@
   color: var(--text-secondary);
   margin: 0;
   line-height: var(--lh-relaxed);
-  border-top: 1px solid var(--border-subtle);
-  padding-top: var(--space-4);
 }
-.faq-item__a p + p { margin-top: var(--space-3); border-top: none; padding-top: 0; }
+.faq-item__a p + p { margin-top: var(--space-3); }
 
-@media (max-width: 560px) {
-  .faq-item__q { padding: var(--space-4) var(--space-4); gap: var(--space-3); }
-  .faq-item__q-badge { width: 34px; height: 34px; font-size: 0.9rem; }
-  .faq-item__a { margin-left: 0; padding-inline: var(--space-4); }
-  .faq-item[data-open="true"] .faq-item__a { padding: 0 var(--space-4) var(--space-5); }
+@media (max-width: 640px) {
+  .faq-list { gap: var(--space-4); }
+  .faq-item { border-radius: var(--radius-md); }
+  .faq-item__q {
+    grid-template-columns: 40px 1fr 28px;
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+  .faq-item__q-badge { width: 38px; height: 38px; font-size: 0.9rem; border-radius: var(--radius-sm); }
+  .faq-item__q-icon { width: 28px; height: 28px; }
+  .faq-item[data-open="true"] .faq-item__a {
+    padding: var(--space-3) var(--space-4) var(--space-5) var(--space-4);
+  }
 }
 
 

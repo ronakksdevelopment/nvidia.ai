@@ -129,10 +129,22 @@ body.chat-body {
   overflow-x: hidden;
   padding: 0 var(--space-3) var(--space-3);
   scrollbar-width: thin;
-  scrollbar-color: var(--nv-graphite-600) transparent;
+  scrollbar-color: #FFFFFF var(--nv-graphite-900);
 }
-.sidebar__history::-webkit-scrollbar { width: 6px; }
-.sidebar__history::-webkit-scrollbar-thumb { background: var(--nv-graphite-600); border-radius: 999px; }
+.sidebar__history:hover, .sidebar__history:active { scrollbar-color: var(--nv-green) var(--nv-graphite-900); }
+.sidebar__history.sidebar__history::-webkit-scrollbar { width: 8px; }
+.sidebar__history.sidebar__history::-webkit-scrollbar-track { background: var(--nv-graphite-900); border-radius: 999px; }
+.sidebar__history.sidebar__history::-webkit-scrollbar-thumb {
+  background: #FFFFFF;
+  border-radius: 999px;
+  border: 2px solid var(--nv-graphite-900);
+  background-clip: padding-box;
+}
+.sidebar__history.sidebar__history::-webkit-scrollbar-thumb:hover,
+.sidebar__history.sidebar__history::-webkit-scrollbar-thumb:active {
+  background: var(--nv-green);
+  background-clip: padding-box;
+}
 
 .history-group__label {
   font-size: 11px;
@@ -237,6 +249,9 @@ body.chat-body {
   color: var(--text-tertiary);
 }
 .sidebar__usage-value { font-family: var(--font-family-mono); color: var(--text-secondary); }
+.sidebar__usage-row--meta { font-size: 10px; margin-top: 2px; }
+.sidebar__usage-percent { font-family: var(--font-family-mono); color: var(--text-tertiary); }
+.sidebar__usage-reset { font-family: var(--font-family-mono); color: var(--text-disabled); }
 .usage-bar {
   height: 5px;
   border-radius: var(--radius-full);
@@ -355,6 +370,10 @@ body.chat-body {
   border-bottom: 1px solid transparent;
 }
 .chat-topbar__menu-btn { display: none; }
+.chat-topbar__reopen-sidebar-btn { display: none; }
+.chat-shell[data-sidebar="collapsed"] .chat-topbar__reopen-sidebar-btn {
+  display: inline-flex;
+}
 
 .chat-topbar__actions {
   margin-left: auto;
@@ -363,10 +382,33 @@ body.chat-body {
   gap: var(--space-2);
 }
 .chat-topbar__usage-chip {
-  display: none;
+  display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-2);
   font-family: var(--font-family-mono);
+  white-space: nowrap;
+}
+.chat-topbar__usage-chip .nv-icon { flex-shrink: 0; }
+.chat-topbar__usage-reset {
+  color: var(--text-tertiary);
+  font-weight: var(--fw-regular);
+  opacity: 0.85;
+}
+.chat-topbar__usage-reset::before {
+  content: "\00b7";
+  margin-right: var(--space-2);
+  opacity: 0.7;
+}
+.chat-topbar__usage-chip[id="topbarSessionUsageChip"].is-near-limit {
+  color: var(--status-warning);
+  border-color: var(--status-warning);
+}
+
+@media (max-width: 900px) {
+  .chat-topbar__usage-reset { display: none; }
+}
+@media (max-width: 760px) {
+  .chat-topbar__usage-chip { display: none; }
 }
 
 /* Model badge / dropdown */
@@ -811,6 +853,36 @@ body.chat-body {
 }
 @keyframes caretBlink { 50% { opacity: 0; } }
 
+/* Live "Generating... X.Xs" timer, shown under an in-progress assistant
+   reply and swapped for the final elapsed time once streaming completes. */
+.msg__gen-timer {
+  font-size: 11px;
+  font-family: var(--font-family-mono);
+  color: var(--text-tertiary);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.msg__gen-timer::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--nv-green);
+  flex-shrink: 0;
+  animation: genTimerPulse 1s ease-in-out infinite;
+}
+.msg__gen-timer--done {
+  color: var(--text-disabled);
+}
+.msg__gen-timer--done::before {
+  animation: none;
+  background: var(--text-disabled);
+}
+@keyframes genTimerPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
 /* Typing / thinking indicator */
 .typing-indicator {
   display: inline-flex;
@@ -1090,6 +1162,7 @@ body.chat-body {
   }
   .chat-topbar__menu-btn { display: inline-flex; }
   .sidebar__collapse-btn { display: none; }
+  .chat-topbar__reopen-sidebar-btn { display: none !important; }
 }
 
 /* Mobile / Android: bottom-docked composer, full width, no centering */
@@ -1243,6 +1316,6 @@ body.chat-body {
    ------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .msg, .chat-empty, .attachment-chip, .dropzone-overlay__card { animation: none !important; }
-  .streaming-caret, .typing-indicator span, .composer__stop-btn { animation: none !important; }
+  .streaming-caret, .typing-indicator span, .composer__stop-btn, .msg__gen-timer::before { animation: none !important; }
   .incognito-strip, .incognito-badge, .incognito-toggle.is-active { animation: none !important; }
 }

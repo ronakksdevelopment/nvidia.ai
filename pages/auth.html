@@ -9,7 +9,7 @@
 <link rel="manifest" href="../manifest.json" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="../css/design-system.css" />
 <link rel="stylesheet" href="../css/styles.css" />
@@ -27,7 +27,7 @@
       "Open weights and transparent training data. Nemotron is built so you always
       know what's under the hood."
     </p>
-    <span class="text-caption">NVIDIA Nemotron v2.0</span>
+    <span class="text-caption">NVIDIA Nemotron v2.5</span>
   </aside>
 
   <main id="authMain" class="auth-page__main">
@@ -43,15 +43,32 @@
           <label class="field__label" for="authName">Name</label>
           <div class="input-wrap">
             <i class="fa-solid fa-user nv-icon input-icon" aria-hidden="true"></i>
-            <input class="input" id="authName" type="text" placeholder="Your name" autocomplete="name" required />
+            <input class="input input--auth-field" id="authName" type="text" placeholder="Your name" autocomplete="name" required />
           </div>
         </div>
         <div class="field">
           <label class="field__label" for="authEmail">Email</label>
           <div class="input-wrap">
             <i class="fa-solid fa-envelope nv-icon input-icon" aria-hidden="true"></i>
-            <input class="input" id="authEmail" type="email" placeholder="you@company.com" autocomplete="email" required />
+            <input class="input input--auth-field" id="authEmail" type="email" placeholder="you@company.com" autocomplete="email" required />
           </div>
+          <p class="field__error" id="authEmailError" hidden>Enter valid email id</p>
+        </div>
+        <div class="nv-captcha" data-nv-captcha>
+          <div class="nv-captcha__row" data-nv-captcha-checkrow>
+            <label class="nv-captcha__check">
+              <input type="checkbox" data-nv-captcha-checkbox />
+              <span class="nv-captcha__box"><span class="nv-captcha__spinner" aria-hidden="true"></span><i class="fa-solid fa-check nv-captcha__tick" aria-hidden="true"></i></span>
+              <span class="nv-captcha__label">I'm not a robot</span>
+            </label>
+            <img class="nv-captcha__badge" src="../assets/logo/nemotron-32.png" alt="" width="28" height="28" />
+          </div>
+          <div class="nv-captcha__challenge" data-nv-captcha-challenge hidden>
+            <p class="nv-captcha__question" data-nv-captcha-question></p>
+            <input class="input" type="text" inputmode="numeric" placeholder="Your answer" data-nv-captcha-answer />
+            <button class="btn btn--secondary btn--sm" type="button" data-nv-captcha-verify>Verify</button>
+          </div>
+          <p class="nv-captcha__status" data-nv-captcha-status hidden></p>
         </div>
         <button class="btn btn--primary btn--full btn--lg" type="submit">Sign in</button>
       </form>
@@ -82,6 +99,7 @@
 <script src="../js/router.js"></script>
 <script src="../js/tooltip.js"></script>
 <script src="../js/app.js"></script>
+<script src="../js/captcha.js"></script>
 <script>
   document.getElementById('authForm').addEventListener('submit', function (e) {
     e.preventDefault();

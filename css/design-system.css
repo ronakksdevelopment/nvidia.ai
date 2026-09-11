@@ -42,6 +42,11 @@
   --text-on-brand:       var(--nv-black);
   --text-link:           var(--nv-green);
 
+  /* ---------- Icons ---------- */
+  /* Normal icons are white by default in the (default) dark theme and turn
+     NVIDIA green on hover/focus/click — see .nv-icon rules in styles.css. */
+  --icon-default:        var(--nv-white);
+
   /* ---------- Border ---------- */
   --border-subtle:       rgba(255, 255, 255, 0.08);
   --border-default:      rgba(255, 255, 255, 0.14);
@@ -60,7 +65,7 @@
   --status-info-bg:      rgba(77, 163, 229, 0.12);
 
   /* ---------- Typography ---------- */
-  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-base: 'Barlow', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
 
   --fs-display:  clamp(2.75rem, 2.1rem + 2.6vw, 4.5rem);
@@ -181,6 +186,9 @@
   --border-subtle:       rgba(10, 10, 10, 0.08);
   --border-default:      rgba(10, 10, 10, 0.13);
   --border-strong:       rgba(10, 10, 10, 0.22);
+
+  /* Icons stay legible on a light surface instead of vanishing as white-on-white. */
+  --icon-default:        var(--nv-graphite-900);
 
   --shadow-sm:  0 1px 2px rgba(20, 22, 26, 0.06);
   --shadow-md:  0 4px 16px rgba(20, 22, 26, 0.08), 0 1px 2px rgba(20, 22, 26, 0.06);

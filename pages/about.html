@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>About - Nemotron</title>
-<meta name="description" content="About the NVIDIA Nemotron v2.0 project." />
+<meta name="description" content="About the NVIDIA Nemotron v2.5 project." />
 <meta name="theme-color" content="#0A0A0A" />
 
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/logo/nemotron-32.png" />
@@ -15,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="../css/design-system.css" />
@@ -55,7 +55,7 @@
       <span class="settings-nav-group__label">Settings</span>
       <a class="settings-nav-link" href="settings.html">
         <i class="fa-solid fa-gear nv-icon" aria-hidden="true"></i>
-        General &amp; OpenRouter
+        General
       </a>
       <a class="settings-nav-link" href="profile.html">
         <i class="fa-solid fa-user nv-icon" aria-hidden="true"></i>
@@ -71,15 +71,15 @@
       </a>
       <a class="settings-nav-link" href="help.html">
         <i class="fa-solid fa-circle-question nv-icon" aria-hidden="true"></i>
-        Help &amp; FAQ
+        FAQ
       </a>
       <a class="settings-nav-link" href="privacy.html">
         <i class="fa-solid fa-shield-halved nv-icon" aria-hidden="true"></i>
-        Privacy Policy
+        Privacy
       </a>
       <a class="settings-nav-link" href="terms.html">
         <i class="fa-regular fa-file nv-icon" aria-hidden="true"></i>
-        Terms of Service
+        Terms
       </a>
     </nav>
 
@@ -107,7 +107,7 @@
         <h2>What this is</h2>
         <p>
           NVIDIA Nemotron is a chat interface built to explore NVIDIA's open Nemotron model family.
-          Bring your own free OpenRouter API key and talk directly to any of the eight free NVIDIA
+          Bring your own free OpenRouter API key and talk directly to NVIDIA's free
           Nemotron models available on OpenRouter. There is no backend server and no account system
           beyond a local, on-device identity: your name, email, settings, and chat history live only
           in this browser.
@@ -122,24 +122,89 @@
 
         <h2>Project status</h2>
         <p>
-          Nemotron v2.0 covers real-time streaming chat with all eight free models, API key management,
+          Nemotron v2.5 covers real-time streaming chat with NVIDIA's free Nemotron models, API key management,
           model selection, dark/light/system theming, a live connection test, and a local account and
           guest-mode system. Conversation history is saved on-device for signed-in sessions and never
           saved for guest sessions.
         </p>
 
-        <h2>Model family</h2>
-        <p>Eight free NVIDIA Nemotron models are wired into the model picker in Settings and in chat:</p>
-        <ul>
-          <li><strong>nvidia/nemotron-3-ultra-550b-a55b:free</strong>: frontier reasoning and orchestration</li>
-          <li><strong>nvidia/nemotron-3.5-lightning:free</strong>: high-throughput agentic workloads</li>
-          <li><strong>nvidia/nemotron-3-super-120b-a12b:free</strong>: balanced multi-agent reasoning</li>
-          <li><strong>nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free</strong>: compact omni-modal reasoning</li>
-          <li><strong>nvidia/llama-nemotron-rerank-vl-1b-v2:free</strong>: multimodal reranking</li>
-          <li><strong>nvidia/nemotron-3.5-content-safety:free</strong>: content moderation and guardrails</li>
-          <li><strong>nvidia/llama-nemotron-embed-vl-1b-v2:free</strong>: multimodal embeddings</li>
-          <li><strong>nvidia/nemotron-3-embed-1b:free</strong>: text embeddings</li>
-        </ul>
+        <h2>Models</h2>
+        <p>Nemotron organizes the free NVIDIA models available through OpenRouter into three categories. Pick a text model for chat, an embedding model for retrieval, or the rerank model for reordering search results.</p>
+
+        <div class="model-category-grid">
+
+          <div class="model-category-card">
+            <div class="model-category-card__header">
+              <span class="model-category-card__icon"><i class="fa-solid fa-comments nv-icon" aria-hidden="true"></i></span>
+              <div>
+                <div class="model-category-card__title">Text Models</div>
+                <div class="model-category-card__count">5 models</div>
+              </div>
+            </div>
+            <ul class="model-category-card__list">
+              <li>NVIDIA: Llama 3.1 Nemotron 70B Instruct <span class="badge badge--brand">free</span></li>
+              <li>NVIDIA: Llama 3.3 Nemotron Super 49B V1 <span class="badge badge--brand">free</span></li>
+              <li>NVIDIA: Llama 3.3 Nemotron Super 49B V1: Reasoning <span class="badge badge--brand">free</span></li>
+              <li>NVIDIA: Nemotron Nano 9B V2 <span class="badge badge--brand">free</span></li>
+              <li>NVIDIA: Nemotron 3 Nano Omni 4B V1 <span class="badge badge--brand">free</span></li>
+            </ul>
+          </div>
+
+          <div class="model-category-card">
+            <div class="model-category-card__header">
+              <span class="model-category-card__icon"><i class="fa-solid fa-vector-square nv-icon" aria-hidden="true"></i></span>
+              <div>
+                <div class="model-category-card__title">Embedding Models</div>
+                <div class="model-category-card__count">2 models</div>
+              </div>
+            </div>
+            <ul class="model-category-card__list">
+              <li>NVIDIA: NV-Embed-v2 <span class="badge badge--brand">free</span></li>
+              <li>NVIDIA: NV-EmbedQA-E5-v5 <span class="badge badge--brand">free</span></li>
+            </ul>
+          </div>
+
+          <div class="model-category-card">
+            <div class="model-category-card__header">
+              <span class="model-category-card__icon"><i class="fa-solid fa-arrow-down-wide-short nv-icon" aria-hidden="true"></i></span>
+              <div>
+                <div class="model-category-card__title">Rerank Models</div>
+                <div class="model-category-card__count">1 model</div>
+              </div>
+            </div>
+            <ul class="model-category-card__list">
+              <li>NVIDIA: Llama Nemotron Rerank VL 1B V2 <span class="badge badge--brand">free</span></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <h2>Credits &amp; Attribution</h2>
+        <div class="credits-grid">
+
+          <div class="credits-card">
+            <span class="credits-card__icon"><i class="fa-solid fa-microchip nv-icon" aria-hidden="true"></i></span>
+            <div class="credits-card__title">NVIDIA Nemotron models</div>
+            <p class="credits-card__desc">This project uses NVIDIA Nemotron models, accessed through OpenRouter, to generate every AI response in chat.</p>
+          </div>
+
+          <div class="credits-card">
+            <span class="credits-card__icon"><i class="fa-solid fa-route nv-icon" aria-hidden="true"></i></span>
+            <div class="credits-card__title">OpenRouter</div>
+            <p class="credits-card__desc">Model access, routing, and free-tier availability are provided by OpenRouter. Credit to OpenRouter for making these models reachable with a single API key.</p>
+          </div>
+
+        </div>
+
+        <a class="btn btn--primary btn--lg credits-cta" href="https://openrouter.ai/models?q=nvidia&amp;variant=free" target="_blank" rel="noopener">
+          <i class="fa-solid fa-arrow-up-right-from-square nv-icon" aria-hidden="true"></i>
+          Browse NVIDIA Models on OpenRouter
+        </a>
+
+        <p class="credits-disclaimer">
+          <i class="fa-solid fa-circle-info nv-icon nv-icon--sm" aria-hidden="true"></i>
+          Model availability, rate limits, and performance depend on OpenRouter and on the specific NVIDIA model selected, and may change at any time.
+        </p>
 
         <h2>Built with</h2>
         <p>Vanilla HTML, CSS, and JavaScript. No frameworks, no build step, no dependencies beyond Google Fonts.</p>
