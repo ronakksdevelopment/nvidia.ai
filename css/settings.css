@@ -962,6 +962,7 @@
   color: var(--text-secondary);
   margin: 0;
   line-height: var(--lh-relaxed);
+  max-width: 100%;
 }
 .faq-item__a p + p { margin-top: var(--space-3); }
 
