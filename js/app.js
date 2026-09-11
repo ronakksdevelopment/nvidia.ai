@@ -94,6 +94,38 @@
   updateOnlineStatus(false);
 
   /* -----------------------------------------------------------------------
+     Scroll lock (shared by the mobile nav drawer and modals)
+     Plain `body.style.overflow = "hidden"` does not reliably stop iOS
+     Safari from rubber-band-panning the page horizontally behind an open
+     overlay - that gesture scrolls the visual viewport, not an
+     overflow-able box. Pinning <html> with position:fixed (see the
+     .nv-scroll-locked rule in styles.css) actually removes the page from
+     the scroll root while an overlay is open. Scroll position is saved
+     and restored so closing the drawer/modal doesn't jump the page back
+     to the top. A simple counter lets the drawer and a modal both be
+     "open" (e.g. drawer open, then a link inside it opens a modal)
+     without the first close call re-enabling scroll too early.
+     ----------------------------------------------------------------------- */
+  let scrollLockCount = 0;
+  let savedScrollY = 0;
+  function lockPageScroll() {
+    if (scrollLockCount === 0) {
+      savedScrollY = window.scrollY || window.pageYOffset || 0;
+      document.documentElement.classList.add("nv-scroll-locked");
+      document.body.style.top = -savedScrollY + "px";
+    }
+    scrollLockCount++;
+  }
+  function unlockPageScroll() {
+    scrollLockCount = Math.max(0, scrollLockCount - 1);
+    if (scrollLockCount === 0) {
+      document.documentElement.classList.remove("nv-scroll-locked");
+      document.body.style.top = "";
+      window.scrollTo(0, savedScrollY);
+    }
+  }
+
+  /* -----------------------------------------------------------------------
      Mobile nav drawer
      ----------------------------------------------------------------------- */
   const menuToggle = document.getElementById("menuToggle");
@@ -103,15 +135,16 @@
     if (!navDrawer) return;
     navDrawer.classList.add("is-open");
     menuToggle && menuToggle.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
+    lockPageScroll();
     const firstLink = navDrawer.querySelector("a");
     firstLink && firstLink.focus();
   }
   function closeDrawer() {
     if (!navDrawer) return;
+    if (!navDrawer.classList.contains("is-open")) return;
     navDrawer.classList.remove("is-open");
     menuToggle && menuToggle.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+    unlockPageScroll();
     menuToggle && menuToggle.focus();
   }
   menuToggle && menuToggle.addEventListener("click", openDrawer);
@@ -143,7 +176,7 @@
     });
     lastFocusedEl = document.activeElement;
     overlay.classList.add("is-open");
-    document.body.style.overflow = "hidden";
+    lockPageScroll();
     const focusable = overlay.querySelector(
       "input, button, [href], select, textarea"
     );
@@ -152,8 +185,9 @@
 
   function closeModal(overlay) {
     if (!overlay) return;
+    if (!overlay.classList.contains("is-open")) return;
     overlay.classList.remove("is-open");
-    document.body.style.overflow = "";
+    unlockPageScroll();
     lastFocusedEl && lastFocusedEl.focus();
   }
 
@@ -163,6 +197,13 @@
       const currentOverlay = btn.closest(".modal-overlay");
       if (currentOverlay && btn.hasAttribute("data-close-modal")) {
         closeModal(currentOverlay);
+      }
+      // The mobile Sign in / Get started buttons live inside the nav
+      // drawer. Opening a modal from there must close the drawer first,
+      // or two full-screen fixed overlays stack on top of each other and
+      // the drawer visually blocks/darkens the modal behind it.
+      if (navDrawer && navDrawer.classList.contains("is-open")) {
+        closeDrawer();
       }
       openModal(btn.getAttribute("data-open-modal"));
     });
@@ -180,6 +221,15 @@
       if (e.target === overlay) closeModal(overlay);
     });
   });
+
+  // Exposed so pages with modals opened programmatically from their own
+  // script (e.g. settings.js's reset-confirm modal) go through the same
+  // scroll-lock counter as every other modal, instead of re-implementing
+  // a separate, easily-mismatched open/close pair.
+  window.NemotronModal = {
+    open: openModal,
+    close: (id) => closeModal(typeof id === "string" ? document.getElementById(id) : id),
+  };
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
@@ -313,6 +363,15 @@
     info: "Note",
   };
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
   function showToast(type, title, message) {
     if (!toastRegion) return;
     const icon = TOAST_ICONS[type] || TOAST_ICONS.info;
@@ -324,8 +383,8 @@
     toast.innerHTML = `
       <i class="fa-solid ${icon} toast__icon nv-icon" aria-hidden="true"></i>
       <div class="toast__content">
-        <div class="toast__title">${toastTitle}</div>
-        ${message ? `<div class="toast__message">${message}</div>` : ""}
+        <div class="toast__title">${escapeHtml(toastTitle)}</div>
+        ${message ? `<div class="toast__message">${escapeHtml(message)}</div>` : ""}
       </div>
       <button class="toast__close" type="button" aria-label="Dismiss notification">
         <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>

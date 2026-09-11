@@ -40,6 +40,11 @@ html:hover, html:active { scrollbar-color: var(--nv-green) transparent; }
   }
 }
 
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   font-family: var(--font-family-base);
   background: var(--surface-canvas);
@@ -48,7 +53,26 @@ body {
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   min-height: 100dvh;
+  width: 100%;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Applied to <html> (see js/app.js scroll-lock) while the mobile nav
+   drawer or any modal is open. Using position:fixed on the scroll root
+   instead of relying on overflow:hidden alone is what actually stops
+   iOS Safari's rubber-band horizontal swipe/pan from moving the page
+   behind an open drawer - overflow-x:hidden on body alone does not
+   prevent that gesture on iOS. The saved scroll offset is restored by
+   the same script when the lock is released. */
+html.nv-scroll-locked,
+html.nv-scroll-locked body {
+  overflow: hidden;
+}
+html.nv-scroll-locked {
+  position: fixed;
+  inset: 0;
+  width: 100%;
 }
 
 img, picture, svg, video { display: block; max-width: 100%; }
@@ -297,6 +321,20 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
   flex-shrink: 0;
 }
 
+/* Paint signed-in/signed-out nav state instantly from the data-session
+   attribute set by the inline head script, before js/session.js (loaded
+   at the end of body) has a chance to run. Prevents a flash of "Sign in /
+   Get started" for returning signed-in users, and a flash of the account
+   menu for signed-out visitors. The [hidden] attribute rules further down
+   still apply once js/session.js repaints after DOMContentLoaded. */
+:root[data-session="authed"] [data-signed-out-only],
+:root[data-session="guest"] [data-signed-out-only] {
+  display: none !important;
+}
+:root[data-session="signed-out"] [data-signed-in-only] {
+  display: none !important;
+}
+
 .navbar__menu-btn {
   display: none;
   background: transparent;
@@ -312,12 +350,24 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
   .navbar__menu-btn { display: inline-flex; }
 }
 
-/* Mobile drawer */
+/* -------------------------------------------------------------------------
+   Mobile drawer
+   Docked to the LEFT edge and sized from the viewport (min(320px, 84vw)),
+   so it always renders as a solid, fully-opaque panel filling from the
+   left edge inward, scaled to the device - never a sliver, never
+   overflowing off-screen. It is fixed positioning, not part of document
+   flow, so it cannot be scrolled/swiped away horizontally: html.nv-
+   scroll-locked (set by js/app.js while the drawer is open) pins the
+   whole page in place so only the drawer's own internal content, if it
+   ever overflows vertically, can scroll - the page behind it cannot pan
+   left/right no matter how the user swipes.
+   ------------------------------------------------------------------------- */
 .nav-drawer {
   position: fixed;
   inset: 0;
   z-index: var(--z-overlay);
   display: none;
+  overflow: hidden; /* belt-and-braces: nothing in here can cause page-level horizontal scroll */
 }
 .nav-drawer.is-open { display: block; }
 .nav-drawer__scrim {
@@ -325,19 +375,28 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
   inset: 0;
   background: rgba(0,0,0,0.6);
   animation: fadeIn var(--duration-base) var(--ease-standard);
+  touch-action: none; /* tapping/swiping the scrim never scrolls the page behind it */
 }
 .nav-drawer__panel {
   position: absolute;
-  top: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: auto;
   height: 100%;
+  height: 100dvh;
   width: min(320px, 84vw);
+  max-width: 100vw;
   background: var(--surface-raised);
-  border-left: 1px solid var(--border-subtle);
+  border-left: none;
+  border-right: 1px solid var(--border-subtle);
   padding: var(--space-6);
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  animation: slideInRight var(--duration-slow) var(--ease-out);
+  overflow-y: auto;
+  overflow-x: hidden;
+  animation: slideInLeft var(--duration-slow) var(--ease-out);
+  box-shadow: var(--shadow-xl);
 }
 .nav-drawer__header {
   display: flex;
@@ -359,7 +418,7 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
 .nav-drawer__links a:hover { background: var(--surface-hover); color: var(--text-primary); }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
 /* =========================================================================
    6. BUTTONS
@@ -1248,7 +1307,15 @@ textarea.input { resize: vertical; min-height: 96px; }
   flex-wrap: wrap;
   min-height: 88px;
 }
-.model-row__meta { display: flex; align-items: center; gap: var(--space-4); align-self: center; }
+/* Fixed-basis meta column so its width never depends on how long an
+   individual model's name/description happens to be - without this,
+   .model-row__specs (a sibling flex item, not a grid column) starts at
+   a different x-position on every row, which is exactly the misaligned
+   "1M / Context", "128K / Context" etc. columns from the model list
+   screenshot: each row's stats landed under a different point instead
+   of one consistent vertical line. flex-basis + flex-shrink:1 lets long
+   descriptions still wrap instead of overflowing on narrow screens. */
+.model-row__meta { display: flex; align-items: center; gap: var(--space-4); align-self: center; flex: 1 1 340px; min-width: 0; }
 .model-row__glyph {
   width: 40px; height: 40px;
   border-radius: var(--radius-sm);
@@ -1263,9 +1330,13 @@ textarea.input { resize: vertical; min-height: 96px; }
 .model-row__glyph .nv-icon { font-size: 1.25rem; }
 .model-row__name { font-weight: var(--fw-semibold); font-size: var(--fs-body); }
 .model-row__desc { font-size: var(--fs-caption); color: var(--text-tertiary); }
-.model-row__specs { display: flex; flex-direction: row; align-items: center; gap: var(--space-6); align-self: center; }
-.model-row__spec { text-align: right; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; min-width: 80px; }
-.model-row__spec-val { font-family: var(--font-family-mono); font-size: var(--fs-body-sm); color: var(--text-primary); font-weight: var(--fw-medium); line-height: 1.3; }
+/* Fixed total width (two 96px columns + the gap between them) so the
+   specs block itself is always the same size and the badge after it
+   lines up too, regardless of which row it's in. flex-shrink:0 stops it
+   from being squeezed by a long description before wrapping kicks in. */
+.model-row__specs { display: flex; flex-direction: row; align-items: center; gap: var(--space-6); align-self: center; flex: 0 0 auto; }
+.model-row__spec { text-align: right; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; width: 104px; flex-shrink: 0; }
+.model-row__spec-val { font-family: var(--font-family-mono); font-size: var(--fs-body-sm); color: var(--text-primary); font-weight: var(--fw-medium); line-height: 1.3; white-space: nowrap; }
 .model-row__spec-label { font-size: 11px; color: var(--text-tertiary); line-height: 1.3; }
 
 /* -------------------------------------------------------------------------

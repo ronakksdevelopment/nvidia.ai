@@ -10,22 +10,35 @@
   var scrim = document.getElementById("settingsNavScrim");
 
   if (toggle && nav && scrim) {
-    toggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("is-open");
-      scrim.classList.toggle("is-open", open);
-      toggle.setAttribute("aria-expanded", String(open));
-    });
-    scrim.addEventListener("click", function () {
+    // Plain overflow:hidden on body does not reliably stop iOS Safari's
+    // rubber-band horizontal pan/swipe of the page behind an open drawer.
+    // Pinning <html> with position:fixed (.nv-scroll-locked in
+    // styles.css) removes the page from the scroll root while this
+    // drawer is open, and the saved offset is restored on close.
+    var savedScrollY = 0;
+    function openNav() {
+      savedScrollY = window.scrollY || window.pageYOffset || 0;
+      document.documentElement.classList.add("nv-scroll-locked");
+      document.body.style.top = -savedScrollY + "px";
+      nav.classList.add("is-open");
+      scrim.classList.add("is-open");
+      toggle.setAttribute("aria-expanded", "true");
+    }
+    function closeNav() {
+      if (!nav.classList.contains("is-open")) return;
+      document.documentElement.classList.remove("nv-scroll-locked");
+      document.body.style.top = "";
+      window.scrollTo(0, savedScrollY);
       nav.classList.remove("is-open");
       scrim.classList.remove("is-open");
       toggle.setAttribute("aria-expanded", "false");
+    }
+    toggle.addEventListener("click", function () {
+      nav.classList.contains("is-open") ? closeNav() : openNav();
     });
+    scrim.addEventListener("click", closeNav);
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") {
-        nav.classList.remove("is-open");
-        scrim.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
+      if (e.key === "Escape") closeNav();
     });
   }
 

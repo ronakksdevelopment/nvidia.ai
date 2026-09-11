@@ -20,6 +20,24 @@
 
 <link rel="stylesheet" href="css/design-system.css" />
 <link rel="stylesheet" href="css/styles.css" />
+<script>
+  /* Paint the correct signed-in/signed-out nav state before first render,
+     so returning signed-in users never see a flash of "Sign in / Get
+     started" before js/session.js finishes loading at the end of body.
+     Mirrors the read-only logic in js/session.js (storage key + guest
+     sessionStorage flag) without depending on that script's load order. */
+  (function () {
+    "use strict";
+    try {
+      var guest = window.sessionStorage.getItem("nemotron.guest") === "1";
+      var raw = guest ? null : window.localStorage.getItem("nemotron.session");
+      var signedIn = guest || !!raw;
+      document.documentElement.setAttribute("data-session", signedIn ? (guest ? "guest" : "authed") : "signed-out");
+    } catch (e) {
+      document.documentElement.setAttribute("data-session", "signed-out");
+    }
+  })();
+</script>
 </head>
 <body>
 

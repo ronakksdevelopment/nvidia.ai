@@ -167,7 +167,7 @@
   margin-bottom: var(--space-3);
 }
 .settings-page-header__title { font-size: var(--fs-h2); margin-bottom: var(--space-2); }
-.settings-page-header__desc { font-size: var(--fs-body); color: var(--text-secondary); max-width: 60ch; }
+.settings-page-header__desc { font-size: var(--fs-body); color: var(--text-secondary); max-width: 100%; }
 
 /* -------------------------------------------------------------------------
    3. Settings sections
@@ -193,7 +193,7 @@
   margin-bottom: var(--space-1);
 }
 .settings-section__title .nv-icon { font-size: 1.125rem; color: var(--nv-green); }
-.settings-section__desc { font-size: var(--fs-body-sm); color: var(--text-secondary); max-width: 58ch; }
+.settings-section__desc { font-size: var(--fs-body-sm); color: var(--text-secondary); max-width: 100%; }
 
 .settings-row {
   display: flex;

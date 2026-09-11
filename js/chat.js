@@ -641,11 +641,41 @@
      ======================================================================= */
   const isMobile = () => window.matchMedia("(max-width: 1024px)").matches;
 
+  /* Robust scroll lock: plain overflow:hidden on body does not reliably
+     stop iOS Safari's rubber-band horizontal pan/swipe of the page behind
+     an open drawer. Pinning <html> with position:fixed (the
+     .nv-scroll-locked rule in styles.css) actually removes the page from
+     the scroll root while the sidebar drawer (or a modal) is open, and
+     the saved scroll offset is restored once every lock is released so
+     the page doesn't jump. A counter lets the mobile sidebar drawer and a
+     modal both be open at once (e.g. deleting a chat from the mobile
+     drawer) without the first close re-enabling scroll too early. */
+  let scrollLockCount = 0;
+  let savedScrollY = 0;
+  function lockPageScroll() {
+    if (scrollLockCount === 0) {
+      savedScrollY = window.scrollY || window.pageYOffset || 0;
+      document.documentElement.classList.add("nv-scroll-locked");
+      document.body.style.top = -savedScrollY + "px";
+    }
+    scrollLockCount++;
+  }
+  function unlockPageScroll() {
+    scrollLockCount = Math.max(0, scrollLockCount - 1);
+    if (scrollLockCount === 0) {
+      document.documentElement.classList.remove("nv-scroll-locked");
+      document.body.style.top = "";
+      window.scrollTo(0, savedScrollY);
+    }
+  }
+
   function setSidebarState(open) {
     if (isMobile()) {
+      const wasOpen = isSidebarOpen();
       chatShell.setAttribute("data-sidebar", open ? "expanded" : "collapsed");
       mobileSidebarBtn && mobileSidebarBtn.setAttribute("aria-expanded", String(open));
-      document.body.style.overflow = open ? "hidden" : "";
+      if (open && !wasOpen) lockPageScroll();
+      else if (!open && wasOpen) unlockPageScroll();
     } else {
       chatShell.setAttribute("data-sidebar", open ? "expanded" : "collapsed");
       sidebarCollapseBtn && sidebarCollapseBtn.setAttribute("aria-expanded", String(open));
@@ -1897,15 +1927,15 @@
     });
     lastFocusedEl = document.activeElement;
     overlay.classList.add("is-open");
-    document.body.style.overflow = "hidden";
+    lockPageScroll();
     const focusable = overlay.querySelector("input, button, [href], select, textarea");
     focusable && focusable.focus();
   }
   function closeModalById(id) {
     const overlay = document.getElementById(id);
-    if (!overlay) return;
+    if (!overlay || !overlay.classList.contains("is-open")) return;
     overlay.classList.remove("is-open");
-    document.body.style.overflow = "";
+    unlockPageScroll();
     lastFocusedEl && lastFocusedEl.focus();
   }
   $$("[data-close-modal]").forEach((btn) => {

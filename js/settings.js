@@ -574,12 +574,17 @@
      Reset (with confirm modal; open/close handled by app.js)
      ----------------------------------------------------------------------- */
   resetSettingsBtn.addEventListener("click", () => {
-    const overlay = document.getElementById("resetConfirmModal");
-    if (overlay) {
-      overlay.classList.add("is-open");
-      document.body.style.overflow = "hidden";
-      const focusable = overlay.querySelector("button");
-      focusable && focusable.focus();
+    if (window.NemotronModal) {
+      window.NemotronModal.open("resetConfirmModal");
+    } else {
+      // app.js failed to load for some reason: fall back to the minimal
+      // direct toggle rather than leaving the button completely inert.
+      const overlay = document.getElementById("resetConfirmModal");
+      if (overlay) {
+        overlay.classList.add("is-open");
+        const focusable = overlay.querySelector("button");
+        focusable && focusable.focus();
+      }
     }
   });
 
@@ -591,10 +596,11 @@
     testOutput.textContent = "";
     testOutput.className = "test-panel__output";
 
-    const overlay = document.getElementById("resetConfirmModal");
-    if (overlay) {
-      overlay.classList.remove("is-open");
-      document.body.style.overflow = "";
+    if (window.NemotronModal) {
+      window.NemotronModal.close("resetConfirmModal");
+    } else {
+      const overlay = document.getElementById("resetConfirmModal");
+      if (overlay) overlay.classList.remove("is-open");
     }
     toast("success", "Settings reset", "All saved settings were cleared from this browser.");
   });
@@ -691,12 +697,25 @@
      Mobile settings nav drawer
      ----------------------------------------------------------------------- */
   if (settingsNavToggle && settingsNav && settingsNavScrim) {
+    // Plain overflow:hidden on body does not reliably stop iOS Safari's
+    // rubber-band horizontal pan/swipe of the page behind an open drawer.
+    // Pinning <html> with position:fixed (.nv-scroll-locked in
+    // styles.css) removes the page from the scroll root while this
+    // drawer is open, and the saved offset is restored on close.
+    let savedScrollY = 0;
     function openNav() {
+      savedScrollY = window.scrollY || window.pageYOffset || 0;
+      document.documentElement.classList.add("nv-scroll-locked");
+      document.body.style.top = -savedScrollY + "px";
       settingsNav.classList.add("is-open");
       settingsNavScrim.classList.add("is-open");
       settingsNavToggle.setAttribute("aria-expanded", "true");
     }
     function closeNav() {
+      if (!settingsNav.classList.contains("is-open")) return;
+      document.documentElement.classList.remove("nv-scroll-locked");
+      document.body.style.top = "";
+      window.scrollTo(0, savedScrollY);
       settingsNav.classList.remove("is-open");
       settingsNavScrim.classList.remove("is-open");
       settingsNavToggle.setAttribute("aria-expanded", "false");
