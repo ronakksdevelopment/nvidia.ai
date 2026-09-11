@@ -657,7 +657,7 @@
   margin-bottom: var(--space-3);
 }
 .doc-content h2:first-child { margin-top: 0; }
-.doc-content p { font-size: var(--fs-body-sm); color: var(--text-secondary); margin-bottom: var(--space-4); }
+.doc-content p { font-size: var(--fs-body-sm); color: var(--text-secondary); margin-bottom: var(--space-4); max-width: 100%; }
 .doc-content ul { list-style: disc; padding-left: var(--space-6); margin-bottom: var(--space-4); }
 .doc-content li { font-size: var(--fs-body-sm); color: var(--text-secondary); margin-bottom: var(--space-2); }
 .doc-content strong { color: var(--text-primary); }
