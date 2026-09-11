@@ -221,6 +221,7 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
 }
 
 .stack { display: flex; flex-direction: column; }
+.stack[hidden] { display: none; }
 .cluster { display: flex; flex-wrap: wrap; align-items: center; }
 
 .section {
@@ -448,6 +449,13 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
   pointer-events: none;
 }
 .btn .nv-icon { font-size: 1.125rem; flex-shrink: 0; }
+/* .btn's own display:inline-flex above otherwise beats the plain
+   [hidden] attribute (author rules always win over the UA stylesheet,
+   regardless of specificity), which is exactly why the navbar's Sign
+   in / Get started buttons kept showing for signed-in users even
+   though js/session-driven code was correctly setting hidden=true on
+   them - the JS was working, this missing override was not. */
+.btn[hidden] { display: none; }
 
 .btn--primary {
   background: var(--nv-green);
@@ -1251,6 +1259,7 @@ textarea.input { resize: vertical; min-height: 96px; }
 .hero__title { max-width: 16ch; }
 .hero__subtitle { font-size: var(--fs-body-lg); max-width: 56ch; margin-inline: auto; }
 .hero__actions { display: flex; gap: var(--space-4); flex-wrap: wrap; justify-content: center; margin-top: var(--space-2); }
+.hero__actions[hidden] { display: none; }
 .hero__note { font-size: var(--fs-caption); color: var(--text-tertiary); }
 
 .hero__logo-mark {
