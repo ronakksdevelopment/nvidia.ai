@@ -11,6 +11,10 @@
      guest-mode contract: nothing saves, incognito mode included.
    - Provide a single guest-mode entry point used by the "Continue as guest"
      actions on the sign-in/sign-up modals and the auth page.
+   - Provide an in-memory-only Incognito Mode flag, independent of guest vs.
+     signed-in identity, that chat.js reads to decide whether the active
+     conversation is persisted. Nothing about incognito state ever touches
+     localStorage or sessionStorage, so it cannot survive a refresh.
    - Persist only a non-sensitive display identity (name/email/avatar
      initials) for signed-in sessions, entirely on-device, and never
      persist anything at all for guest sessions.
@@ -109,6 +113,38 @@
       } catch (e) { /* fall through */ }
     }
     return memoryGuestFlag;
+  }
+
+  /* -----------------------------------------------------------------------
+     Incognito mode: deliberately held in a plain JS variable only, never
+     sessionStorage or localStorage. Unlike guest mode (which is about
+     identity), incognito is about a single conversation's persistence and
+     can be toggled by a signed-in account too. Because it lives only in
+     memory, it is automatically and unconditionally cleared on refresh,
+     tab close, or navigation to another document, with no code needed to
+     "exit" it beyond the toggle itself. Listeners let chat.js repaint the
+     badge/toggle UI immediately when the flag flips.
+     ----------------------------------------------------------------------- */
+  var incognitoActive = false;
+  var incognitoListeners = [];
+
+  function isIncognitoActive() {
+    return incognitoActive;
+  }
+  function setIncognitoActive(active) {
+    active = !!active;
+    if (active === incognitoActive) return;
+    incognitoActive = active;
+    incognitoListeners.forEach(function (fn) {
+      try { fn(incognitoActive); } catch (e) { /* listener errors shouldn't break the toggle */ }
+    });
+  }
+  function toggleIncognito() {
+    setIncognitoActive(!incognitoActive);
+    return incognitoActive;
+  }
+  function onIncognitoChange(fn) {
+    if (typeof fn === "function") incognitoListeners.push(fn);
   }
 
   /* -----------------------------------------------------------------------
@@ -306,5 +342,9 @@
     paintAccountUI: paintAccountUI,
     hasShownGuestNotice: hasShownGuestNotice,
     markGuestNoticeShown: markGuestNoticeShown,
+    isIncognitoActive: isIncognitoActive,
+    setIncognitoActive: setIncognitoActive,
+    toggleIncognito: toggleIncognito,
+    onIncognitoChange: onIncognitoChange,
   };
 })();

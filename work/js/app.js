@@ -132,6 +132,15 @@
   function openModal(id) {
     const overlay = document.getElementById(id);
     if (!overlay) return;
+    // Close any other modal that's already open first. Without this, a
+    // trigger button that lives outside the currently-open modal (e.g. a
+    // header "Get started" button while "Sign in" is open) opens a second
+    // overlay on top of the first, stacking two full-screen backdrops at
+    // the same z-index. Only trigger buttons with data-close-modal handled
+    // this before; this guard makes it unconditional for every open call.
+    document.querySelectorAll(".modal-overlay.is-open").forEach((openOverlay) => {
+      if (openOverlay !== overlay) closeModal(openOverlay);
+    });
     lastFocusedEl = document.activeElement;
     overlay.classList.add("is-open");
     document.body.style.overflow = "hidden";
@@ -210,8 +219,8 @@
       input.type = isPassword ? "text" : "password";
       btn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
       btn.innerHTML = isPassword
-        ? '<svg width="18" height="18"><use href="#icon-eye-off"/></svg>'
-        : '<svg width="18" height="18"><use href="#icon-eye"/></svg>';
+        ? '<i class="fa-solid fa-eye-slash nv-icon" aria-hidden="true"></i>'
+        : '<i class="fa-solid fa-eye nv-icon" aria-hidden="true"></i>';
     });
   });
 
@@ -292,10 +301,10 @@
   const toastRegion = document.getElementById("toastRegion");
 
   const TOAST_ICONS = {
-    success: "icon-check-circle",
-    danger: "icon-x-circle",
-    warning: "icon-alert-triangle",
-    info: "icon-info",
+    success: "fa-circle-check",
+    danger: "fa-circle-xmark",
+    warning: "fa-triangle-exclamation",
+    info: "fa-circle-info",
   };
   const TOAST_TITLES = {
     success: "Success",
@@ -313,13 +322,13 @@
     toast.className = `toast toast--${type}`;
     toast.setAttribute("role", "status");
     toast.innerHTML = `
-      <svg class="toast__icon" width="20" height="20"><use href="#${icon}"/></svg>
+      <i class="fa-solid ${icon} toast__icon nv-icon" aria-hidden="true"></i>
       <div class="toast__content">
         <div class="toast__title">${toastTitle}</div>
         ${message ? `<div class="toast__message">${message}</div>` : ""}
       </div>
       <button class="toast__close" type="button" aria-label="Dismiss notification">
-        <svg width="16" height="16"><use href="#icon-x"/></svg>
+        <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
       </button>
     `;
     toastRegion.appendChild(toast);

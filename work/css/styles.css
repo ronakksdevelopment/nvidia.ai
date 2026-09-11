@@ -106,6 +106,58 @@ p { color: var(--text-secondary); max-width: 62ch; }
 .text-brand { color: var(--nv-green); }
 
 /* -------------------------------------------------------------------------
+   2b. Icon system (Font Awesome)
+   All icons render as Font Awesome glyphs sized via font-size so they sit
+   on the text baseline and inherit color via `currentColor`-equivalent
+   `color:` inheritance, matching how the previous inline-SVG icons behaved.
+   Default size mirrors the old 18-20px inline SVGs used across buttons,
+   inputs, and nav.
+   ------------------------------------------------------------------------- */
+.nv-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard);
+}
+.nv-icon--xs { font-size: 0.75rem; }
+.nv-icon--sm { font-size: 0.875rem; }
+.nv-icon--lg { font-size: 1.5rem; }
+.nv-icon--xl { font-size: 2rem; }
+
+/* Composite icon (e.g. wifi + slash) built from two stacked FA glyphs
+   since Font Awesome's free tier has no single "wifi-off" glyph. */
+.nv-icon-stack {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125em;
+  height: 1.125em;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+.nv-icon-stack--sm { font-size: 0.875rem; }
+.nv-icon-stack--lg { font-size: 1.5rem; }
+.nv-icon-stack i { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.nv-icon-stack__strike { transform: scaleX(-1); }
+
+/* Icon rotation micro-interaction (used on hover for chevrons, arrows) */
+.icon-rotate-on-hover:hover .nv-icon,
+.icon-rotate-on-hover:focus-visible .nv-icon {
+  transform: rotate(8deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nv-icon { transition: none; }
+  .icon-rotate-on-hover:hover .nv-icon,
+  .icon-rotate-on-hover:focus-visible .nv-icon { transform: none; }
+}
+
+/* -------------------------------------------------------------------------
    3. Layout primitives
    ------------------------------------------------------------------------- */
 .container {
@@ -302,7 +354,7 @@ p { color: var(--text-secondary); max-width: 62ch; }
   cursor: not-allowed;
   pointer-events: none;
 }
-.btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.btn .nv-icon { font-size: 1.125rem; flex-shrink: 0; }
 
 .btn--primary {
   background: var(--nv-green);
@@ -379,6 +431,7 @@ p { color: var(--text-secondary); max-width: 62ch; }
   align-items: center;
   gap: var(--space-1);
 }
+.field__error[hidden] { display: none; }
 
 .input-wrap { position: relative; display: flex; align-items: center; }
 .input {
@@ -407,7 +460,8 @@ p { color: var(--text-secondary); max-width: 62ch; }
   position: absolute;
   left: var(--space-4);
   color: var(--text-tertiary);
-  width: 18px; height: 18px;
+  font-size: 1.125rem;
+  display: inline-flex;
   pointer-events: none;
 }
 .input-wrap:has(.input-icon) .input { padding-left: var(--space-9); }
@@ -480,12 +534,12 @@ textarea.input { resize: vertical; min-height: 96px; }
   transition: border-color var(--duration-base) var(--ease-standard);
 }
 .dropdown__trigger:hover { border-color: var(--border-strong); }
-.dropdown__trigger svg {
-  width: 16px; height: 16px;
+.dropdown__trigger .nv-icon {
+  font-size: 1rem;
   color: var(--text-tertiary);
   transition: transform var(--duration-base) var(--ease-standard);
 }
-.dropdown[data-open="true"] .dropdown__trigger svg { transform: rotate(180deg); }
+.dropdown[data-open="true"] .dropdown__trigger .nv-icon { transform: rotate(180deg); }
 .dropdown[data-open="true"] .dropdown__trigger { border-color: var(--nv-green); }
 
 .dropdown__menu {
@@ -552,7 +606,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   display: inline-flex; padding: 1px; border-radius: 50%;
 }
 .chip button:hover { background: rgba(255,255,255,0.12); }
-.chip button svg { width: 12px; height: 12px; }
+.chip button .nv-icon { font-size: 0.75rem; }
 
 .badge {
   display: inline-flex;
@@ -608,7 +662,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   color: var(--nv-green);
   margin-bottom: var(--space-5);
 }
-.card__icon svg { width: 24px; height: 24px; }
+.card__icon .nv-icon { font-size: 1.5rem; }
 
 .card__title { font-size: var(--fs-h4); margin-bottom: var(--space-2); }
 .card__body { font-size: var(--fs-body-sm); color: var(--text-secondary); }
@@ -661,7 +715,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   flex-shrink: 0;
   margin-bottom: var(--space-4);
 }
-.modal__icon svg { width: 22px; height: 22px; }
+.modal__icon .nv-icon { font-size: 1.375rem; }
 .modal__icon--danger { background: var(--status-danger-bg); color: var(--status-danger); }
 .modal__icon--warning { background: var(--status-warning-bg); color: var(--status-warning); }
 .modal__icon--brand { background: var(--status-success-bg); color: var(--nv-green); }
@@ -745,7 +799,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   border: none;
   text-align: left;
 }
-.context-menu__item svg { width: 16px; height: 16px; }
+.context-menu__item .nv-icon { font-size: 1rem; }
 .context-menu__item:hover { background: var(--surface-hover); color: var(--text-primary); }
 .context-menu__item--danger { color: var(--status-danger); }
 .context-menu__item--danger:hover { background: var(--status-danger-bg); }
@@ -763,6 +817,19 @@ textarea.input { resize: vertical; min-height: 96px; }
   flex-direction: column-reverse;
   gap: var(--space-3);
   width: min(360px, calc(100vw - var(--space-6) * 2));
+  /* A burst of rapid actions (e.g. quickly toggling a mode on/off) can
+     stack more toasts than fit on short/mobile viewports. Cap the region's
+     height and let it scroll internally instead of covering the whole
+     screen and blocking content/controls above it. */
+  max-height: calc(100vh - var(--space-6) * 2);
+  max-height: calc(100dvh - var(--space-6) * 2);
+  overflow-y: auto;
+  overflow-x: visible;
+  scrollbar-width: thin;
+  scrollbar-color: var(--nv-graphite-600) transparent;
+  /* Reserve horizontal room for the translateX() enter/leave animation so
+     it isn't clipped by overflow-y: auto. */
+  padding-right: 2px;
 }
 .toast {
   display: flex;
@@ -783,7 +850,7 @@ textarea.input { resize: vertical; min-height: 96px; }
 @keyframes toastOut {
   to { opacity: 0; transform: translateX(24px) scale(0.96); }
 }
-.toast__icon { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
+.toast__icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 1px; }
 .toast--success .toast__icon { color: var(--status-success); }
 .toast--warning .toast__icon { color: var(--status-warning); }
 .toast--danger .toast__icon { color: var(--status-danger); }
@@ -793,7 +860,18 @@ textarea.input { resize: vertical; min-height: 96px; }
 .toast__message { font-size: var(--fs-caption); color: var(--text-secondary); margin-top: 2px; }
 .toast__close { background: transparent; border: none; color: var(--text-tertiary); padding: 2px; border-radius: var(--radius-sm); flex-shrink: 0; }
 .toast__close:hover { color: var(--text-primary); }
-.toast__close svg { width: 16px; height: 16px; }
+.toast__close .nv-icon { font-size: 1rem; }
+
+@media (max-width: 640px) {
+  .toast-region {
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: var(--space-3);
+    width: auto;
+    max-height: calc(100vh - var(--space-3) * 2);
+    max-height: calc(100dvh - var(--space-3) * 2);
+  }
+}
 
 /* =========================================================================
    16. SKELETONS
@@ -851,7 +929,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   color: var(--text-tertiary);
   margin-bottom: var(--space-2);
 }
-.state-panel__icon svg { width: 30px; height: 30px; }
+.state-panel__icon .nv-icon { font-size: 1.875rem; }
 .state-panel__title { font-size: var(--fs-h4); }
 .state-panel__body { font-size: var(--fs-body-sm); color: var(--text-secondary); max-width: 40ch; }
 .state-panel__actions { display: flex; gap: var(--space-3); margin-top: var(--space-2); }
@@ -884,7 +962,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   display: none;
 }
 .offline-banner.is-visible { display: flex; }
-.offline-banner svg { width: 16px; height: 16px; flex-shrink: 0; }
+.offline-banner .nv-icon, .offline-banner .nv-icon-stack { font-size: 1rem; flex-shrink: 0; }
 
 .guest-banner {
   position: static;
@@ -1001,7 +1079,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   justify-content: center;
   flex-shrink: 0;
 }
-.model-row__glyph svg { width: 20px; height: 20px; }
+.model-row__glyph .nv-icon { font-size: 1.25rem; }
 .model-row__name { font-weight: var(--fw-semibold); font-size: var(--fs-body); }
 .model-row__desc { font-size: var(--fs-caption); color: var(--text-tertiary); }
 .model-row__specs { display: flex; gap: var(--space-6); }
@@ -1061,7 +1139,7 @@ textarea.input { resize: vertical; min-height: 96px; }
 .splash {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: var(--z-splash);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1154,7 +1232,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   background: var(--surface-raised);
   border: 1px solid var(--border-subtle);
 }
-.onboarding__feature svg { width: 20px; height: 20px; color: var(--nv-green); flex-shrink: 0; }
+.onboarding__feature .nv-icon { font-size: 1.25rem; color: var(--nv-green); flex-shrink: 0; }
 .onboarding__feature-text { font-size: var(--fs-body-sm); color: var(--text-secondary); }
 
 /* =========================================================================
@@ -1167,7 +1245,6 @@ textarea.input { resize: vertical; min-height: 96px; }
 }
 @media (max-width: 900px) {
   .auth-page { grid-template-columns: 1fr; }
-  .auth-page__aside { display: none; }
 }
 .auth-page__aside {
   position: relative;
@@ -1179,6 +1256,22 @@ textarea.input { resize: vertical; min-height: 96px; }
   border-right: 1px solid var(--border-subtle);
   overflow: hidden;
 }
+/* This panel is intentionally always-dark (branded editorial side panel,
+   independent of the app's light/dark theme), the same way the chat
+   code-block background stays dark in both themes. Its text must therefore
+   use fixed light colors here rather than --text-primary/--text-tertiary,
+   which flip to near-black in light mode and would otherwise render
+   unreadable dark-on-dark text against this panel's permanently dark
+   background. */
+.auth-page__aside,
+.auth-page__aside .navbar__brand,
+.auth-page__aside-quote,
+.auth-page__aside .text-caption {
+  color: var(--nv-white);
+}
+.auth-page__aside .text-caption {
+  color: rgba(255, 255, 255, 0.6);
+}
 .auth-page__aside::before {
   content: "";
   position: absolute;
@@ -1188,13 +1281,20 @@ textarea.input { resize: vertical; min-height: 96px; }
   height: 600px;
   background: radial-gradient(circle, rgba(118,185,0,0.14), transparent 65%);
 }
+/* Must come after the base .auth-page__aside rule (display: flex) above so
+   this wins the cascade at equal specificity — this is the same ordering
+   pitfall as the .settings-savebar mobile override elsewhere in the
+   codebase: a media-query override placed before the rule it's meant to
+   override loses at equal specificity to whatever comes later in the file. */
+@media (max-width: 900px) {
+  .auth-page__aside { display: none; }
+}
 .auth-page__aside-quote {
   position: relative;
   z-index: 1;
   font-size: var(--fs-h4);
   font-weight: var(--fw-medium);
   line-height: var(--lh-snug);
-  color: var(--text-primary);
   max-width: 34ch;
 }
 .auth-page__main {

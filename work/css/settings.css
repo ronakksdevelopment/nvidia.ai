@@ -65,7 +65,7 @@
   transition: background-color var(--duration-base) var(--ease-standard),
               color var(--duration-base) var(--ease-standard);
 }
-.settings-nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.settings-nav-link .nv-icon { font-size: 1.125rem; flex-shrink: 0; }
 .settings-nav-link:hover {
   background: var(--surface-hover);
   color: var(--text-primary);
@@ -166,7 +166,7 @@
   gap: var(--space-2);
   margin-bottom: var(--space-1);
 }
-.settings-section__title svg { width: 18px; height: 18px; color: var(--nv-green); }
+.settings-section__title .nv-icon { font-size: 1.125rem; color: var(--nv-green); }
 .settings-section__desc { font-size: var(--fs-body-sm); color: var(--text-secondary); max-width: 58ch; }
 
 .settings-row {
@@ -202,7 +202,7 @@
   font-size: var(--fs-caption);
   margin-top: var(--space-2);
 }
-.key-status svg { width: 14px; height: 14px; }
+.key-status .nv-icon { font-size: 0.875rem; }
 .key-status--idle { color: var(--text-tertiary); }
 .key-status--checking { color: var(--status-info); }
 .key-status--valid { color: var(--status-success); }
@@ -281,21 +281,47 @@
   border-color: var(--nv-green);
   color: var(--nv-black);
 }
-.theme-option__check svg { width: 12px; height: 12px; }
+.theme-option__check .nv-icon { font-size: 0.75rem; }
 
 /* -------------------------------------------------------------------------
-   6. Sticky save bar
+   6. Save bar
    ------------------------------------------------------------------------- */
+/* Sits in normal document flow by default, right after the last settings
+   section, so it can never overlap earlier content (e.g. .model-meta-card)
+   regardless of viewport height or scroll position — the bug this replaces
+   was caused by position: sticky resolving against the document/viewport
+   with no bounded scrolling ancestor, so it snapped over content before any
+   scrolling happened. Only once the user has scrolled near the true bottom
+   of the page does js/settings.js add --floating, switching it to a fixed
+   bar pinned to the viewport edge (see that class below). Verify via
+   bar.getBoundingClientRect() vs .model-meta-card.getBoundingClientRect()
+   at scroll position 0: with no --floating class present, they cannot
+   overlap because the bar is never removed from flow at that point. */
 .settings-savebar {
-  position: sticky;
-  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-3);
   padding: var(--space-4) 0;
   margin-top: var(--space-6);
+  background: transparent;
+}
+.settings-savebar--floating {
+  position: fixed;
+  left: 260px;
+  right: 0;
+  bottom: 0;
+  margin-top: 0;
+  padding: var(--space-4) var(--space-8);
   background: linear-gradient(180deg, transparent, var(--surface-canvas) 30%);
+  z-index: var(--z-sticky);
+}
+/* Below the .settings-shell__nav off-canvas breakpoint (860px, see section 1)
+   the nav no longer occupies a column, so the floating bar spans full width.
+   This rule must stay after .settings-savebar--floating above so it wins
+   the cascade at equal specificity. */
+@media (max-width: 860px) {
+  .settings-savebar--floating { left: 0; padding-inline: var(--space-4); }
 }
 .settings-savebar__status {
   margin-right: auto;
@@ -305,7 +331,8 @@
   align-items: center;
   gap: var(--space-2);
 }
-.settings-savebar__status svg { width: 14px; height: 14px; color: var(--status-success); }
+.settings-savebar__status[hidden] { display: none; }
+.settings-savebar__status .nv-icon { font-size: 0.875rem; color: var(--status-success); }
 
 /* -------------------------------------------------------------------------
    7. Model select (native, styled)
@@ -336,7 +363,6 @@
   right: var(--space-4);
   color: var(--text-tertiary);
   pointer-events: none;
-  width: 16px; height: 16px;
 }
 
 .model-meta-card {
@@ -357,7 +383,7 @@
   color: var(--nv-green);
   display: flex; align-items: center; justify-content: center;
 }
-.model-meta-card__icon svg { width: 18px; height: 18px; }
+.model-meta-card__icon .nv-icon { font-size: 1.125rem; }
 .model-meta-card__name { font-size: var(--fs-body-sm); font-weight: var(--fw-semibold); color: var(--text-primary); }
 .model-meta-card__id { font-size: 12px; font-family: var(--font-family-mono); color: var(--text-tertiary); word-break: break-all; }
 .model-meta-card__desc { font-size: var(--fs-caption); color: var(--text-secondary); margin-top: var(--space-2); }
@@ -431,13 +457,13 @@
   text-align: left;
   background: transparent;
 }
-.faq-item__q svg {
-  width: 16px; height: 16px;
+.faq-item__q .nv-icon {
+  font-size: 1rem;
   color: var(--text-tertiary);
   flex-shrink: 0;
   transition: transform var(--duration-base) var(--ease-standard);
 }
-.faq-item[data-open="true"] .faq-item__q svg { transform: rotate(180deg); }
+.faq-item[data-open="true"] .faq-item__q .nv-icon { transform: rotate(180deg); }
 .faq-item__a {
   padding: 0 var(--space-5);
   max-height: 0;

@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="../css/design-system.css" />
 <link rel="stylesheet" href="../css/styles.css" />
@@ -29,12 +30,12 @@
      OFFLINE BANNER
      ========================================================= -->
 <div class="offline-banner" id="offlineBanner" role="status">
-  <svg width="16" height="16"><use href="#icon-wifi-off"/></svg>
+  <span class="nv-icon-stack nv-icon--sm" aria-hidden="true"><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-slash nv-icon-stack__strike"></i></span>
   <span>You're offline. Some features may be unavailable.</span>
 </div>
 
 <div class="offline-banner guest-banner" id="guestBanner" data-guest-only hidden role="status">
-  <svg width="16" height="16"><use href="#icon-user"/></svg>
+  <i class="fa-solid fa-user nv-icon nv-icon--sm" aria-hidden="true"></i>
   <span>You're chatting as a guest. Nothing here is saved, and this history disappears when you close the tab.</span>
 </div>
 
@@ -50,27 +51,27 @@
         <span class="sidebar__brand-text">Nemotron</span>
       </a>
       <button class="icon-btn sidebar__collapse-btn" id="sidebarCollapseBtn" type="button" aria-label="Collapse sidebar" aria-expanded="true" aria-controls="sidebar">
-        <svg width="18" height="18"><use href="#icon-panel-left"/></svg>
+        <i class="fa-solid fa-table-columns nv-icon" aria-hidden="true"></i>
       </button>
     </div>
 
     <div class="sidebar__actions">
       <button class="btn btn--primary btn--full sidebar__new-chat" id="newChatBtn" type="button">
-        <svg width="18" height="18"><use href="#icon-plus"/></svg>
+        <i class="fa-solid fa-plus nv-icon" aria-hidden="true"></i>
         <span>New chat</span>
       </button>
       <button class="icon-btn sidebar__new-chat-icon" id="newChatIconBtn" type="button" aria-label="New chat" title="New chat (Ctrl+Shift+O)">
-        <svg width="18" height="18"><use href="#icon-plus"/></svg>
+        <i class="fa-solid fa-plus nv-icon" aria-hidden="true"></i>
       </button>
     </div>
 
     <div class="sidebar__search">
       <div class="input-wrap">
-        <svg class="input-icon" width="16" height="16"><use href="#icon-search"/></svg>
+        <i class="fa-solid fa-magnifying-glass nv-icon nv-icon--sm input-icon" aria-hidden="true"></i>
         <input class="input sidebar__search-input" type="search" id="historySearch" placeholder="Search conversations…" aria-label="Search conversations" autocomplete="off" />
       </div>
       <button class="icon-btn sidebar__search-icon-btn" id="searchIconBtn" type="button" aria-label="Search conversations" title="Search conversations">
-        <svg width="18" height="18"><use href="#icon-search"/></svg>
+        <i class="fa-solid fa-magnifying-glass nv-icon" aria-hidden="true"></i>
       </button>
     </div>
 
@@ -95,7 +96,7 @@
           <span class="account-menu-trigger__name" data-account-name>Account</span>
           <span class="account-menu-trigger__plan" data-account-plan>Free</span>
         </span>
-        <svg class="account-menu-trigger__chevron" width="16" height="16"><use href="#icon-chevron-up"/></svg>
+        <i class="fa-solid fa-chevron-up nv-icon nv-icon--sm account-menu-trigger__chevron" aria-hidden="true"></i>
       </button>
 
       <div class="account-menu" id="accountMenu" role="menu" aria-label="Account menu">
@@ -111,24 +112,24 @@
         </p>
         <div class="dropdown__divider"></div>
         <a class="dropdown__item" role="menuitem" href="settings.html">
-          <svg width="16" height="16"><use href="#icon-settings"/></svg>
+          <i class="fa-solid fa-gear nv-icon nv-icon--sm" aria-hidden="true"></i>
           Settings
         </a>
         <button class="dropdown__item" role="menuitem" type="button" id="shortcutsMenuBtn">
-          <svg width="16" height="16"><use href="#icon-keyboard"/></svg>
+          <i class="fa-solid fa-keyboard nv-icon nv-icon--sm" aria-hidden="true"></i>
           Keyboard shortcuts
         </button>
         <a class="dropdown__item" role="menuitem" href="profile.html">
-          <svg width="16" height="16"><use href="#icon-user"/></svg>
+          <i class="fa-solid fa-user nv-icon nv-icon--sm" aria-hidden="true"></i>
           Profile
         </a>
         <div class="dropdown__divider"></div>
         <a class="dropdown__item" role="menuitem" href="../index.html">
-          <svg width="16" height="16"><use href="#icon-globe"/></svg>
+          <i class="fa-solid fa-globe nv-icon nv-icon--sm" aria-hidden="true"></i>
           Back to home
         </a>
         <button class="dropdown__item dropdown__item--danger" role="menuitem" type="button" id="logoutBtn">
-          <svg width="16" height="16"><use href="#icon-logout"/></svg>
+          <i class="fa-solid fa-arrow-right-from-bracket nv-icon nv-icon--sm" aria-hidden="true"></i>
           Log out
         </button>
       </div>
@@ -146,7 +147,7 @@
     <!-- Topbar -->
     <header class="chat-topbar">
       <button class="icon-btn chat-topbar__menu-btn" id="mobileSidebarBtn" type="button" aria-label="Open conversation history" aria-expanded="false" aria-controls="sidebar">
-        <svg width="20" height="20"><use href="#icon-panel-left"/></svg>
+        <i class="fa-solid fa-table-columns nv-icon" aria-hidden="true"></i>
       </button>
 
       <div class="dropdown model-dropdown" id="modelDropdown" data-open="false">
@@ -156,7 +157,7 @@
             <span class="model-badge__name">Nemotron 3 Super</span>
             <span class="model-badge__tag">FREE</span>
           </span>
-          <svg class="model-badge__chevron" width="14" height="14"><use href="#icon-chevron-down"/></svg>
+          <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm model-badge__chevron" aria-hidden="true"></i>
         </button>
         <div class="dropdown__menu model-dropdown__menu" role="listbox" aria-label="Choose model">
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3-ultra-550b-a55b:free">
@@ -164,70 +165,83 @@
               <span class="model-option__name">Nemotron 3 Ultra</span>
               <span class="text-caption">Frontier reasoning, 1M context</span>
             </span>
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
           <button class="dropdown__item model-option" role="option" aria-selected="true" type="button" data-model="nvidia/nemotron-3-super-120b-a12b:free">
             <span class="model-option__main">
               <span class="model-option__name">Nemotron 3 Super</span>
               <span class="text-caption">Balanced, everyday reasoning</span>
             </span>
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3.5-lightning:free">
             <span class="model-option__main">
               <span class="model-option__name">Nemotron 3.5 Lightning</span>
               <span class="text-caption">Fastest, high-throughput</span>
             </span>
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">
             <span class="model-option__main">
               <span class="model-option__name">Nemotron 3 Nano Omni</span>
               <span class="text-caption">Reasoning, text + image input</span>
             </span>
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3.5-content-safety:free">
             <span class="model-option__main">
               <span class="model-option__name">Nemotron 3.5 Content Safety</span>
               <span class="text-caption">Moderation and guardrails</span>
             </span>
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/llama-nemotron-rerank-vl-1b-v2:free">
             <span class="model-option__main">
               <span class="model-option__name">Llama Nemotron Rerank VL 1B</span>
               <span class="text-caption">Document reranking</span>
             </span>
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/llama-nemotron-embed-vl-1b-v2:free">
             <span class="model-option__main">
               <span class="model-option__name">Llama Nemotron Embed VL 1B</span>
               <span class="text-caption">Multimodal embeddings</span>
             </span>
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3-embed-1b:free">
             <span class="model-option__main">
               <span class="model-option__name">Nemotron 3 Embed 1B</span>
               <span class="text-caption">Text embeddings</span>
             </span>
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
         </div>
       </div>
 
       <div class="chat-topbar__actions">
+        <span class="badge badge--neutral incognito-badge" id="incognitoBadge" hidden>
+          <i class="fa-solid fa-user-secret nv-icon nv-icon--sm" aria-hidden="true"></i>
+          <span>Incognito</span>
+        </span>
         <span class="badge badge--brand chat-topbar__usage-chip" id="topbarUsageChip" title="Session token usage">
-          <svg width="13" height="13"><use href="#icon-cpu"/></svg>
+          <i class="fa-solid fa-microchip nv-icon nv-icon--sm" aria-hidden="true"></i>
           <span id="topbarUsageText">0 / 32K tokens</span>
         </span>
+        <button class="icon-btn incognito-toggle" id="incognitoToggleBtn" type="button" aria-pressed="false" aria-label="Turn on Incognito Mode" title="Incognito Mode: this chat won't be saved">
+          <i class="fa-solid fa-user-secret nv-icon" aria-hidden="true"></i>
+        </button>
         <button class="icon-btn" id="shortcutsTopbarBtn" type="button" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
-          <svg width="18" height="18"><use href="#icon-keyboard"/></svg>
+          <i class="fa-solid fa-keyboard nv-icon" aria-hidden="true"></i>
         </button>
       </div>
     </header>
+
+    <div class="incognito-strip" id="incognitoStrip" data-incognito-only hidden role="status">
+      <i class="fa-solid fa-user-secret nv-icon nv-icon--sm" aria-hidden="true"></i>
+      <span>You're in Incognito Mode. This conversation is kept in memory only and will disappear when you turn it off, refresh, or close the tab.</span>
+      <button class="incognito-strip__exit" id="incognitoExitBtn" type="button">Turn off</button>
+    </div>
 
     <!-- Scrollable message region -->
     <main class="chat-scroll" id="chatScroll" aria-label="Conversation">
@@ -241,19 +255,19 @@
 
           <div class="chat-suggestions" id="chatSuggestions">
             <button class="chat-suggestion" type="button" data-prompt="Explain how transformer attention works, step by step.">
-              <svg width="18" height="18"><use href="#icon-cpu"/></svg>
+              <i class="fa-solid fa-microchip nv-icon" aria-hidden="true"></i>
               <span>Explain how transformer attention works</span>
             </button>
             <button class="chat-suggestion" type="button" data-prompt="Write a Python function that merges two sorted lists efficiently, with tests.">
-              <svg width="18" height="18"><use href="#icon-bolt"/></svg>
+              <i class="fa-solid fa-bolt nv-icon" aria-hidden="true"></i>
               <span>Write a Python merge-sort helper with tests</span>
             </button>
             <button class="chat-suggestion" type="button" data-prompt="Give me a table comparing Nemotron Nano, Super, and Ultra for common use cases.">
-              <svg width="18" height="18"><use href="#icon-layers"/></svg>
+              <i class="fa-solid fa-layer-group nv-icon" aria-hidden="true"></i>
               <span>Compare Nemotron Nano vs Super vs Ultra</span>
             </button>
             <button class="chat-suggestion" type="button" data-prompt="Draft a friendly onboarding email for new beta testers of an AI product.">
-              <svg width="18" height="18"><use href="#icon-spark"/></svg>
+              <i class="fa-solid fa-sparkles nv-icon" aria-hidden="true"></i>
               <span>Draft a beta-tester onboarding email</span>
             </button>
           </div>
@@ -268,7 +282,7 @@
     <!-- Drag & drop overlay -->
     <div class="dropzone-overlay" id="dropzoneOverlay" aria-hidden="true">
       <div class="dropzone-overlay__card">
-        <svg width="32" height="32"><use href="#icon-upload"/></svg>
+        <i class="fa-solid fa-arrow-up-from-bracket nv-icon nv-icon--lg" aria-hidden="true"></i>
         <div class="dropzone-overlay__title">Drop to attach</div>
         <div class="dropzone-overlay__subtitle">Images and files will be added to your message</div>
       </div>
@@ -284,7 +298,7 @@
 
         <div class="composer__field">
           <button class="icon-btn composer__attach-btn" type="button" id="attachBtn" aria-label="Attach file" title="Attach file">
-            <svg width="20" height="20"><use href="#icon-paperclip"/></svg>
+            <i class="fa-solid fa-paperclip nv-icon" aria-hidden="true"></i>
           </button>
           <input type="file" id="fileInput" class="visually-hidden" multiple accept="image/*,.pdf,.txt,.md,.csv,.json" />
 
@@ -298,10 +312,10 @@
           ></textarea>
 
           <button class="composer__send-btn" id="sendBtn" type="submit" aria-label="Send message" disabled>
-            <svg width="18" height="18"><use href="#icon-arrow-up"/></svg>
+            <i class="fa-solid fa-arrow-up nv-icon" aria-hidden="true"></i>
           </button>
           <button class="composer__stop-btn" id="stopBtn" type="button" aria-label="Stop generating" hidden>
-            <svg width="16" height="16"><use href="#icon-stop"/></svg>
+            <i class="fa-solid fa-stop nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
         </div>
 
@@ -329,7 +343,7 @@
         <p class="text-caption">Move faster around Nemotron chat</p>
       </div>
       <button class="modal__close" type="button" data-close-modal aria-label="Close">
-        <svg width="20" height="20"><use href="#icon-x"/></svg>
+        <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
       </button>
     </div>
     <div class="shortcuts-list">
@@ -354,7 +368,7 @@
 <div class="modal-overlay" id="deleteConvoModal" data-modal-overlay>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteConvoTitle">
     <div class="modal__icon modal__icon--danger">
-      <svg width="22" height="22"><use href="#icon-trash"/></svg>
+      <i class="fa-regular fa-trash-can nv-icon nv-icon--lg" aria-hidden="true"></i>
     </div>
     <h2 class="modal__title" id="deleteConvoTitle">Delete this conversation?</h2>
     <p class="modal__body">This will permanently remove <strong id="deleteConvoName">this chat</strong> and its messages. This can't be undone.</p>
@@ -374,105 +388,6 @@
      ICON SPRITE
      ========================================================= -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/>
-  </symbol>
-  <symbol id="icon-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3 2 8l10 5 10-5-10-5z"/>
-    <path d="M2 13l10 5 10-5"/>
-  </symbol>
-  <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="6" y="6" width="12" height="12" rx="2"/>
-    <rect x="9.5" y="9.5" width="5" height="5" rx="1"/>
-    <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
-  </symbol>
-  <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"/>
-    <path d="m9 12 2 2 4-4"/>
-  </symbol>
-  <symbol id="icon-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>
-  </symbol>
-  <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m6 9 6 6 6-6"/>
-  </symbol>
-  <symbol id="icon-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m18 15-6-6-6 6"/>
-  </symbol>
-  <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m5 13 4 4L19 7"/>
-  </symbol>
-  <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="m8.5 12.5 2.3 2.3 4.7-5"/>
-  </symbol>
-  <symbol id="icon-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M10.3 3.9 2.5 18a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.7 3.9a1.5 1.5 0 0 0-2.6 0z"/>
-    <path d="M12 9v4M12 16.5v.01"/>
-  </symbol>
-  <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M12 11v5.5M12 8v.01"/>
-  </symbol>
-  <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 6l12 12M18 6 6 18"/>
-  </symbol>
-  <symbol id="icon-x-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="m9 9 6 6M15 9l-6 6"/>
-  </symbol>
-  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 6h16M4 12h16M4 18h16"/>
-  </symbol>
-  <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="11" cy="11" r="7"/>
-    <path d="m20 20-3.5-3.5"/>
-  </symbol>
-  <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="5" y="10" width="14" height="10" rx="2"/>
-    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-  </symbol>
-  <symbol id="icon-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 3-2M12 20h.01M19 12.5a10 10 0 0 0-2.7-2.1M16.7 6.6A15.9 15.9 0 0 0 12 6c-1 0-2 .1-2.9.3"/>
-  </symbol>
-  <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 12a9 9 0 0 1 15.3-6.4M21 12a9 9 0 0 1-15.3 6.4"/>
-    <path d="M18.7 3v4.6h-4.6M5.3 21v-4.6h4.6"/>
-  </symbol>
-  <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 7h16M9 7V4h6v3M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/>
-  </symbol>
-  <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="9" y="9" width="12" height="12" rx="2"/>
-    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>
-  </symbol>
-  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5"/>
-    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
-  </symbol>
-  <symbol id="icon-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-    <path d="m8.6 10.6 6.8-3.9M8.6 13.4l6.8 3.9"/>
-  </symbol>
-  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="4"/>
-    <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/>
-  </symbol>
-  <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="3"/>
-    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
-  </symbol>
-  <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-    <path d="M16 17l5-5-5-5M21 12H9"/>
-  </symbol>
-  <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 12h14M13 6l6 6-6 6"/>
-  </symbol>
-  <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M3 12h18M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/>
-  </symbol>
   <symbol id="icon-nemotron-mark" viewBox="0 0 100 100" fill="none">
     <path d="M50 8 90 30v40L50 92 10 70V30z" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/>
     <circle cx="50" cy="30" r="6" fill="currentColor"/>
@@ -484,56 +399,7 @@
     <circle cx="50" cy="50" r="9" fill="currentColor"/>
     <path d="M50 30 30 42M50 30l20 12M30 42v16M70 42v16M30 58l20 12M70 58 50 70M50 30v40M30 42l40 16M70 42 30 58" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
   </symbol>
-
-  <!-- Chat-specific icons -->
-  <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 5v14M5 12h14"/>
-  </symbol>
-  <symbol id="icon-panel-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="4" width="18" height="16" rx="2"/>
-    <path d="M9.5 4v16"/>
-  </symbol>
-  <symbol id="icon-paperclip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 11.5 12.4 20a5 5 0 0 1-7-7l8.4-8.4a3.5 3.5 0 0 1 5 5L10.4 18a2 2 0 0 1-3-3l7.1-7.1"/>
-  </symbol>
-  <symbol id="icon-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 19V5M5 12l7-7 7 7"/>
-  </symbol>
-  <symbol id="icon-stop" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <rect x="6" y="6" width="12" height="12" rx="2"/>
-  </symbol>
-  <symbol id="icon-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 21V9m0 0 4.5 4.5M12 9 7.5 13.5"/>
-    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
-  </symbol>
-  <symbol id="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="4" width="18" height="16" rx="2"/>
-    <circle cx="9" cy="10" r="1.5" fill="currentColor" stroke="none"/>
-    <path d="m4.5 18 5-5 3.5 3.5L17.5 12l3 3"/>
-  </symbol>
-  <symbol id="icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
-    <path d="M14 3v5h5"/>
-  </symbol>
-  <symbol id="icon-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 20h9"/>
-    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-  </symbol>
-  <symbol id="icon-keyboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="2" y="6" width="20" height="12" rx="2"/>
-    <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h12"/>
-  </symbol>
-  <symbol id="icon-dots" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/>
-  </symbol>
-  <symbol id="icon-thumb-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M7 22V11M2 13v7a2 2 0 0 0 2 2h11.4a2 2 0 0 0 2-1.6l1.4-7A2 2 0 0 0 17 11h-4.5l1-4.5A1.7 1.7 0 0 0 11.8 4L7 11"/>
-  </symbol>
-  <symbol id="icon-thumb-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M17 2v11M22 11V4a2 2 0 0 0-2-2H8.6a2 2 0 0 0-2 1.6l-1.4 7A2 2 0 0 0 7 13h4.5l-1 4.5A1.7 1.7 0 0 0 12.2 20L17 13"/>
-  </symbol>
 </svg>
-
 <script src="../js/session.js"></script>
 <script src="../js/router.js"></script>
 <script src="../js/chat.js"></script>

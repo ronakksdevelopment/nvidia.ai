@@ -37,7 +37,7 @@
      1. Toast (reuses foundation pattern, self-contained here for chat.html)
      ======================================================================= */
   const toastRegion = $("#toastRegion");
-  const TOAST_ICONS = { success: "icon-check-circle", danger: "icon-x-circle", warning: "icon-alert-triangle", info: "icon-info" };
+  const TOAST_ICONS = { success: "fa-circle-check", danger: "fa-circle-xmark", warning: "fa-triangle-exclamation", info: "fa-circle-info" };
   const TOAST_TITLES = { success: "Success", danger: "Something went wrong", warning: "Heads up", info: "Note" };
   function showToast(type, title, message) {
     if (!toastRegion) return;
@@ -47,13 +47,13 @@
     toast.className = `toast toast--${type}`;
     toast.setAttribute("role", "status");
     toast.innerHTML = `
-      <svg class="toast__icon" width="20" height="20"><use href="#${icon}"/></svg>
+      <i class="fa-solid ${icon} toast__icon nv-icon" aria-hidden="true"></i>
       <div class="toast__content">
         <div class="toast__title">${escapeHtml(toastTitle)}</div>
         ${message ? `<div class="toast__message">${escapeHtml(message)}</div>` : ""}
       </div>
       <button class="toast__close" type="button" aria-label="Dismiss notification">
-        <svg width="16" height="16"><use href="#icon-x"/></svg>
+        <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
       </button>`;
     toastRegion.appendChild(toast);
     const remove = () => { toast.classList.add("is-leaving"); setTimeout(() => toast.remove(), 200); };
@@ -251,7 +251,8 @@
   <div class="code-block__head">
     <span class="code-block__lang">${escapeHtml(lang || "text")}</span>
     <button class="code-block__copy-btn" type="button" data-copy-target="${id}">
-      <svg width="13" height="13"><use href="#icon-copy"/></svg>
+      <i class="fa-regular fa-copy nv-icon code-block__copy-icon code-block__copy-icon--default" aria-hidden="true"></i>
+      <i class="fa-solid fa-check nv-icon code-block__copy-icon code-block__copy-icon--copied" aria-hidden="true"></i>
       <span>Copy</span>
     </button>
   </div>
@@ -303,6 +304,7 @@
   const DEFAULT_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
 
   const isGuestSession = () => !!(window.NemotronSession && window.NemotronSession.isGuestActive());
+  const isIncognitoSession = () => !!(window.NemotronSession && window.NemotronSession.isIncognitoActive());
 
   /* Settings (API key + model) are stored under nemotron.settings by
      js/settings.js. chat.html doesn't load settings.js, so chat.js reads
@@ -320,6 +322,12 @@
   }
 
   function loadPersistedHistory() {
+    // Guest-only guard (see persistHistory() above for why incognito must
+    // NOT gate this): at the point this runs during page init, Incognito
+    // is always false anyway, since it lives only in memory and is reset
+    // on every navigation/refresh (js/session.js). Checking guest alone
+    // here keeps that invariant explicit instead of implying incognito
+    // could ever suppress loading a signed-in user's real history.
     if (isGuestSession()) return null;
     try {
       const raw = localStorage.getItem(HISTORY_KEY);
@@ -333,11 +341,27 @@
   }
 
   function persistHistory() {
+    // Guest sessions never touch storage at all, matching the guest-mode
+    // contract in session.js. Incognito is handled below by filtering, not
+    // by an early return here: a signed-in user's REAL conversations must
+    // keep saving even while Incognito is active for a separate, unsaved
+    // conversation. An early `if (isEphemeralSession()) return;` here would
+    // incorrectly no-op persistence for real data too, since guest-or-
+    // incognito would be true whenever EITHER guest or incognito is
+    // active. See discardIncognitoConversations() / setIncognito() for how
+    // the incognito-flagged conversation itself gets cleared on toggle-off.
     if (isGuestSession()) return;
     try {
+      // Defense in depth: even outside a fully-ephemeral (guest/incognito)
+      // session, never let an incognito-flagged conversation reach disk.
+      // This matters for a signed-in user who toggles Incognito mid-session:
+      // their real conversations still save, the incognito one never does.
+      const persistableConvos = state.conversations.filter((c) => !c.incognito);
+      const persistableMessages = {};
+      persistableConvos.forEach((c) => { persistableMessages[c.id] = state.messagesByConvo[c.id] || []; });
       localStorage.setItem(HISTORY_KEY, JSON.stringify({
-        conversations: state.conversations,
-        messagesByConvo: state.messagesByConvo,
+        conversations: persistableConvos,
+        messagesByConvo: persistableMessages,
       }));
     } catch (e) { /* storage full or unavailable: state simply won't survive reload */ }
   }
@@ -393,6 +417,11 @@
   const usageValueText = $("#usageValueText");
   const topbarUsageChip = $("#topbarUsageChip");
   const topbarUsageText = $("#topbarUsageText");
+
+  const incognitoBadge = $("#incognitoBadge");
+  const incognitoToggleBtn = $("#incognitoToggleBtn");
+  const incognitoStrip = $("#incognitoStrip");
+  const incognitoExitBtn = $("#incognitoExitBtn");
 
   const accountMenuTrigger = $("#accountMenuTrigger");
   const accountMenu = $("#accountMenu");
@@ -491,7 +520,7 @@
     query = (query || "").trim();
     sidebarHistory.innerHTML = "";
 
-    let list = state.conversations.slice().sort((a, b) => b.updatedAt - a.updatedAt);
+    let list = state.conversations.filter((c) => !c.incognito).slice().sort((a, b) => b.updatedAt - a.updatedAt);
     if (query) {
       list = list.filter((c) => c.title.toLowerCase().includes(query.toLowerCase()));
     }
@@ -525,7 +554,7 @@
         btn.innerHTML = `
           <span class="history-item__title">${highlightMatch(c.title, query)}</span>
           <button class="history-item__menu-btn" type="button" data-menu-convo-id="${c.id}" aria-label="Conversation options" aria-expanded="false">
-            <svg width="16" height="16"><use href="#icon-dots"/></svg>
+            <i class="fa-solid fa-ellipsis-vertical nv-icon" aria-hidden="true"></i>
           </button>`;
         btn.addEventListener("click", (e) => {
           if (e.target.closest(".history-item__menu-btn")) return;
@@ -589,7 +618,8 @@
   function startNewConversation() {
     if (state.isGenerating) stopGeneration();
     const id = "c" + uid();
-    state.conversations.unshift({ id, title: "New chat", updatedAt: Date.now(), pinned: false });
+    const incognito = isIncognitoSession();
+    state.conversations.unshift({ id, title: "New chat", updatedAt: Date.now(), pinned: false, incognito });
     state.messagesByConvo[id] = [];
     state.activeConvoId = id;
     renderHistory(historySearch.value);
@@ -602,6 +632,88 @@
 
   newChatBtn.addEventListener("click", startNewConversation);
   newChatIconBtn.addEventListener("click", startNewConversation);
+
+  /* =======================================================================
+     8b. Incognito Mode
+     Toggling on starts a fresh, unsaved conversation so the user is never
+     left assuming an already-saved conversation just became private.
+     Toggling off (or the explicit "Turn off" exit action) discards every
+     incognito-flagged conversation from in-memory state immediately and
+     returns to the most recent real conversation, matching the "clears
+     when exited" requirement without waiting for a refresh. A refresh or
+     tab close clears it automatically too, since none of this ever
+     touches storage (see js/session.js).
+     ======================================================================= */
+  function paintIncognitoUI(active) {
+    if (incognitoBadge) incognitoBadge.hidden = !active;
+    if (incognitoStrip) incognitoStrip.hidden = !active;
+    if (incognitoToggleBtn) {
+      incognitoToggleBtn.classList.toggle("is-active", active);
+      incognitoToggleBtn.setAttribute("aria-pressed", active ? "true" : "false");
+      incognitoToggleBtn.setAttribute("aria-label", active ? "Turn off Incognito Mode" : "Turn on Incognito Mode");
+      incognitoToggleBtn.title = active
+        ? "Incognito Mode is on: this chat isn't being saved"
+        : "Incognito Mode: this chat won't be saved";
+    }
+    document.documentElement.setAttribute("data-incognito", active ? "true" : "false");
+  }
+
+  function discardIncognitoConversations() {
+    const remaining = [];
+    state.conversations.forEach((c) => {
+      if (c.incognito) {
+        delete state.messagesByConvo[c.id];
+      } else {
+        remaining.push(c);
+      }
+    });
+    const activeWasIncognito = state.activeConvoId && !remaining.some((c) => c.id === state.activeConvoId);
+    state.conversations = remaining;
+    if (activeWasIncognito) {
+      if (remaining.length) {
+        switchConversation(remaining.slice().sort((a, b) => b.updatedAt - a.updatedAt)[0].id);
+      } else {
+        startNewConversation();
+      }
+    } else {
+      renderHistory(historySearch.value);
+    }
+  }
+
+  function setIncognito(active) {
+    if (!window.NemotronSession) return;
+    window.NemotronSession.setIncognitoActive(active);
+  }
+
+  if (window.NemotronSession) {
+    paintIncognitoUI(isIncognitoSession());
+    window.NemotronSession.onIncognitoChange((active) => {
+      paintIncognitoUI(active);
+      if (active) {
+        startNewConversation();
+        showToast("info", "Incognito Mode on", "This conversation won't be saved.");
+      } else {
+        discardIncognitoConversations();
+        showToast("info", "Incognito Mode off", "The temporary conversation was cleared.");
+      }
+    });
+  }
+
+  incognitoToggleBtn && incognitoToggleBtn.addEventListener("click", () => {
+    setIncognito(!isIncognitoSession());
+  });
+  incognitoExitBtn && incognitoExitBtn.addEventListener("click", () => {
+    setIncognito(false);
+  });
+
+  // Belt and suspenders: if a conversation somehow ends up incognito-flagged
+  // (e.g. state restored oddly) but the app is no longer in an ephemeral
+  // session, never let it silently persist on the next save.
+  window.addEventListener("beforeunload", () => {
+    if (!isIncognitoSession()) return;
+    // Nothing to write: incognito state and its conversations live only in
+    // this tab's memory and are simply discarded as the page unloads.
+  });
 
   /* =======================================================================
      9. Message rendering
@@ -623,7 +735,7 @@
     }
     return `
       <div class="msg-attachment">
-        <svg width="16" height="16"><use href="#icon-file"/></svg>
+        <i class="fa-regular fa-file nv-icon" aria-hidden="true"></i>
         <span class="msg-attachment__name">${escapeHtml(att.name)}</span>
       </div>`;
   }
@@ -673,24 +785,24 @@
     if (msg.role === "user") {
       actions.innerHTML = `
         <button class="msg__action-btn" type="button" data-action="edit" aria-label="Edit message" title="Edit">
-          <svg width="15" height="15"><use href="#icon-edit"/></svg>
+          <i class="fa-solid fa-pen nv-icon" aria-hidden="true"></i>
         </button>
         <button class="msg__action-btn" type="button" data-action="copy" aria-label="Copy message" title="Copy">
-          <svg width="15" height="15"><use href="#icon-copy"/></svg>
+          <i class="fa-regular fa-copy nv-icon" aria-hidden="true"></i>
         </button>`;
     } else if (!msg.streaming) {
       actions.innerHTML = `
         <button class="msg__action-btn" type="button" data-action="copy" aria-label="Copy response" title="Copy">
-          <svg width="15" height="15"><use href="#icon-copy"/></svg>
+          <i class="fa-regular fa-copy nv-icon" aria-hidden="true"></i>
         </button>
         <button class="msg__action-btn" type="button" data-action="regenerate" aria-label="Regenerate response" title="Regenerate">
-          <svg width="15" height="15"><use href="#icon-refresh"/></svg>
+          <i class="fa-solid fa-rotate-right nv-icon" aria-hidden="true"></i>
         </button>
         <button class="msg__action-btn ${msg.feedback === "up" ? "is-active" : ""}" type="button" data-action="thumb-up" aria-label="Good response" title="Good response">
-          <svg width="15" height="15"><use href="#icon-thumb-up"/></svg>
+          <i class="fa-${msg.feedback === "up" ? "solid" : "regular"} fa-thumbs-up nv-icon" aria-hidden="true"></i>
         </button>
         <button class="msg__action-btn ${msg.feedback === "down" ? "is-active" : ""}" type="button" data-action="thumb-down" aria-label="Bad response" title="Bad response">
-          <svg width="15" height="15"><use href="#icon-thumb-down"/></svg>
+          <i class="fa-${msg.feedback === "down" ? "solid" : "regular"} fa-thumbs-down nv-icon" aria-hidden="true"></i>
         </button>`;
     }
 
@@ -850,16 +962,16 @@
               <img src="${a.previewUrl}" alt="" style="width:100%;height:100%;object-fit:cover;" />
             </div>
             <button class="attachment-chip__remove" type="button" data-remove-attachment="${a.id}" aria-label="Remove attachment">
-              <svg width="12" height="12"><use href="#icon-x"/></svg>
+              <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
             </button>
           </div>`;
       }
       return `
         <div class="attachment-chip" data-attachment-id="${a.id}">
-          <svg width="14" height="14"><use href="#icon-file"/></svg>
+          <i class="fa-regular fa-file nv-icon" aria-hidden="true"></i>
           <span class="attachment-chip__name">${escapeHtml(a.name)}</span>
           <button class="attachment-chip__remove" type="button" data-remove-attachment="${a.id}" aria-label="Remove attachment">
-            <svg width="12" height="12"><use href="#icon-x"/></svg>
+            <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
           </button>
         </div>`;
     }).join("");
@@ -1240,6 +1352,12 @@
   function openModalById(id) {
     const overlay = document.getElementById(id);
     if (!overlay) return;
+    // Guard against stacking two full-screen modal overlays at once (e.g.
+    // pressing Shift+? to open the shortcuts modal while the delete-confirm
+    // modal is already open). Close any other open modal first.
+    $$(".modal-overlay.is-open").forEach((openOverlay) => {
+      if (openOverlay !== overlay) closeModalById(openOverlay.id);
+    });
     lastFocusedEl = document.activeElement;
     overlay.classList.add("is-open");
     document.body.style.overflow = "hidden";

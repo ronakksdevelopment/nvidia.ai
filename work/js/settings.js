@@ -189,13 +189,16 @@
     keyStatus.className = "key-status key-status--" + state;
     keyStatusText.textContent = message;
     const iconMap = {
-      idle: "icon-info",
-      checking: "icon-refresh",
-      valid: "icon-check-circle",
-      invalid: "icon-x-circle",
+      idle: "fa-circle-info",
+      checking: "fa-rotate-right",
+      valid: "fa-circle-check",
+      invalid: "fa-circle-xmark",
     };
-    const svgUse = keyStatus.querySelector("use");
-    if (svgUse) svgUse.setAttribute("href", "#" + (iconMap[state] || "icon-info"));
+    const icon = keyStatus.querySelector(".nv-icon");
+    if (icon) {
+      icon.className = "fa-solid " + (iconMap[state] || iconMap.idle) + " nv-icon nv-icon--sm";
+      icon.classList.toggle("fa-spin", state === "checking");
+    }
   }
 
   /* -----------------------------------------------------------------------
@@ -275,8 +278,8 @@
     apiKeyInput.type = isPassword ? "text" : "password";
     toggleKeyVisibility.setAttribute("aria-label", isPassword ? "Hide API key" : "Show API key");
     toggleKeyVisibility.innerHTML = isPassword
-      ? '<svg width="18" height="18"><use href="#icon-eye-off"/></svg>'
-      : '<svg width="18" height="18"><use href="#icon-eye"/></svg>';
+      ? '<i class="fa-solid fa-eye-slash nv-icon" aria-hidden="true"></i>'
+      : '<i class="fa-solid fa-eye nv-icon" aria-hidden="true"></i>';
   });
 
   /* -----------------------------------------------------------------------
@@ -476,13 +479,16 @@
     testStatus.className = "key-status key-status--" + state;
     testStatus.querySelector("span").textContent = message;
     const iconMap = {
-      idle: "icon-info",
-      checking: "icon-refresh",
-      valid: "icon-check-circle",
-      invalid: "icon-x-circle",
+      idle: "fa-circle-info",
+      checking: "fa-rotate-right",
+      valid: "fa-circle-check",
+      invalid: "fa-circle-xmark",
     };
-    const svgUse = testStatus.querySelector("use");
-    if (svgUse) svgUse.setAttribute("href", "#" + (iconMap[state] || "icon-info"));
+    const icon = testStatus.querySelector(".nv-icon");
+    if (icon) {
+      icon.className = "fa-solid " + (iconMap[state] || iconMap.idle) + " nv-icon nv-icon--sm";
+      icon.classList.toggle("fa-spin", state === "checking");
+    }
   }
 
   testConnectionBtn.addEventListener("click", runConnectionTest);
@@ -508,6 +514,60 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeNav();
     });
+  }
+
+  /* -----------------------------------------------------------------------
+     Save bar: floats fixed only once the user has scrolled near the
+     bottom of the page. Fixes a bug where position: sticky snapped the
+     bar over mid-page content (e.g. the model meta card) immediately on
+     load, before any scrolling — sticky was resolving against the
+     document since .settings-shell__main-inner has no bounded scrolling
+     ancestor of its own. Keeping the bar in normal flow by default (see
+     .settings-savebar in settings.css) means it can only ever overlap
+     content once we deliberately pull it out of flow here, and we only
+     do that once the bar is already at/near the true bottom of the page,
+     so nothing above it is ever covered.
+     ----------------------------------------------------------------------- */
+  const settingsSavebar = document.getElementById("settingsSavebar");
+  if (settingsSavebar) {
+    const savebarSpacer = document.createElement("div");
+    savebarSpacer.setAttribute("aria-hidden", "true");
+    savebarSpacer.style.display = "none";
+    settingsSavebar.insertAdjacentElement("afterend", savebarSpacer);
+
+    let isFloating = false;
+    function updateSavebarFloat() {
+      const docHeight = document.documentElement.scrollHeight;
+      const viewportBottom = window.scrollY + window.innerHeight;
+      // Threshold: once the viewport's bottom edge is within one bar-height
+      // (plus a little breathing room) of the true end of the page, there's
+      // no more content below to hide, so floating is safe.
+      const barHeight = settingsSavebar.offsetHeight || 64;
+      const threshold = barHeight + 24;
+      const nearBottom = docHeight - viewportBottom <= threshold;
+      // Also float whenever the whole page already fits in the viewport,
+      // since there's nothing to scroll past in the first place.
+      const pageFitsViewport = docHeight <= window.innerHeight + threshold;
+      const shouldFloat = nearBottom || pageFitsViewport;
+
+      if (shouldFloat === isFloating) return;
+      isFloating = shouldFloat;
+      if (shouldFloat) {
+        savebarSpacer.style.display = "block";
+        savebarSpacer.style.height = settingsSavebar.offsetHeight + "px";
+        settingsSavebar.classList.add("settings-savebar--floating");
+      } else {
+        settingsSavebar.classList.remove("settings-savebar--floating");
+        savebarSpacer.style.display = "none";
+      }
+    }
+
+    updateSavebarFloat();
+    window.addEventListener("scroll", updateSavebarFloat, { passive: true });
+    window.addEventListener("resize", updateSavebarFloat);
+    if (window.ResizeObserver) {
+      new ResizeObserver(updateSavebarFloat).observe(document.body);
+    }
   }
 
   /* Expose for other pages that may want to read the saved model/key */

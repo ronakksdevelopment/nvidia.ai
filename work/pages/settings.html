@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="../css/design-system.css" />
 <link rel="stylesheet" href="../css/styles.css" />
@@ -26,7 +27,7 @@
 <a class="skip-link" href="#settingsMain">Skip to content</a>
 
 <div class="offline-banner" id="offlineBanner" role="status">
-  <svg width="16" height="16"><use href="#icon-wifi-off"/></svg>
+  <span class="nv-icon-stack nv-icon--sm" aria-hidden="true"><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-slash nv-icon-stack__strike"></i></span>
   <span>You're offline. Some features may be unavailable.</span>
 </div>
 
@@ -35,7 +36,7 @@
   <!-- Mobile topbar -->
   <div class="settings-shell__mobile-topbar">
     <button class="icon-btn" id="settingsNavToggle" type="button" aria-label="Open settings menu" aria-expanded="false" aria-controls="settingsNav">
-      <svg width="20" height="20"><use href="#icon-menu"/></svg>
+      <i class="fa-solid fa-bars nv-icon" aria-hidden="true"></i>
     </button>
     <span class="settings-shell__brand">
       <img src="../assets/logo/nemotron-32.png" alt="" width="20" height="20" />
@@ -57,11 +58,11 @@
     <nav class="settings-nav-group" aria-label="Settings sections">
       <span class="settings-nav-group__label">Settings</span>
       <a class="settings-nav-link" href="settings.html" aria-current="page">
-        <svg width="18" height="18"><use href="#icon-settings"/></svg>
+        <i class="fa-solid fa-gear nv-icon" aria-hidden="true"></i>
         General &amp; OpenRouter
       </a>
       <a class="settings-nav-link" href="profile.html">
-        <svg width="18" height="18"><use href="#icon-user"/></svg>
+        <i class="fa-solid fa-user nv-icon" aria-hidden="true"></i>
         Profile
       </a>
     </nav>
@@ -69,26 +70,26 @@
     <nav class="settings-nav-group" aria-label="Resources">
       <span class="settings-nav-group__label">Resources</span>
       <a class="settings-nav-link" href="about.html">
-        <svg width="18" height="18"><use href="#icon-info"/></svg>
+        <i class="fa-solid fa-circle-info nv-icon" aria-hidden="true"></i>
         About
       </a>
       <a class="settings-nav-link" href="help.html">
-        <svg width="18" height="18"><use href="#icon-help"/></svg>
+        <i class="fa-solid fa-circle-question nv-icon" aria-hidden="true"></i>
         Help &amp; FAQ
       </a>
       <a class="settings-nav-link" href="privacy.html">
-        <svg width="18" height="18"><use href="#icon-shield"/></svg>
+        <i class="fa-solid fa-shield-halved nv-icon" aria-hidden="true"></i>
         Privacy Policy
       </a>
       <a class="settings-nav-link" href="terms.html">
-        <svg width="18" height="18"><use href="#icon-file"/></svg>
+        <i class="fa-regular fa-file nv-icon" aria-hidden="true"></i>
         Terms of Service
       </a>
     </nav>
 
     <div class="settings-shell__back">
       <a class="settings-nav-link" href="chat.html">
-        <svg width="18" height="18"><use href="#icon-arrow-right" style="transform:rotate(180deg)"/></svg>
+        <i class="fa-solid fa-arrow-left nv-icon" aria-hidden="true"></i>
         Back to chat
       </a>
     </div>
@@ -102,7 +103,7 @@
 
       <div class="settings-page-header">
         <span class="settings-page-header__eyebrow">
-          <svg width="14" height="14"><use href="#icon-cpu"/></svg>
+          <i class="fa-solid fa-microchip nv-icon nv-icon--sm" aria-hidden="true"></i>
           Settings
         </span>
         <h1 class="settings-page-header__title">General &amp; OpenRouter</h1>
@@ -119,7 +120,7 @@
         <section class="settings-section">
           <div class="settings-section__head">
             <h2 class="settings-section__title">
-              <svg width="18" height="18"><use href="#icon-key"/></svg>
+              <i class="fa-solid fa-key nv-icon" aria-hidden="true"></i>
               OpenRouter API key
             </h2>
             <p class="settings-section__desc">
@@ -131,7 +132,7 @@
           <div class="field">
             <label class="field__label" for="apiKeyInput">API key <span class="optional">(required to send messages)</span></label>
             <div class="input-wrap api-key-field">
-              <svg class="input-icon" width="18" height="18"><use href="#icon-key"/></svg>
+              <i class="fa-solid fa-key nv-icon input-icon" aria-hidden="true"></i>
               <input
                 class="input"
                 id="apiKeyInput"
@@ -144,21 +145,21 @@
               />
               <div class="api-key-field__actions">
                 <button class="icon-btn" type="button" id="toggleKeyVisibility" aria-label="Show API key">
-                  <svg width="18" height="18"><use href="#icon-eye"/></svg>
+                  <i class="fa-solid fa-eye nv-icon" aria-hidden="true"></i>
                 </button>
                 <button class="icon-btn" type="button" id="pasteKeyBtn" aria-label="Paste from clipboard" title="Paste from clipboard">
-                  <svg width="18" height="18"><use href="#icon-copy"/></svg>
+                  <i class="fa-regular fa-copy nv-icon" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
             <span class="field__hint" id="apiKeyHint">Stored locally in this browser via <code class="text-mono">localStorage</code>. Never uploaded to Nemotron's servers.</span>
             <span class="field__error" id="apiKeyError" hidden>
-              <svg width="14" height="14"><use href="#icon-alert-triangle"/></svg>
+              <i class="fa-solid fa-triangle-exclamation nv-icon nv-icon--sm" aria-hidden="true"></i>
               <span id="apiKeyErrorText">Enter a valid OpenRouter API key.</span>
             </span>
 
             <div class="key-status key-status--idle" id="keyStatus">
-              <svg width="14" height="14"><use href="#icon-info"/></svg>
+              <i class="fa-solid fa-circle-info nv-icon nv-icon--sm" aria-hidden="true"></i>
               <span id="keyStatusText">No key saved yet.</span>
             </div>
           </div>
@@ -168,7 +169,7 @@
         <section class="settings-section">
           <div class="settings-section__head">
             <h2 class="settings-section__title">
-              <svg width="18" height="18"><use href="#icon-cpu"/></svg>
+              <i class="fa-solid fa-microchip nv-icon" aria-hidden="true"></i>
               Default model
             </h2>
             <p class="settings-section__desc">
@@ -189,7 +190,7 @@
                 <option value="nvidia/llama-nemotron-embed-vl-1b-v2:free">Llama Nemotron Embed VL 1B v2</option>
                 <option value="nvidia/nemotron-3-embed-1b:free">Nemotron 3 Embed 1B</option>
               </select>
-              <svg class="select-chevron" width="16" height="16"><use href="#icon-chevron-down"/></svg>
+              <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm select-chevron" aria-hidden="true"></i>
             </div>
             <span class="field__hint">Exactly eight free NVIDIA models are available via OpenRouter.</span>
           </div>
@@ -212,7 +213,7 @@
         <section class="settings-section">
           <div class="settings-section__head">
             <h2 class="settings-section__title">
-              <svg width="18" height="18"><use href="#icon-sun"/></svg>
+              <i class="fa-solid fa-sun nv-icon" aria-hidden="true"></i>
               Theme
             </h2>
             <p class="settings-section__desc">Choose how Nemotron looks on this device.</p>
@@ -225,10 +226,10 @@
                 <span class="theme-option__preview theme-option__preview--dark"><span></span><span></span></span>
                 <span class="theme-option__foot">
                   <span class="theme-option__name">
-                    <svg width="14" height="14" style="vertical-align:-2px; margin-right:6px;"><use href="#icon-moon"/></svg>
+                    <i class="fa-solid fa-moon nv-icon nv-icon--sm" aria-hidden="true"></i>
                     Dark
                   </span>
-                  <span class="theme-option__check"><svg width="12" height="12"><use href="#icon-check"/></svg></span>
+                  <span class="theme-option__check"><i class="fa-solid fa-check nv-icon nv-icon--xs" aria-hidden="true"></i></span>
                 </span>
               </span>
             </label>
@@ -239,10 +240,10 @@
                 <span class="theme-option__preview theme-option__preview--light"><span></span><span></span></span>
                 <span class="theme-option__foot">
                   <span class="theme-option__name">
-                    <svg width="14" height="14" style="vertical-align:-2px; margin-right:6px;"><use href="#icon-sun"/></svg>
+                    <i class="fa-solid fa-sun nv-icon nv-icon--sm" aria-hidden="true"></i>
                     Light
                   </span>
-                  <span class="theme-option__check"><svg width="12" height="12"><use href="#icon-check"/></svg></span>
+                  <span class="theme-option__check"><i class="fa-solid fa-check nv-icon nv-icon--xs" aria-hidden="true"></i></span>
                 </span>
               </span>
             </label>
@@ -253,10 +254,10 @@
                 <span class="theme-option__preview theme-option__preview--system"></span>
                 <span class="theme-option__foot">
                   <span class="theme-option__name">
-                    <svg width="14" height="14" style="vertical-align:-2px; margin-right:6px;"><use href="#icon-monitor"/></svg>
+                    <i class="fa-solid fa-display nv-icon nv-icon--sm" aria-hidden="true"></i>
                     System
                   </span>
-                  <span class="theme-option__check"><svg width="12" height="12"><use href="#icon-check"/></svg></span>
+                  <span class="theme-option__check"><i class="fa-solid fa-check nv-icon nv-icon--xs" aria-hidden="true"></i></span>
                 </span>
               </span>
             </label>
@@ -267,7 +268,7 @@
         <section class="settings-section">
           <div class="settings-section__head">
             <h2 class="settings-section__title">
-              <svg width="18" height="18"><use href="#icon-zap"/></svg>
+              <i class="fa-solid fa-bolt-lightning nv-icon" aria-hidden="true"></i>
               Test connection
             </h2>
             <p class="settings-section__desc">
@@ -278,11 +279,11 @@
           <div class="test-panel">
             <div class="test-panel__row">
               <button class="btn btn--secondary" type="button" id="testConnectionBtn">
-                <svg width="16" height="16"><use href="#icon-bolt"/></svg>
+                <i class="fa-solid fa-bolt nv-icon nv-icon--sm" aria-hidden="true"></i>
                 Send test message
               </button>
               <span class="key-status key-status--idle" id="testStatus">
-                <svg width="14" height="14"><use href="#icon-info"/></svg>
+                <i class="fa-solid fa-circle-info nv-icon nv-icon--sm" aria-hidden="true"></i>
                 <span>Save a key first to run a test.</span>
               </span>
             </div>
@@ -294,7 +295,7 @@
         <section class="settings-section">
           <div class="settings-section__head">
             <h2 class="settings-section__title">
-              <svg width="18" height="18"><use href="#icon-trash"/></svg>
+              <i class="fa-regular fa-trash-can nv-icon" aria-hidden="true"></i>
               Reset
             </h2>
             <p class="settings-section__desc">
@@ -311,14 +312,14 @@
         </section>
 
         <!-- ============ Save bar ============ -->
-        <div class="settings-savebar">
+        <div class="settings-savebar" id="settingsSavebar">
           <span class="settings-savebar__status" id="saveStatus" hidden>
-            <svg width="14" height="14"><use href="#icon-check-circle"/></svg>
+            <i class="fa-solid fa-circle-check nv-icon nv-icon--sm" aria-hidden="true"></i>
             <span>Saved</span>
           </span>
           <button class="btn btn--secondary" type="button" id="discardBtn">Discard changes</button>
           <button class="btn btn--primary" type="submit" id="saveSettingsBtn">
-            <svg width="16" height="16"><use href="#icon-check"/></svg>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
             Save settings
           </button>
         </div>
@@ -334,7 +335,7 @@
 <div class="modal-overlay" id="resetConfirmModal" data-modal-overlay>
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="resetConfirmTitle">
     <div class="modal__icon modal__icon--danger">
-      <svg width="22" height="22"><use href="#icon-trash"/></svg>
+      <i class="fa-regular fa-trash-can nv-icon nv-icon--lg" aria-hidden="true"></i>
     </div>
     <h2 class="modal__title" id="resetConfirmTitle">Reset all settings?</h2>
     <p class="modal__body">Your API key, model selection, and theme preference will be removed from this browser. This can't be undone.</p>
@@ -352,35 +353,8 @@
      ICON SPRITE
      ========================================================= -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="icon-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 3-2M12 20h.01M19 12.5a10 10 0 0 0-2.7-2.1M16.7 6.6A15.9 15.9 0 0 0 12 6c-1 0-2 .1-2.9.3"/></symbol>
-  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
-  <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
-  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></symbol>
-  <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 8v.01"/></symbol>
-  <symbol id="icon-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.7 1.3c0 2-3 2.2-3 4.2"/><path d="M12 17.5h.01"/></symbol>
-  <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
-  <symbol id="icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></symbol>
-  <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-  <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
-  <symbol id="icon-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12 20 3M16 8l3 3M13 11l2.5 2.5"/></symbol>
-  <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
-  <symbol id="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.2 4.2M6.4 6.7C4 8.3 2 12 2 12s3.5 7 10 7c1.8 0 3.4-.5 4.7-1.2M9.9 5.2A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a15.6 15.6 0 0 1-2.2 3"/></symbol>
-  <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
-  <symbol id="icon-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 2.5 18a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.7 3.9a1.5 1.5 0 0 0-2.6 0z"/><path d="M12 9v4M12 16.5v.01"/></symbol>
-  <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="icon-nemotron-mark" viewBox="0 0 100 100" fill="none"><path d="M50 8 90 30v40L50 92 10 70V30z" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/><circle cx="50" cy="30" r="6" fill="currentColor"/><circle cx="50" cy="70" r="6" fill="currentColor"/><circle cx="30" cy="42" r="6" fill="currentColor"/><circle cx="70" cy="42" r="6" fill="currentColor"/><circle cx="30" cy="58" r="6" fill="currentColor"/><circle cx="70" cy="58" r="6" fill="currentColor"/><circle cx="50" cy="50" r="9" fill="currentColor"/><path d="M50 30 30 42M50 30l20 12M30 42v16M70 42v16M30 58l20 12M70 58 50 70M50 30v40M30 42l40 16M70 42 30 58" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/></symbol>
-  <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
-  <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></symbol>
-  <symbol id="icon-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
-  <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></symbol>
-  <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.3 2.3 4.7-5"/></symbol>
-  <symbol id="icon-x-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6M15 9l-6 6"/></symbol>
-  <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
-  <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
-  <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></symbol>
-  <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></symbol>
 </svg>
-
 <script src="../js/session.js"></script>
 <script src="../js/router.js"></script>
 <script src="../js/app.js"></script>

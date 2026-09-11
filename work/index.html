@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="css/design-system.css" />
 <link rel="stylesheet" href="css/styles.css" />
@@ -38,7 +39,7 @@
      OFFLINE BANNER
      ========================================================= -->
 <div class="offline-banner" id="offlineBanner" role="status">
-  <svg width="16" height="16"><use href="#icon-wifi-off"/></svg>
+  <span class="nv-icon-stack nv-icon--sm" aria-hidden="true"><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-slash nv-icon-stack__strike"></i></span>
   <span>You're offline. Some features may be unavailable.</span>
 </div>
 
@@ -64,7 +65,7 @@
       <button class="btn btn--ghost btn--sm" type="button" data-open-modal="signinModal">Sign in</button>
       <button class="btn btn--primary btn--sm" type="button" data-open-modal="signupModal">Get started</button>
       <button class="navbar__menu-btn" type="button" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
-        <svg width="22" height="22"><use href="#icon-menu"/></svg>
+        <i class="fa-solid fa-bars nv-icon nv-icon--lg" aria-hidden="true"></i>
       </button>
     </div>
   </div>
@@ -77,7 +78,7 @@
     <div class="nav-drawer__header">
       <span class="navbar__brand"><img src="assets/logo/nemotron-48.png" alt="" width="28" height="28" />Nemotron</span>
       <button class="modal__close" type="button" data-close-drawer aria-label="Close menu">
-        <svg width="20" height="20"><use href="#icon-x"/></svg>
+        <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
       </button>
     </div>
     <nav class="nav-drawer__links" aria-label="Mobile">
@@ -102,7 +103,7 @@
     <div class="container hero__inner">
       <img class="hero__logo-mark" src="assets/logo/nemotron-192.png" alt="" width="72" height="72" />
       <span class="hero__eyebrow badge badge--brand">
-        <svg width="12" height="12"><use href="#icon-spark"/></svg>
+        <i class="fa-solid fa-sparkles nv-icon nv-icon--xs" aria-hidden="true"></i>
         Nemotron v1.0 Beta is here
       </span>
       <h1 class="hero__title text-display">Open, efficient AI, built by NVIDIA</h1>
@@ -113,10 +114,10 @@
       <div class="hero__actions">
         <button class="btn btn--primary btn--lg" type="button" data-open-modal="signupModal">
           Start building
-          <svg><use href="#icon-arrow-right"/></svg>
+          <i class="fa-solid fa-arrow-right nv-icon" aria-hidden="true"></i>
         </button>
         <a class="btn btn--secondary btn--lg" href="pages/about.html">
-          <svg><use href="#icon-info"/></svg>
+          <i class="fa-solid fa-circle-info nv-icon" aria-hidden="true"></i>
           Learn more
         </a>
       </div>
@@ -137,37 +138,37 @@
 
       <div class="grid-3">
         <article class="card card--interactive">
-          <span class="card__icon"><svg><use href="#icon-bolt"/></svg></span>
+          <span class="card__icon"><i class="fa-solid fa-bolt nv-icon" aria-hidden="true"></i></span>
           <h3 class="card__title">Fast inference</h3>
           <p class="card__body">Optimized attention and quantization paths deliver low-latency responses on NVIDIA GPUs, from RTX workstations to H100 clusters.</p>
         </article>
 
         <article class="card card--interactive">
-          <span class="card__icon"><svg><use href="#icon-layers"/></svg></span>
+          <span class="card__icon"><i class="fa-solid fa-layer-group nv-icon" aria-hidden="true"></i></span>
           <h3 class="card__title">Open model family</h3>
           <p class="card__body">Eight free Nemotron models share the same open lineage, so you can prototype small and scale up without rewriting your stack.</p>
         </article>
 
         <article class="card card--interactive">
-          <span class="card__icon"><svg><use href="#icon-shield"/></svg></span>
+          <span class="card__icon"><i class="fa-solid fa-shield-halved nv-icon" aria-hidden="true"></i></span>
           <h3 class="card__title">Transparent by design</h3>
           <p class="card__body">Training data lineage, evaluation results, and model cards are published alongside every release. Nothing is a black box.</p>
         </article>
 
         <article class="card card--interactive">
-          <span class="card__icon"><svg><use href="#icon-cpu"/></svg></span>
+          <span class="card__icon"><i class="fa-solid fa-microchip nv-icon" aria-hidden="true"></i></span>
           <h3 class="card__title">Hardware-aware</h3>
           <p class="card__body">Built and tuned alongside NVIDIA's own inference stack, so throughput and memory footprint are optimized, not an afterthought.</p>
         </article>
 
         <article class="card card--interactive">
-          <span class="card__icon"><svg><use href="#icon-globe"/></svg></span>
+          <span class="card__icon"><i class="fa-solid fa-globe nv-icon" aria-hidden="true"></i></span>
           <h3 class="card__title">Runs anywhere</h3>
           <p class="card__body">Chat through this site using your own OpenRouter API key, or self-host the open weights on your own infrastructure.</p>
         </article>
 
         <article class="card card--interactive">
-          <span class="card__icon"><svg><use href="#icon-spark"/></svg></span>
+          <span class="card__icon"><i class="fa-solid fa-sparkles nv-icon" aria-hidden="true"></i></span>
           <h3 class="card__title">Reasoning-tuned</h3>
           <p class="card__body">Post-trained on multi-step reasoning and tool-use traces, so Nemotron plans before it answers on complex tasks.</p>
         </article>
@@ -189,7 +190,7 @@
       <div class="stack gap-3">
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-bolt"/></svg></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-bolt nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Nemotron 3 Ultra</div>
               <div class="model-row__desc">Frontier reasoning and long-running agent orchestration</div>
@@ -204,7 +205,7 @@
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-layers"/></svg></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-layer-group nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Nemotron 3 Super</div>
               <div class="model-row__desc">Balanced reasoning for complex multi-agent applications</div>
@@ -219,7 +220,7 @@
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-cpu"/></svg></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-microchip nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Nemotron 3.5 Lightning</div>
               <div class="model-row__desc">High-throughput, fast agentic workloads</div>
@@ -234,7 +235,7 @@
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-spark"/></svg></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-sparkles nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Nemotron 3 Nano Omni</div>
               <div class="model-row__desc">Compact multimodal reasoning, text and image input</div>
@@ -249,7 +250,7 @@
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-shield"/></svg></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-shield-halved nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Nemotron 3.5 Content Safety</div>
               <div class="model-row__desc">Moderation and guardrail model for prompts and responses</div>
@@ -264,7 +265,7 @@
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-layers"/></svg></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-layer-group nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Llama Nemotron Rerank VL 1B</div>
               <div class="model-row__desc">Multimodal document reranking for RAG pipelines</div>
@@ -279,7 +280,7 @@
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-globe"/></svg></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-globe nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Llama Nemotron Embed VL 1B</div>
               <div class="model-row__desc">Multimodal embeddings for text and document images</div>
@@ -294,7 +295,7 @@
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-cpu"/></svg></span>
+            <span class="model-row__glyph"><i class="fa-solid fa-microchip nv-icon" aria-hidden="true"></i></span>
             <div>
               <div class="model-row__name">Nemotron 3 Embed 1B</div>
               <div class="model-row__desc">High-throughput text embeddings for retrieval</div>
@@ -354,7 +355,7 @@
     <div class="modal__header">
       <div></div>
       <button class="modal__close" type="button" data-close-modal aria-label="Close dialog">
-        <svg width="20" height="20"><use href="#icon-x"/></svg>
+        <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
       </button>
     </div>
     <img src="assets/logo/nemotron-48.png" alt="" width="36" height="36" style="margin-bottom: var(--space-4);" />
@@ -364,14 +365,14 @@
       <div class="field">
         <label class="field__label" for="siName">Name</label>
         <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18"><use href="#icon-user"/></svg>
+          <i class="fa-solid fa-user nv-icon input-icon" aria-hidden="true"></i>
           <input class="input" id="siName" type="text" placeholder="Ada Lovelace" autocomplete="name" />
         </div>
       </div>
       <div class="field">
         <label class="field__label" for="siEmail">Email</label>
         <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18"><use href="#icon-mail"/></svg>
+          <i class="fa-solid fa-envelope nv-icon input-icon" aria-hidden="true"></i>
           <input class="input" id="siEmail" type="email" placeholder="you@company.com" autocomplete="email" />
         </div>
       </div>
@@ -379,7 +380,7 @@
     </form>
     <div class="auth-divider">or</div>
     <button class="btn btn--secondary btn--full" type="button" data-continue-guest data-close-modal>
-      <svg width="18" height="18"><use href="#icon-user"/></svg>
+      <i class="fa-solid fa-user nv-icon" aria-hidden="true"></i>
       Continue as guest
     </button>
     <p class="auth-footer-note mt-4" style="margin-top: var(--space-3);">Guest sessions are not saved. Nothing persists, even in a normal window.</p>
@@ -393,7 +394,7 @@
     <div class="modal__header">
       <div></div>
       <button class="modal__close" type="button" data-close-modal aria-label="Close dialog">
-        <svg width="20" height="20"><use href="#icon-x"/></svg>
+        <i class="fa-solid fa-xmark nv-icon" aria-hidden="true"></i>
       </button>
     </div>
     <img src="assets/logo/nemotron-48.png" alt="" width="36" height="36" style="margin-bottom: var(--space-4);" />
@@ -407,7 +408,7 @@
       <div class="field">
         <label class="field__label" for="suEmail">Email</label>
         <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18"><use href="#icon-mail"/></svg>
+          <i class="fa-solid fa-envelope nv-icon input-icon" aria-hidden="true"></i>
           <input class="input" id="suEmail" type="email" placeholder="you@company.com" autocomplete="email" />
         </div>
       </div>
@@ -415,7 +416,7 @@
     </form>
     <div class="auth-divider">or</div>
     <button class="btn btn--secondary btn--full" type="button" data-continue-guest data-close-modal>
-      <svg width="18" height="18"><use href="#icon-user"/></svg>
+      <i class="fa-solid fa-user nv-icon" aria-hidden="true"></i>
       Continue as guest
     </button>
     <p class="auth-footer-note mt-4" style="margin-top: var(--space-3);">Guest sessions are not saved. Nothing persists, even in a normal window.</p>
@@ -432,123 +433,6 @@
      ICON SPRITE (inlined for reliability on static hosting)
      ========================================================= -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/>
-  </symbol>
-  <symbol id="icon-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3 2 8l10 5 10-5-10-5z"/>
-    <path d="M2 13l10 5 10-5"/>
-  </symbol>
-  <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="6" y="6" width="12" height="12" rx="2"/>
-    <rect x="9.5" y="9.5" width="5" height="5" rx="1"/>
-    <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
-  </symbol>
-  <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"/>
-    <path d="m9 12 2 2 4-4"/>
-  </symbol>
-  <symbol id="icon-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>
-  </symbol>
-  <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m6 9 6 6 6-6"/>
-  </symbol>
-  <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m5 13 4 4L19 7"/>
-  </symbol>
-  <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="m8.5 12.5 2.3 2.3 4.7-5"/>
-  </symbol>
-  <symbol id="icon-alert-triangle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M10.3 3.9 2.5 18a1.5 1.5 0 0 0 1.3 2.2h16.4a1.5 1.5 0 0 0 1.3-2.2L13.7 3.9a1.5 1.5 0 0 0-2.6 0z"/>
-    <path d="M12 9v4M12 16.5v.01"/>
-  </symbol>
-  <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M12 11v5.5M12 8v.01"/>
-  </symbol>
-  <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 6l12 12M18 6 6 18"/>
-  </symbol>
-  <symbol id="icon-x-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="m9 9 6 6M15 9l-6 6"/>
-  </symbol>
-  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 6h16M4 12h16M4 18h16"/>
-  </symbol>
-  <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="11" cy="11" r="7"/>
-    <path d="m20 20-3.5-3.5"/>
-  </symbol>
-  <symbol id="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="5" width="18" height="14" rx="2"/>
-    <path d="m4 7 8 6 8-6"/>
-  </symbol>
-  <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="5" y="10" width="14" height="10" rx="2"/>
-    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-  </symbol>
-  <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/>
-    <circle cx="12" cy="12" r="3"/>
-  </symbol>
-  <symbol id="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.2 4.2M6.4 6.7C4 8.3 2 12 2 12s3.5 7 10 7c1.8 0 3.4-.5 4.7-1.2M9.9 5.2A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a15.6 15.6 0 0 1-2.2 3"/>
-  </symbol>
-  <symbol id="icon-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 3-2M12 20h.01M19 12.5a10 10 0 0 0-2.7-2.1M16.7 6.6A15.9 15.9 0 0 0 12 6c-1 0-2 .1-2.9.3"/>
-  </symbol>
-  <symbol id="icon-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 12h4l2 3h4l2-3h4"/>
-    <path d="M5.5 5h13l1.5 7v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6l1.5-7z"/>
-  </symbol>
-  <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 12a9 9 0 0 1 15.3-6.4M21 12a9 9 0 0 1-15.3 6.4"/>
-    <path d="M18.7 3v4.6h-4.6M5.3 21v-4.6h4.6"/>
-  </symbol>
-  <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 7h16M9 7V4h6v3M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/>
-  </symbol>
-  <symbol id="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="9" y="9" width="12" height="12" rx="2"/>
-    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/>
-  </symbol>
-  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3v12m0 0 4.5-4.5M12 15 7.5 10.5"/>
-    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
-  </symbol>
-  <symbol id="icon-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-    <path d="m8.6 10.6 6.8-3.9M8.6 13.4l6.8 3.9"/>
-  </symbol>
-  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="4"/>
-    <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/>
-  </symbol>
-  <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="3"/>
-    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>
-  </symbol>
-  <symbol id="icon-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-    <path d="M16 17l5-5-5-5M21 12H9"/>
-  </symbol>
-  <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 12h14M13 6l6 6-6 6"/>
-  </symbol>
-  <symbol id="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M7 4.5v15l13-7.5z"/>
-  </symbol>
-  <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M3 12h18M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/>
-  </symbol>
-  <symbol id="icon-github" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <path d="M12 2a10 10 0 0 0-3.16 19.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.9-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/>
-  </symbol>
   <symbol id="icon-nemotron-mark" viewBox="0 0 100 100" fill="none">
     <path d="M50 8 90 30v40L50 92 10 70V30z" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/>
     <circle cx="50" cy="30" r="6" fill="currentColor"/>
@@ -561,8 +445,6 @@
     <path d="M50 30 30 42M50 30l20 12M30 42v16M70 42v16M30 58l20 12M70 58 50 70M50 30v40M30 42l40 16M70 42 30 58" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
   </symbol>
 </svg>
-
-
 <script src="js/session.js"></script>
 <script src="js/router.js"></script>
 <script src="js/app.js"></script>

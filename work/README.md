@@ -16,6 +16,10 @@ eight free NVIDIA Nemotron models.
   no server) or use guest mode, where nothing is saved at all.
 - Conversation history persists in your browser for signed-in sessions and
   is never saved for guest sessions.
+- Incognito Mode, toggled per conversation from the chat topbar: while
+  it's on, that conversation is never written to localStorage, even for a
+  signed-in session. It's an in-memory-only flag that resets on reload and
+  is independent of guest vs. signed-in identity.
 - Installable as a Progressive Web App, with offline support for the app
   shell.
 
@@ -88,6 +92,18 @@ picker in chat, or as the default model in Settings.
                                  # also inlined in that page's HTML for reliability
                                  # on static hosts, no cross-file SVG fetch)
 ```
+
+## Dependencies
+
+This is a no-build, vanilla HTML/CSS/JS project with exactly one external
+dependency: [Font Awesome 6](https://fontawesome.com/) (free icon set),
+loaded via the `cdnjs` CDN on every page for UI icons (nav, buttons,
+status indicators, and so on). It's the only third-party script or
+stylesheet the app loads; everything else — layout, theming, chat
+streaming, storage — is hand-written with no framework and no package
+manager. If you deploy somewhere that blocks third-party CDNs, icons will
+silently fail to render but the app otherwise keeps working, since no
+functionality depends on Font Awesome loading successfully.
 
 ## How chat works
 

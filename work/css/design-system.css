@@ -138,6 +138,7 @@
   --z-modal:     400;
   --z-toast:     500;
   --z-tooltip:   600;
+  --z-splash:    700;
 
   /* ---------- Layout ---------- */
   --container-max: 1240px;

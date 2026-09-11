@@ -35,7 +35,7 @@ body.chat-body {
   position: relative;
   height: 100%;
   overflow: hidden;
-  background: var(--nv-graphite-900);
+  background: var(--surface-raised);
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
@@ -186,7 +186,7 @@ body.chat-body {
 .history-item.is-active .history-item__menu-btn,
 .history-item__menu-btn[aria-expanded="true"] { opacity: 1; }
 .history-item__menu-btn:hover { background: var(--surface-active); color: var(--text-primary); }
-.history-item__menu-btn svg { width: 15px; height: 15px; }
+.history-item__menu-btn .nv-icon { font-size: 0.9375rem; }
 
 .sidebar__history-empty {
   padding: var(--space-6) var(--space-3);
@@ -223,7 +223,7 @@ body.chat-body {
 .usage-bar {
   height: 5px;
   border-radius: var(--radius-full);
-  background: var(--nv-graphite-700);
+  background: var(--surface-sunken);
   overflow: hidden;
 }
 .usage-bar__fill {
@@ -306,8 +306,8 @@ body.chat-body {
 .dropdown__item[disabled] { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 
 /* Collapse behavior */
-.sidebar__collapse-btn svg { transition: transform var(--duration-base) var(--ease-standard); }
-.chat-shell[data-sidebar="collapsed"] .sidebar__collapse-btn svg { transform: scaleX(-1); }
+.sidebar__collapse-btn .nv-icon { transition: transform var(--duration-base) var(--ease-standard); }
+.chat-shell[data-sidebar="collapsed"] .sidebar__collapse-btn .nv-icon { transform: scaleX(-1); }
 
 .sidebar-scrim {
   display: none;
@@ -389,8 +389,8 @@ body.chat-body {
 }
 .model-option__main { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
 .model-option__name { font-weight: var(--fw-medium); color: var(--text-primary); font-size: var(--fs-body-sm); }
-.model-option svg { color: var(--nv-green); opacity: 0; flex-shrink: 0; }
-.model-option[aria-selected="true"] svg { opacity: 1; }
+.model-option .nv-icon { color: var(--nv-green); opacity: 0; flex-shrink: 0; }
+.model-option[aria-selected="true"] .nv-icon { opacity: 1; }
 
 /* -------------------------------------------------------------------------
    3. Scrollable message region
@@ -457,7 +457,7 @@ body.chat-body {
               transform var(--duration-base) var(--ease-out),
               background-color var(--duration-base) var(--ease-standard);
 }
-.chat-suggestion svg { color: var(--nv-green); flex-shrink: 0; }
+.chat-suggestion .nv-icon { color: var(--nv-green); flex-shrink: 0; }
 .chat-suggestion:hover {
   border-color: rgba(118,185,0,0.4);
   background: var(--surface-hover);
@@ -494,8 +494,8 @@ body.chat-body {
   margin-top: 2px;
 }
 .msg--user .msg__avatar { background: linear-gradient(135deg, var(--nv-green), var(--nv-green-700)); color: var(--nv-black); font-size: 12px; font-weight: var(--fw-bold); }
-.msg--assistant .msg__avatar { background: var(--nv-graphite-800); border: 1px solid var(--border-subtle); color: var(--nv-green); }
-.msg--assistant .msg__avatar svg { width: 16px; height: 16px; }
+.msg--assistant .msg__avatar { background: var(--surface-sunken); border: 1px solid var(--border-subtle); color: var(--nv-green); }
+.msg--assistant .msg__avatar .nv-icon { font-size: 1rem; }
 
 .msg__col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
 
@@ -518,7 +518,7 @@ body.chat-body {
   max-width: 100%;
 }
 .msg--user .msg__bubble {
-  background: var(--nv-graphite-800);
+  background: var(--surface-sunken);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg) var(--radius-lg) var(--space-1) var(--radius-lg);
   padding: var(--space-3) var(--space-4);
@@ -615,6 +615,7 @@ body.chat-body {
   letter-spacing: 0.02em;
 }
 .code-block__copy-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
@@ -627,9 +628,35 @@ body.chat-body {
   padding: var(--space-1) var(--space-2);
   transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
 }
-.code-block__copy-btn svg { width: 13px; height: 13px; }
+.code-block__copy-btn .nv-icon { font-size: 0.8125rem; }
 .code-block__copy-btn:hover { color: var(--text-primary); border-color: var(--border-strong); background: var(--surface-hover); }
 .code-block__copy-btn.is-copied { color: var(--nv-green); border-color: rgba(118,185,0,0.4); }
+
+/* Icon swap: copy glyph <-> checkmark, cross-faded with a small pop */
+.code-block__copy-icon {
+  position: relative;
+  transition: transform var(--duration-base) var(--ease-out),
+              opacity var(--duration-base) var(--ease-standard);
+}
+.code-block__copy-icon--copied {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.5) rotate(-45deg);
+  color: var(--nv-green);
+}
+.code-block__copy-icon--default { opacity: 1; transform: scale(1) rotate(0deg); }
+.code-block__copy-btn.is-copied .code-block__copy-icon--default { opacity: 0; transform: scale(0.5) rotate(45deg); }
+.code-block__copy-btn.is-copied .code-block__copy-icon--copied { opacity: 1; transform: scale(1) rotate(0deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  .code-block__copy-icon { transition: opacity var(--duration-fast) linear; }
+  .code-block__copy-icon--default,
+  .code-block__copy-icon--copied { transform: none; }
+}
 
 .code-block pre {
   margin: 0;
@@ -675,14 +702,14 @@ body.chat-body {
   color: var(--text-secondary);
   max-width: 220px;
 }
-.msg-attachment svg { flex-shrink: 0; color: var(--nv-green); }
+.msg-attachment .nv-icon { flex-shrink: 0; color: var(--nv-green); }
 .msg-attachment__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .msg-attachment--image {
   width: 148px; height: 148px;
   padding: 0;
   overflow: hidden;
   position: relative;
-  background: var(--nv-graphite-800);
+  background: var(--surface-sunken);
   display: flex; align-items: center; justify-content: center;
 }
 .msg-attachment--image .img-placeholder-skeleton {
@@ -712,7 +739,7 @@ body.chat-body {
   border-radius: var(--radius-sm);
   transition: color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
 }
-.msg__action-btn svg { width: 15px; height: 15px; }
+.msg__action-btn .nv-icon { font-size: 0.9375rem; }
 .msg__action-btn:hover { color: var(--text-primary); background: var(--surface-hover); }
 .msg__action-btn.is-active { color: var(--nv-green); }
 .msg__action-btn--danger:hover { color: var(--status-danger); background: var(--status-danger-bg); }
@@ -828,7 +855,7 @@ body.chat-body {
 }
 
 .composer {
-  background: var(--nv-graphite-900);
+  background: var(--surface-raised);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: var(--space-2) var(--space-2) var(--space-1);
@@ -862,18 +889,18 @@ body.chat-body {
   animation: chipIn var(--duration-base) var(--ease-out);
 }
 @keyframes chipIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-.attachment-chip svg { color: var(--nv-green); flex-shrink: 0; }
+.attachment-chip .nv-icon { color: var(--nv-green); flex-shrink: 0; }
 .attachment-chip__name { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .attachment-chip__remove {
   background: transparent; border: none; color: var(--text-tertiary);
   display: inline-flex; padding: 1px; border-radius: 50%;
 }
 .attachment-chip__remove:hover { background: rgba(255,255,255,0.12); color: var(--text-primary); }
-.attachment-chip__remove svg { width: 12px; height: 12px; }
+.attachment-chip__remove .nv-icon { font-size: 0.75rem; }
 .attachment-chip--image { padding: 0; overflow: hidden; }
 .attachment-chip--image .attachment-chip__thumb {
   width: 56px; height: 56px;
-  background: var(--nv-graphite-700);
+  background: var(--surface-sunken);
   display: flex; align-items: center; justify-content: center;
   color: var(--text-disabled);
 }
@@ -892,6 +919,12 @@ body.chat-body {
 
 .composer__input {
   flex: 1;
+  /* Textareas have a browser-default intrinsic minimum width (historically
+     tied to the cols attribute) that a flex item does not shrink below
+     unless told to. Without this, the composer collapses to that intrinsic
+     width on narrow viewports and the placeholder/typed text wraps one
+     character per line instead of using the available row width. */
+  min-width: 0;
   background: transparent;
   border: none;
   color: var(--text-primary);
@@ -932,6 +965,7 @@ body.chat-body {
   border-radius: 50%;
   animation: stopPulse 1.6s ease-in-out infinite;
 }
+.composer__stop-btn[hidden] { display: none; }
 .composer__stop-btn:hover { background: var(--nv-graphite-600); }
 @keyframes stopPulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(229,72,77,0); }
@@ -1004,6 +1038,15 @@ body.chat-body {
     transition: transform var(--duration-slow) var(--ease-out);
     border-right: 1px solid var(--border-default);
   }
+  /* .sidebar becomes position:fixed above, which pulls it out of normal
+     flow but NOT out of grid auto-placement in all engines, and the
+     display:none .sidebar-scrim is skipped by auto-placement entirely.
+     That combination can push .chat-main into implicit/track-1 placement
+     instead of the 1fr track, collapsing it (and everything inside it,
+     including the composer) to zero width. Pin both explicitly so
+     placement can't misfire regardless of sidebar/scrim state. */
+  .sidebar { grid-column: 1; }
+  .chat-main { grid-column: 2; }
   .chat-shell[data-sidebar="expanded"] .sidebar {
     transform: translateX(0);
     box-shadow: var(--shadow-xl);
@@ -1053,9 +1096,120 @@ body.chat-body {
 }
 
 /* -------------------------------------------------------------------------
+   8c. Incognito Mode
+   Topbar badge, toggle button (default + active/glow state), the banner
+   strip below the topbar, and an optional global tint while active.
+   ------------------------------------------------------------------------- */
+
+/* Topbar "Incognito" badge (next to the usage chip) */
+.incognito-badge {
+  color: var(--text-secondary);
+  animation: fadeIn var(--duration-base) var(--ease-standard);
+}
+.incognito-badge .nv-icon { color: var(--nv-green); }
+/* .badge sets display:inline-flex unconditionally, which otherwise beats
+   the [hidden] attribute's UA-stylesheet display:none by specificity. */
+.incognito-badge[hidden] { display: none; }
+
+/* Toggle button: extends .icon-btn, adds an active/glow state so it reads
+   as a persistent mode switch rather than a one-off action button. */
+.incognito-toggle.is-active {
+  color: var(--nv-green);
+  background: var(--status-success-bg);
+  border-color: rgba(118, 185, 0, 0.35);
+  box-shadow: var(--shadow-glow-green);
+  animation: incognitoGlowIn var(--duration-base) var(--ease-out);
+}
+.incognito-toggle.is-active:hover {
+  background: var(--status-success-bg);
+  color: var(--nv-green);
+}
+.incognito-toggle.is-active:active { transform: scale(0.94); }
+
+/* Banner strip under the topbar while Incognito is on */
+.incognito-strip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  background: var(--status-success-bg);
+  border-bottom: 1px solid rgba(118, 185, 0, 0.28);
+  color: var(--text-primary);
+  font-size: var(--fs-body-sm);
+  animation: incognitoStripIn var(--duration-base) var(--ease-out);
+}
+/* This own rule's display:flex above otherwise beats the [hidden]
+   attribute's UA-stylesheet display:none by specificity (same pattern as
+   .composer__attachments[hidden] elsewhere in this file). */
+.incognito-strip[hidden] { display: none; }
+.incognito-strip .nv-icon {
+  color: var(--nv-green);
+  flex-shrink: 0;
+}
+.incognito-strip span {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-secondary);
+}
+.incognito-strip__exit {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(118, 185, 0, 0.35);
+  background: transparent;
+  color: var(--nv-green);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              transform var(--duration-fast) var(--ease-standard);
+}
+.incognito-strip__exit:hover { background: rgba(118, 185, 0, 0.14); }
+.incognito-strip__exit:active { transform: scale(0.96); }
+
+/* Optional subtle global tint while Incognito is active. Kept intentionally
+   faint (a hairline tint on the canvas + a green-tinted topbar rule) so it
+   reads as ambient context, not a jarring theme swap. */
+[data-incognito="true"] .chat-shell {
+  background: linear-gradient(180deg, rgba(118, 185, 0, 0.035), transparent 320px);
+}
+[data-incognito="true"] .chat-topbar {
+  border-bottom-color: rgba(118, 185, 0, 0.16);
+}
+
+@keyframes incognitoStripIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes incognitoGlowIn {
+  from { box-shadow: 0 0 0 0 rgba(118, 185, 0, 0); }
+  to   { box-shadow: var(--shadow-glow-green); }
+}
+
+@media (max-width: 640px) {
+  .incognito-strip { padding: var(--space-2) var(--space-3); }
+  .incognito-strip span {
+    font-size: var(--fs-caption);
+    /* The full sentence doesn't fit next to the icon + exit button on
+       narrow screens. Rather than let a `flex: 1; min-width: 0` child
+       wrap to one word per line (unreadable), truncate to one line with
+       an ellipsis; the same information is always available via the
+       "Turn off" action and the topbar badge/tooltip. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .incognito-badge > span { display: none; } /* icon-only badge on small screens; icon is an <i>, unaffected */
+}
+
+/* -------------------------------------------------------------------------
    9. Reduced motion respects
    ------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .msg, .chat-empty, .attachment-chip, .dropzone-overlay__card { animation: none !important; }
   .streaming-caret, .typing-indicator span, .composer__stop-btn { animation: none !important; }
+  .incognito-strip, .incognito-badge, .incognito-toggle.is-active { animation: none !important; }
 }

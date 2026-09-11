@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="../css/design-system.css" />
 <link rel="stylesheet" href="../css/styles.css" />
@@ -26,7 +27,7 @@
 <a class="skip-link" href="#settingsMain">Skip to content</a>
 
 <div class="offline-banner" id="offlineBanner" role="status">
-  <svg width="16" height="16"><use href="#icon-wifi-off"/></svg>
+  <span class="nv-icon-stack nv-icon--sm" aria-hidden="true"><i class="fa-solid fa-wifi"></i><i class="fa-solid fa-slash nv-icon-stack__strike"></i></span>
   <span>You're offline. Some features may be unavailable.</span>
 </div>
 
@@ -34,7 +35,7 @@
 
   <div class="settings-shell__mobile-topbar">
     <button class="icon-btn" id="settingsNavToggle" type="button" aria-label="Open settings menu" aria-expanded="false" aria-controls="settingsNav">
-      <svg width="20" height="20"><use href="#icon-menu"/></svg>
+      <i class="fa-solid fa-bars nv-icon" aria-hidden="true"></i>
     </button>
     <span class="settings-shell__brand">
       <img src="../assets/logo/nemotron-32.png" alt="" width="20" height="20" />
@@ -53,11 +54,11 @@
     <nav class="settings-nav-group" aria-label="Settings sections">
       <span class="settings-nav-group__label">Settings</span>
       <a class="settings-nav-link" href="settings.html">
-        <svg width="18" height="18"><use href="#icon-settings"/></svg>
+        <i class="fa-solid fa-gear nv-icon" aria-hidden="true"></i>
         General &amp; OpenRouter
       </a>
       <a class="settings-nav-link" href="profile.html">
-        <svg width="18" height="18"><use href="#icon-user"/></svg>
+        <i class="fa-solid fa-user nv-icon" aria-hidden="true"></i>
         Profile
       </a>
     </nav>
@@ -65,26 +66,26 @@
     <nav class="settings-nav-group" aria-label="Resources">
       <span class="settings-nav-group__label">Resources</span>
       <a class="settings-nav-link" href="about.html">
-        <svg width="18" height="18"><use href="#icon-info"/></svg>
+        <i class="fa-solid fa-circle-info nv-icon" aria-hidden="true"></i>
         About
       </a>
       <a class="settings-nav-link" href="help.html">
-        <svg width="18" height="18"><use href="#icon-help"/></svg>
+        <i class="fa-solid fa-circle-question nv-icon" aria-hidden="true"></i>
         Help &amp; FAQ
       </a>
       <a class="settings-nav-link" href="privacy.html" aria-current="page">
-        <svg width="18" height="18"><use href="#icon-shield"/></svg>
+        <i class="fa-solid fa-shield-halved nv-icon" aria-hidden="true"></i>
         Privacy Policy
       </a>
       <a class="settings-nav-link" href="terms.html">
-        <svg width="18" height="18"><use href="#icon-file"/></svg>
+        <i class="fa-regular fa-file nv-icon" aria-hidden="true"></i>
         Terms of Service
       </a>
     </nav>
 
     <div class="settings-shell__back">
       <a class="settings-nav-link" href="chat.html">
-        <svg width="18" height="18"><use href="#icon-arrow-right" style="transform:rotate(180deg)"/></svg>
+        <i class="fa-solid fa-arrow-left nv-icon" aria-hidden="true"></i>
         Back to chat
       </a>
     </div>
@@ -95,7 +96,7 @@
 
       <div class="settings-page-header">
         <span class="settings-page-header__eyebrow">
-          <svg width="14" height="14"><use href="#icon-shield"/></svg>
+          <i class="fa-solid fa-shield-halved nv-icon nv-icon--sm" aria-hidden="true"></i>
           Legal
         </span>
         <h1 class="settings-page-header__title">Privacy Policy</h1>
@@ -151,18 +152,6 @@
 </div>
 
 <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="false"></div>
-
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="icon-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 12.5a10 10 0 0 1 3-2M12 20h.01M19 12.5a10 10 0 0 0-2.7-2.1M16.7 6.6A15.9 15.9 0 0 0 12 6c-1 0-2 .1-2.9.3"/></symbol>
-  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
-  <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
-  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></symbol>
-  <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 8v.01"/></symbol>
-  <symbol id="icon-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.7 1.3c0 2-3 2.2-3 4.2"/><path d="M12 17.5h.01"/></symbol>
-  <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3z"/><path d="m9 12 2 2 4-4"/></symbol>
-  <symbol id="icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></symbol>
-  <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-</svg>
 
 <script src="../js/session.js"></script>
 <script src="../js/router.js"></script>

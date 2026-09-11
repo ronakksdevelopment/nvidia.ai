@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="css/design-system.css" />
 <link rel="stylesheet" href="css/styles.css" />
@@ -71,7 +72,7 @@
   <div class="container">
     <div class="state-panel" style="margin-inline:auto; max-width: 480px;">
       <span class="state-panel__icon" aria-hidden="true">
-        <svg width="30" height="30"><use href="#icon-compass"/></svg>
+        <i class="fa-solid fa-compass nv-icon nv-icon--lg" aria-hidden="true"></i>
       </span>
       <h1 class="state-panel__title">Page not found</h1>
       <p class="state-panel__body">
@@ -80,11 +81,11 @@
       </p>
       <div class="state-panel__actions">
         <a class="btn btn--primary" id="goHomeNow" href="index.html">
-          <svg width="16" height="16"><use href="#icon-globe"/></svg>
+          <i class="fa-solid fa-globe nv-icon nv-icon--sm" aria-hidden="true"></i>
           Go home now
         </a>
         <a class="btn btn--secondary" id="goChatNow" href="pages/chat.html">
-          <svg width="16" height="16"><use href="#icon-arrow-right"/></svg>
+          <i class="fa-solid fa-arrow-right nv-icon nv-icon--sm" aria-hidden="true"></i>
           Open chat
         </a>
       </div>
@@ -93,12 +94,7 @@
 </main>
 
 <div aria-hidden="true" style="display:none">
-  <svg xmlns="http://www.w3.org/2000/svg">
-    <symbol id="icon-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2z"/></symbol>
-    <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/></symbol>
-    <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
-  </svg>
-</div>
+  </div>
 
 </body>
 </html>
