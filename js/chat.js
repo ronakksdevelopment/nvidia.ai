@@ -748,18 +748,99 @@
         btn.type = "button";
         btn.setAttribute("data-convo-id", c.id);
         btn.innerHTML = `
-          <span class="history-item__title">${highlightMatch(c.title, query)}</span>
+          <span class="history-item__title" data-title>${highlightMatch(c.title, query)}</span>
+          <input class="history-item__edit-input" type="text" data-rename-input value="${escapeHtml(c.title)}" maxlength="60" hidden />
+          <button class="history-item__edit-btn" type="button" data-edit-convo-id="${c.id}" aria-label="Rename conversation" title="Rename">
+            <i class="fa-solid fa-pen nv-icon" aria-hidden="true"></i>
+          </button>
           <button class="history-item__menu-btn" type="button" data-menu-convo-id="${c.id}" aria-label="Conversation options" aria-expanded="false">
             <i class="fa-solid fa-ellipsis-vertical nv-icon" aria-hidden="true"></i>
           </button>`;
         btn.addEventListener("click", (e) => {
-          if (e.target.closest(".history-item__menu-btn")) return;
+          if (e.target.closest(".history-item__menu-btn") || e.target.closest(".history-item__edit-btn") || e.target.closest(".history-item__edit-input")) return;
           switchConversation(c.id);
         });
         sidebarHistory.appendChild(btn);
       });
     });
   }
+
+  /* Animated (typewriter) title update: swaps a conversation's sidebar
+     title in with a brief type-in effect instead of popping in instantly,
+     used when the local quick title lands and again when the model-
+     generated title replaces it. */
+  function animateTitleUpdate(convoId, newTitle) {
+    const el = sidebarHistory.querySelector(`.history-item[data-convo-id="${convoId}"] .history-item__title`);
+    if (!el) { renderHistory(historySearch.value); return; }
+    el.classList.add("is-typing");
+    let i = 0;
+    const full = String(newTitle || "");
+    el.textContent = "";
+    const step = () => {
+      i++;
+      el.textContent = full.slice(0, i);
+      if (i < full.length) {
+        requestAnimationFrame(() => setTimeout(step, 16));
+      } else {
+        el.classList.remove("is-typing");
+      }
+    };
+    requestAnimationFrame(step);
+  }
+
+  // Inline rename: pen icon swaps the title span for a text input.
+  function beginRename(convoId) {
+    const item = sidebarHistory.querySelector(`.history-item[data-convo-id="${convoId}"]`);
+    if (!item) return;
+    const titleEl = item.querySelector("[data-title]");
+    const input = item.querySelector("[data-rename-input]");
+    if (!titleEl || !input) return;
+    item.classList.add("is-editing");
+    titleEl.hidden = true;
+    input.hidden = false;
+    input.value = (state.conversations.find((c) => c.id === convoId) || {}).title || "";
+    input.focus();
+    input.select();
+  }
+
+  function commitRename(convoId, value) {
+    const convo = state.conversations.find((c) => c.id === convoId);
+    if (!convo) return;
+    const trimmed = String(value || "").trim().slice(0, 60);
+    if (trimmed) {
+      convo.title = trimmed;
+      convo.titleGenerated = true; // manual rename should not be overwritten by auto-title
+    }
+    persistHistory();
+    renderHistory(historySearch.value);
+  }
+
+  sidebarHistory.addEventListener("click", (e) => {
+    const editBtn = e.target.closest(".history-item__edit-btn");
+    if (!editBtn) return;
+    e.stopPropagation();
+    beginRename(editBtn.getAttribute("data-edit-convo-id"));
+  });
+
+  sidebarHistory.addEventListener("keydown", (e) => {
+    const input = e.target.closest("[data-rename-input]");
+    if (!input) return;
+    const convoId = input.closest(".history-item").getAttribute("data-convo-id");
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commitRename(convoId, input.value);
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      renderHistory(historySearch.value);
+    }
+  });
+
+  sidebarHistory.addEventListener("focusout", (e) => {
+    const input = e.target.closest("[data-rename-input]");
+    if (!input) return;
+    const convoId = input.closest(".history-item").getAttribute("data-convo-id");
+    commitRename(convoId, input.value);
+  });
 
   // Delete via the (single, shared) context affordance: click the "..." to open a tiny inline confirm
   sidebarHistory.addEventListener("click", (e) => {
@@ -1318,6 +1399,7 @@
     renderHistory(historySearch.value);
     renderMessages();
     persistHistory();
+    if (isFirstMessage && convo) animateTitleUpdate(convo.id, convo.title);
 
     generateAssistantReply();
   }
@@ -1698,6 +1780,7 @@
         if (!current) return;
         current.title = cleaned;
         renderHistory(historySearch.value);
+        animateTitleUpdate(convoId, cleaned);
         persistHistory();
       })
       .catch(() => {

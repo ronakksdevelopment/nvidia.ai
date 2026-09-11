@@ -167,6 +167,7 @@
           <i class="fa-solid fa-chevron-down nv-icon nv-icon--sm model-badge__chevron" aria-hidden="true"></i>
         </button>
         <div class="dropdown__menu model-dropdown__menu" role="listbox" aria-label="Choose model">
+          <div class="model-dropdown__group-label">Text</div>
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3-ultra-550b-a55b:free">
             <span class="model-option__main">
               <span class="model-option__name">Nemotron 3 Ultra</span>
@@ -202,13 +203,8 @@
             </span>
             <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>
-          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/llama-nemotron-rerank-vl-1b-v2:free">
-            <span class="model-option__main">
-              <span class="model-option__name">Llama Nemotron Rerank VL 1B</span>
-              <span class="text-caption">Document reranking</span>
-            </span>
-            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
-          </button>
+
+          <div class="model-dropdown__group-label">Embedding</div>
           <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/llama-nemotron-embed-vl-1b-v2:free">
             <span class="model-option__main">
               <span class="model-option__name">Llama Nemotron Embed VL 1B</span>
@@ -220,6 +216,15 @@
             <span class="model-option__main">
               <span class="model-option__name">Nemotron 3 Embed 1B</span>
               <span class="text-caption">Text embeddings</span>
+            </span>
+            <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
+          </button>
+
+          <div class="model-dropdown__group-label">Rerank</div>
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/llama-nemotron-rerank-vl-1b-v2:free">
+            <span class="model-option__main">
+              <span class="model-option__name">Llama Nemotron Rerank VL 1B</span>
+              <span class="text-caption">Document reranking</span>
             </span>
             <i class="fa-solid fa-check nv-icon nv-icon--sm" aria-hidden="true"></i>
           </button>

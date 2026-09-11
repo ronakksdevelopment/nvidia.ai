@@ -131,53 +131,61 @@
         <h2>Models</h2>
         <p>Nemotron organizes the free NVIDIA models available through OpenRouter into three categories. Pick a text model for chat, an embedding model for retrieval, or the rerank model for reordering search results.</p>
 
-        <div class="model-category-grid">
-
-          <div class="model-category-card">
-            <div class="model-category-card__header">
-              <span class="model-category-card__icon"><i class="fa-solid fa-comments nv-icon" aria-hidden="true"></i></span>
-              <div>
-                <div class="model-category-card__title">Text Models</div>
-                <div class="model-category-card__count">5 models</div>
-              </div>
-            </div>
-            <ul class="model-category-card__list">
-              <li>NVIDIA: Llama 3.1 Nemotron 70B Instruct <span class="badge badge--brand">free</span></li>
-              <li>NVIDIA: Llama 3.3 Nemotron Super 49B V1 <span class="badge badge--brand">free</span></li>
-              <li>NVIDIA: Llama 3.3 Nemotron Super 49B V1: Reasoning <span class="badge badge--brand">free</span></li>
-              <li>NVIDIA: Nemotron Nano 9B V2 <span class="badge badge--brand">free</span></li>
-              <li>NVIDIA: Nemotron 3 Nano Omni 4B V1 <span class="badge badge--brand">free</span></li>
-            </ul>
+        <div class="model-tabs" id="modelTabs">
+          <div class="model-tabs__nav" role="tablist" aria-label="Model categories">
+            <button class="model-tabs__btn is-active" type="button" role="tab" aria-selected="true" aria-controls="modelTabPanel-text" id="modelTab-text" data-tab="text">
+              <i class="fa-solid fa-comments nv-icon" aria-hidden="true"></i> Text <span class="model-tabs__count">5</span>
+            </button>
+            <button class="model-tabs__btn" type="button" role="tab" aria-selected="false" aria-controls="modelTabPanel-embedding" id="modelTab-embedding" data-tab="embedding">
+              <i class="fa-solid fa-vector-square nv-icon" aria-hidden="true"></i> Embedding <span class="model-tabs__count">2</span>
+            </button>
+            <button class="model-tabs__btn" type="button" role="tab" aria-selected="false" aria-controls="modelTabPanel-rerank" id="modelTab-rerank" data-tab="rerank">
+              <i class="fa-solid fa-arrow-down-wide-short nv-icon" aria-hidden="true"></i> Rerank <span class="model-tabs__count">1</span>
+            </button>
           </div>
 
-          <div class="model-category-card">
-            <div class="model-category-card__header">
-              <span class="model-category-card__icon"><i class="fa-solid fa-vector-square nv-icon" aria-hidden="true"></i></span>
-              <div>
-                <div class="model-category-card__title">Embedding Models</div>
-                <div class="model-category-card__count">2 models</div>
-              </div>
+          <div class="model-tabs__panel" id="modelTabPanel-text" role="tabpanel" aria-labelledby="modelTab-text">
+            <div class="model-tabs__list">
+              <div class="model-tabs__row"><span>NVIDIA: Llama 3.1 Nemotron 70B Instruct</span><span class="badge badge--brand">free</span></div>
+              <div class="model-tabs__row"><span>NVIDIA: Llama 3.3 Nemotron Super 49B V1</span><span class="badge badge--brand">free</span></div>
+              <div class="model-tabs__row"><span>NVIDIA: Llama 3.3 Nemotron Super 49B V1: Reasoning</span><span class="badge badge--brand">free</span></div>
+              <div class="model-tabs__row"><span>NVIDIA: Nemotron Nano 9B V2</span><span class="badge badge--brand">free</span></div>
+              <div class="model-tabs__row"><span>NVIDIA: Nemotron 3 Nano Omni 4B V1</span><span class="badge badge--brand">free</span></div>
             </div>
-            <ul class="model-category-card__list">
-              <li>NVIDIA: NV-Embed-v2 <span class="badge badge--brand">free</span></li>
-              <li>NVIDIA: NV-EmbedQA-E5-v5 <span class="badge badge--brand">free</span></li>
-            </ul>
           </div>
 
-          <div class="model-category-card">
-            <div class="model-category-card__header">
-              <span class="model-category-card__icon"><i class="fa-solid fa-arrow-down-wide-short nv-icon" aria-hidden="true"></i></span>
-              <div>
-                <div class="model-category-card__title">Rerank Models</div>
-                <div class="model-category-card__count">1 model</div>
-              </div>
+          <div class="model-tabs__panel" id="modelTabPanel-embedding" role="tabpanel" aria-labelledby="modelTab-embedding" hidden>
+            <div class="model-tabs__list">
+              <div class="model-tabs__row"><span>NVIDIA: NV-Embed-v2</span><span class="badge badge--brand">free</span></div>
+              <div class="model-tabs__row"><span>NVIDIA: NV-EmbedQA-E5-v5</span><span class="badge badge--brand">free</span></div>
             </div>
-            <ul class="model-category-card__list">
-              <li>NVIDIA: Llama Nemotron Rerank VL 1B V2 <span class="badge badge--brand">free</span></li>
-            </ul>
           </div>
 
+          <div class="model-tabs__panel" id="modelTabPanel-rerank" role="tabpanel" aria-labelledby="modelTab-rerank" hidden>
+            <div class="model-tabs__list">
+              <div class="model-tabs__row"><span>NVIDIA: Llama Nemotron Rerank VL 1B V2</span><span class="badge badge--brand">free</span></div>
+            </div>
+          </div>
         </div>
+
+        <script>
+          (function () {
+            var tabs = document.querySelectorAll("#modelTabs .model-tabs__btn");
+            tabs.forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                var target = btn.getAttribute("data-tab");
+                tabs.forEach(function (b) {
+                  var active = b === btn;
+                  b.classList.toggle("is-active", active);
+                  b.setAttribute("aria-selected", String(active));
+                });
+                document.querySelectorAll("#modelTabs .model-tabs__panel").forEach(function (p) {
+                  p.hidden = p.id !== "modelTabPanel-" + target;
+                });
+              });
+            });
+          })();
+        </script>
 
         <h2>Credits &amp; Attribution</h2>
         <div class="credits-grid">

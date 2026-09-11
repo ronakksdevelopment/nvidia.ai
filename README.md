@@ -7,6 +7,46 @@ chat experience to offline support. Chat runs on real OpenRouter API calls
 using your own free API key, with real streaming responses from NVIDIA's
 free Nemotron models.
 
+## What's new (latest session)
+
+- **Home page model rows** — the "Eight free models, one API key" spec
+  columns (active params / context) now line up in fixed-width, evenly
+  aligned columns across all 8 cards instead of drifting with text length.
+- **Captcha simplified** — the "I'm not a robot" checkbox on Sign In / Sign
+  Up now always auto-verifies after a short spinner; the random math
+  challenge was removed.
+- **Selected text color fixed** — global `::selection` now uses white text
+  on the green highlight everywhere (previously black, unreadable in the
+  name field and elsewhere).
+- **Animated, renamable chat titles** — sidebar conversation titles now
+  type in with a brief animation both when the instant local title is set
+  and when the model-generated title replaces it. Hovering a chat row
+  reveals a pen icon for inline rename (Enter/blur to save, Esc to
+  cancel), alongside the existing "..." options menu.
+- **New-chat suggestion cards fixed** — the two longer suggestions
+  ("Compare Nemotron Nano vs Super vs Ultra", "Draft a beta-tester
+  onboarding email") now truncate to one line like the other two instead
+  of wrapping and forcing the empty-chat screen to scroll.
+- **Model picker grouped by category** — the chat topbar's model dropdown
+  now shows Text / Embedding / Rerank section labels above the relevant
+  models.
+- **About → Models redesigned as tabs** — replaced the three tall category
+  cards with a wide, short tab switcher (Text / Embedding / Rerank) above
+  a single compact list panel.
+- **FAQ redesigned** — replaced the boxed FAQ cards with a numbered,
+  terminal-style accordion: a connecting rail down the left with
+  mono-numbered nodes per question (turning green when open) and a `+`/`−`
+  marker instead of a chevron.
+- **Settings pages widened** — the shared content container used by
+  General, Profile, About, FAQ, Privacy, and Terms grew from 720px to
+  960px max-width, removing the oversized empty side margins on wide
+  screens.
+- **Mobile overflow fixes** — the chat topbar's model dropdown now clamps
+  to the viewport width and right-aligns on small screens instead of
+  risking clipping off-screen; the new About page model tabs shrink text
+  and stack to full width below 400px. No known horizontal-scroll issues
+  remain across mobile/tablet/desktop.
+
 ## What's new in v2.5
 
 - **Redesigned FAQ cards** — bold 2.5px borders, thicker accent bars,

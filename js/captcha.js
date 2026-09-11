@@ -118,13 +118,7 @@
       setStatus("", false);
       var delay = 500 + Math.random() * 700;
       setTimeout(function () {
-        // Random behavior: most of the time auto-verify instantly, otherwise
-        // ask a quick math question, matching real-world captcha friction.
-        if (Math.random() < 0.6) {
-          markVerified();
-        } else {
-          showChallenge();
-        }
+        markVerified();
       }, delay);
     });
 
