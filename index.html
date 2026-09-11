@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>NVIDIA Nemotron — Open, Efficient AI Models</title>
-<meta name="description" content="Nemotron v1.0 Beta — build, chat, and reason with NVIDIA's open Nemotron model family. Fast, efficient, and built for developers." />
+<title>NVIDIA Nemotron - Open, Efficient AI Models</title>
+<meta name="description" content="Nemotron v1.0 Beta: build, chat, and reason with NVIDIA's open Nemotron model family. Fast, efficient, and built for developers." />
 <meta name="theme-color" content="#0A0A0A" />
 
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/nemotron-32.png" />
@@ -105,22 +105,22 @@
         <svg width="12" height="12"><use href="#icon-spark"/></svg>
         Nemotron v1.0 Beta is here
       </span>
-      <h1 class="hero__title text-display">Open, efficient AI — built by NVIDIA</h1>
+      <h1 class="hero__title text-display">Open, efficient AI, built by NVIDIA</h1>
       <p class="hero__subtitle text-body-lg">
         Reason, code, and converse with the Nemotron model family. Open weights,
-        transparent training data, and inference tuned for real hardware — free to try today.
+        transparent training data, and inference tuned for real hardware. Free to try today.
       </p>
       <div class="hero__actions">
         <button class="btn btn--primary btn--lg" type="button" data-open-modal="signupModal">
           Start building
           <svg><use href="#icon-arrow-right"/></svg>
         </button>
-        <button class="btn btn--secondary btn--lg" type="button" data-open-modal="demoModal">
-          <svg><use href="#icon-play"/></svg>
-          Watch demo
-        </button>
+        <a class="btn btn--secondary btn--lg" href="pages/about.html">
+          <svg><use href="#icon-info"/></svg>
+          Learn more
+        </a>
       </div>
-      <span class="hero__note">No credit card required · Free tier available</span>
+      <span class="hero__note">No credit card required · Free OpenRouter API key required</span>
     </div>
   </section>
 
@@ -132,7 +132,7 @@
       <div class="section-head">
         <span class="badge badge--neutral">Why Nemotron</span>
         <h2>Built for developers who ship</h2>
-        <p>Every layer of Nemotron is designed for practical deployment — from a single laptop to a full data center.</p>
+        <p>Every layer of Nemotron is designed for practical deployment, from a single laptop to a full data center.</p>
       </div>
 
       <div class="grid-3">
@@ -145,13 +145,13 @@
         <article class="card card--interactive">
           <span class="card__icon"><svg><use href="#icon-layers"/></svg></span>
           <h3 class="card__title">Open model family</h3>
-          <p class="card__body">Nano, Super, and Ultra variants share one architecture, so you can prototype small and scale up without rewriting your stack.</p>
+          <p class="card__body">Eight free Nemotron models share the same open lineage, so you can prototype small and scale up without rewriting your stack.</p>
         </article>
 
         <article class="card card--interactive">
           <span class="card__icon"><svg><use href="#icon-shield"/></svg></span>
           <h3 class="card__title">Transparent by design</h3>
-          <p class="card__body">Training data lineage, evaluation results, and model cards are published alongside every release — nothing is a black box.</p>
+          <p class="card__body">Training data lineage, evaluation results, and model cards are published alongside every release. Nothing is a black box.</p>
         </article>
 
         <article class="card card--interactive">
@@ -163,7 +163,7 @@
         <article class="card card--interactive">
           <span class="card__icon"><svg><use href="#icon-globe"/></svg></span>
           <h3 class="card__title">Runs anywhere</h3>
-          <p class="card__body">Deploy through the API, self-host the open weights, or run quantized builds locally — your infrastructure, your choice.</p>
+          <p class="card__body">Chat through this site using your own OpenRouter API key, or self-host the open weights on your own infrastructure.</p>
         </article>
 
         <article class="card card--interactive">
@@ -182,54 +182,129 @@
     <div class="container">
       <div class="section-head">
         <span class="badge badge--neutral">Model family</span>
-        <h2>Pick the size that fits your workload</h2>
-        <p>Three variants, one architecture — swap between them as your product grows.</p>
+        <h2>Eight free models, one API key</h2>
+        <p>Pick the model that fits your task, right from the chat model picker. All eight are free on OpenRouter.</p>
       </div>
 
       <div class="stack gap-3">
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-cpu"/></svg></span>
+            <span class="model-row__glyph"><svg><use href="#icon-bolt"/></svg></span>
             <div>
-              <div class="model-row__name">Nemotron Nano</div>
-              <div class="model-row__desc">Edge and on-device inference</div>
+              <div class="model-row__name">Nemotron 3 Ultra</div>
+              <div class="model-row__desc">Frontier reasoning and long-running agent orchestration</div>
             </div>
           </div>
           <div class="model-row__specs">
-            <div class="model-row__spec"><div class="model-row__spec-val">8B</div><div class="model-row__spec-label">Parameters</div></div>
-            <div class="model-row__spec"><div class="model-row__spec-val">128K</div><div class="model-row__spec-label">Context</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">55B active</div><div class="model-row__spec-label">of 550B (MoE)</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">1M</div><div class="model-row__spec-label">Context</div></div>
           </div>
-          <span class="badge badge--brand">Free tier</span>
+          <span class="badge badge--brand">Free</span>
         </div>
 
         <div class="model-row">
           <div class="model-row__meta">
             <span class="model-row__glyph"><svg><use href="#icon-layers"/></svg></span>
             <div>
-              <div class="model-row__name">Nemotron Super</div>
-              <div class="model-row__desc">Balanced reasoning and throughput</div>
+              <div class="model-row__name">Nemotron 3 Super</div>
+              <div class="model-row__desc">Balanced reasoning for complex multi-agent applications</div>
             </div>
           </div>
           <div class="model-row__specs">
-            <div class="model-row__spec"><div class="model-row__spec-val">49B</div><div class="model-row__spec-label">Parameters</div></div>
-            <div class="model-row__spec"><div class="model-row__spec-val">128K</div><div class="model-row__spec-label">Context</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">12B active</div><div class="model-row__spec-label">of 120B (MoE)</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">1M</div><div class="model-row__spec-label">Context</div></div>
           </div>
-          <span class="badge badge--info">Beta</span>
+          <span class="badge badge--brand">Free</span>
         </div>
 
         <div class="model-row">
           <div class="model-row__meta">
-            <span class="model-row__glyph"><svg><use href="#icon-bolt"/></svg></span>
+            <span class="model-row__glyph"><svg><use href="#icon-cpu"/></svg></span>
             <div>
-              <div class="model-row__name">Nemotron Ultra</div>
-              <div class="model-row__desc">Maximum reasoning depth</div>
+              <div class="model-row__name">Nemotron 3.5 Lightning</div>
+              <div class="model-row__desc">High-throughput, fast agentic workloads</div>
             </div>
           </div>
           <div class="model-row__specs">
-            <div class="model-row__spec"><div class="model-row__spec-val">253B</div><div class="model-row__spec-label">Parameters</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">3B active</div><div class="model-row__spec-label">of 30B (MoE)</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">1M</div><div class="model-row__spec-label">Context</div></div>
+          </div>
+          <span class="badge badge--brand">Free</span>
+        </div>
+
+        <div class="model-row">
+          <div class="model-row__meta">
+            <span class="model-row__glyph"><svg><use href="#icon-spark"/></svg></span>
+            <div>
+              <div class="model-row__name">Nemotron 3 Nano Omni</div>
+              <div class="model-row__desc">Compact multimodal reasoning, text and image input</div>
+            </div>
+          </div>
+          <div class="model-row__specs">
+            <div class="model-row__spec"><div class="model-row__spec-val">3B active</div><div class="model-row__spec-label">of 30B (MoE)</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">256K</div><div class="model-row__spec-label">Context</div></div>
+          </div>
+          <span class="badge badge--brand">Free</span>
+        </div>
+
+        <div class="model-row">
+          <div class="model-row__meta">
+            <span class="model-row__glyph"><svg><use href="#icon-shield"/></svg></span>
+            <div>
+              <div class="model-row__name">Nemotron 3.5 Content Safety</div>
+              <div class="model-row__desc">Moderation and guardrail model for prompts and responses</div>
+            </div>
+          </div>
+          <div class="model-row__specs">
+            <div class="model-row__spec"><div class="model-row__spec-val">4B</div><div class="model-row__spec-label">Parameters</div></div>
             <div class="model-row__spec"><div class="model-row__spec-val">128K</div><div class="model-row__spec-label">Context</div></div>
           </div>
-          <span class="badge badge--warning">Waitlist</span>
+          <span class="badge badge--brand">Free</span>
+        </div>
+
+        <div class="model-row">
+          <div class="model-row__meta">
+            <span class="model-row__glyph"><svg><use href="#icon-layers"/></svg></span>
+            <div>
+              <div class="model-row__name">Llama Nemotron Rerank VL 1B</div>
+              <div class="model-row__desc">Multimodal document reranking for RAG pipelines</div>
+            </div>
+          </div>
+          <div class="model-row__specs">
+            <div class="model-row__spec"><div class="model-row__spec-val">1.7B</div><div class="model-row__spec-label">Parameters</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">10K</div><div class="model-row__spec-label">Context</div></div>
+          </div>
+          <span class="badge badge--brand">Free</span>
+        </div>
+
+        <div class="model-row">
+          <div class="model-row__meta">
+            <span class="model-row__glyph"><svg><use href="#icon-globe"/></svg></span>
+            <div>
+              <div class="model-row__name">Llama Nemotron Embed VL 1B</div>
+              <div class="model-row__desc">Multimodal embeddings for text and document images</div>
+            </div>
+          </div>
+          <div class="model-row__specs">
+            <div class="model-row__spec"><div class="model-row__spec-val">1B</div><div class="model-row__spec-label">Parameters</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">131K</div><div class="model-row__spec-label">Context</div></div>
+          </div>
+          <span class="badge badge--brand">Free</span>
+        </div>
+
+        <div class="model-row">
+          <div class="model-row__meta">
+            <span class="model-row__glyph"><svg><use href="#icon-cpu"/></svg></span>
+            <div>
+              <div class="model-row__name">Nemotron 3 Embed 1B</div>
+              <div class="model-row__desc">High-throughput text embeddings for retrieval</div>
+            </div>
+          </div>
+          <div class="model-row__specs">
+            <div class="model-row__spec"><div class="model-row__spec-val">1B</div><div class="model-row__spec-label">Parameters</div></div>
+            <div class="model-row__spec"><div class="model-row__spec-val">33K</div><div class="model-row__spec-label">Context</div></div>
+          </div>
+          <span class="badge badge--brand">Free</span>
         </div>
       </div>
     </div>
@@ -243,177 +318,11 @@
       <div class="cta-band">
         <img src="assets/logo/nemotron-48.png" alt="" width="40" height="40" />
         <h2>Ready to build with Nemotron?</h2>
-        <p>Create a free account and get access to Nano and Super today.</p>
+        <p>Create a free account, add your own OpenRouter API key, and start chatting today.</p>
         <div class="hero__actions">
           <button class="btn btn--primary btn--lg" type="button" data-open-modal="signupModal">Create free account</button>
           <button class="btn btn--ghost btn--lg" type="button" data-open-modal="signinModal">I already have an account</button>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       COMPONENT SHOWCASE (foundation reference — not final UI)
-       ========================================================= -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <span class="badge badge--neutral">Foundation kit</span>
-        <h2>Reusable components</h2>
-        <p>Reference states for the shared component library used across the product.</p>
-      </div>
-
-      <div class="grid-2" style="gap: var(--space-6);">
-
-        <!-- Buttons & badges -->
-        <div class="card">
-          <h3 class="card__title">Buttons</h3>
-          <div class="cluster gap-3 mt-4">
-            <button class="btn btn--primary">Primary</button>
-            <button class="btn btn--secondary">Secondary</button>
-            <button class="btn btn--ghost">Ghost</button>
-            <button class="btn btn--danger">Danger</button>
-          </div>
-          <div class="cluster gap-3 mt-4">
-            <button class="btn btn--primary btn--sm">Small</button>
-            <button class="btn btn--primary" disabled>Disabled</button>
-            <button class="btn btn--primary btn--loading">Loading</button>
-          </div>
-          <div class="cluster gap-2 mt-4">
-            <span class="badge badge--brand">Brand</span>
-            <span class="badge badge--info">Info</span>
-            <span class="badge badge--warning">Warning</span>
-            <span class="badge badge--danger">Danger</span>
-            <span class="badge badge--neutral">Neutral</span>
-          </div>
-        </div>
-
-        <!-- Inputs -->
-        <div class="card">
-          <h3 class="card__title">Inputs</h3>
-          <div class="stack gap-3 mt-4">
-            <div class="field">
-              <label class="field__label" for="demoEmail">Email</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="18" height="18"><use href="#icon-mail"/></svg>
-                <input class="input" id="demoEmail" type="email" placeholder="you@company.com" />
-              </div>
-            </div>
-            <div class="field">
-              <label class="field__label" for="demoErr">With error</label>
-              <input class="input" id="demoErr" type="text" aria-invalid="true" aria-describedby="demoErrMsg" value="not-valid" />
-              <span class="field__error" id="demoErrMsg">
-                <svg width="14" height="14"><use href="#icon-alert-triangle"/></svg>
-                Enter a valid value
-              </span>
-            </div>
-            <label class="switch">
-              <input type="checkbox" checked />
-              <span class="switch__track"><span class="switch__thumb"></span></span>
-              <span class="switch__label">Enable notifications</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Dropdown & chips -->
-        <div class="card">
-          <h3 class="card__title">Dropdown &amp; chips</h3>
-          <div class="mt-4">
-            <div class="dropdown" id="demoDropdown">
-              <button class="dropdown__trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-                <span>Nemotron Super</span>
-                <svg><use href="#icon-chevron-down"/></svg>
-              </button>
-              <ul class="dropdown__menu" role="listbox">
-                <li><button class="dropdown__item" role="option">Nemotron Nano</button></li>
-                <li><button class="dropdown__item" role="option" aria-selected="true">Nemotron Super</button></li>
-                <li><button class="dropdown__item" role="option">Nemotron Ultra</button></li>
-              </ul>
-            </div>
-          </div>
-          <div class="cluster gap-2 mt-4">
-            <span class="chip chip--active">Reasoning <button aria-label="Remove"><svg><use href="#icon-x"/></svg></button></span>
-            <span class="chip">Code</span>
-            <span class="chip">Long context</span>
-          </div>
-        </div>
-
-        <!-- Tooltip & context menu -->
-        <div class="card">
-          <h3 class="card__title">Tooltip &amp; context menu</h3>
-          <div class="cluster gap-3 mt-4">
-            <span class="tooltip">
-              <button class="btn btn--secondary btn--sm">Hover me</button>
-              <span class="tooltip__bubble" role="tooltip">Helpful context here</span>
-            </span>
-            <button class="btn btn--secondary btn--sm" id="contextMenuTrigger">Right-click / tap</button>
-          </div>
-          <div class="context-menu" id="demoContextMenu" role="menu">
-            <button class="context-menu__item" role="menuitem"><svg><use href="#icon-copy"/></svg>Copy</button>
-            <button class="context-menu__item" role="menuitem"><svg><use href="#icon-share"/></svg>Share</button>
-            <div class="context-menu__divider"></div>
-            <button class="context-menu__item context-menu__item--danger" role="menuitem"><svg><use href="#icon-trash"/></svg>Delete</button>
-          </div>
-        </div>
-
-        <!-- Skeletons -->
-        <div class="card">
-          <h3 class="card__title">Loading skeleton</h3>
-          <div class="skeleton-card mt-4">
-            <div class="cluster gap-3">
-              <div class="skeleton skeleton--avatar"></div>
-              <div class="stack gap-2" style="flex:1;">
-                <div class="skeleton skeleton--title"></div>
-                <div class="skeleton skeleton--text" style="width:40%;"></div>
-              </div>
-            </div>
-            <div class="skeleton skeleton--text" style="width:100%;"></div>
-            <div class="skeleton skeleton--text" style="width:85%;"></div>
-          </div>
-        </div>
-
-        <!-- Toasts -->
-        <div class="card">
-          <h3 class="card__title">Toast notifications</h3>
-          <p class="text-body-sm mt-2">Trigger sample toasts to preview the notification region.</p>
-          <div class="cluster gap-3 mt-4">
-            <button class="btn btn--secondary btn--sm" data-toast="success">Success</button>
-            <button class="btn btn--secondary btn--sm" data-toast="danger">Error</button>
-            <button class="btn btn--secondary btn--sm" data-toast="warning">Warning</button>
-            <button class="btn btn--secondary btn--sm" data-toast="info">Info</button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Empty & offline states -->
-      <div class="grid-2 mt-6" style="gap: var(--space-6);">
-        <div class="card">
-          <div class="state-panel" style="padding-block: var(--space-6);">
-            <span class="state-panel__icon"><svg><use href="#icon-inbox"/></svg></span>
-            <h4 class="state-panel__title">No conversations yet</h4>
-            <p class="state-panel__body">Start a new chat with Nemotron and it will show up here.</p>
-            <div class="state-panel__actions">
-              <button class="btn btn--primary btn--sm">New chat</button>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="state-panel" style="padding-block: var(--space-6);">
-            <span class="state-panel__icon"><svg><use href="#icon-wifi-off"/></svg></span>
-            <h4 class="state-panel__title">You're offline</h4>
-            <p class="state-panel__body">Check your connection. We'll reconnect automatically.</p>
-            <div class="state-panel__actions">
-              <button class="btn btn--secondary btn--sm"><svg><use href="#icon-refresh"/></svg>Retry</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="cluster gap-3 mt-6">
-        <button class="btn btn--secondary" data-open-modal="confirmModal">Preview confirmation dialog</button>
-        <button class="btn btn--secondary" data-open-modal="demoModal">Preview info modal</button>
-        <button class="btn btn--secondary" id="offlineToggle">Toggle offline banner</button>
       </div>
     </div>
   </section>
@@ -424,13 +333,13 @@
   <div class="container footer__inner">
     <span class="footer__brand">
       <img src="assets/logo/nemotron-32.png" alt="" width="20" height="20" />
-      Nemotron v1.0 Beta — an NVIDIA project
+      Nemotron v1.0 Beta, an NVIDIA project
     </span>
     <nav class="footer__links" aria-label="Footer">
       <a href="https://developer.nvidia.com" target="_blank" rel="noopener">Docs</a>
       <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
+      <a href="pages/privacy.html">Privacy</a>
+      <a href="pages/terms.html">Terms</a>
     </nav>
   </div>
 </footer>
@@ -450,23 +359,20 @@
     </div>
     <img src="assets/logo/nemotron-48.png" alt="" width="36" height="36" style="margin-bottom: var(--space-4);" />
     <h2 class="modal__title" id="signinTitle">Welcome back</h2>
-    <p class="modal__body">Sign in to continue to Nemotron. This is a frontend-only mockup — no data is sent anywhere.</p>
+    <p class="modal__body">Sign in to continue to Nemotron. Your name and email stay on this device; add your own OpenRouter API key in Settings to start chatting.</p>
     <form class="auth-form">
+      <div class="field">
+        <label class="field__label" for="siName">Name</label>
+        <div class="input-wrap">
+          <svg class="input-icon" width="18" height="18"><use href="#icon-user"/></svg>
+          <input class="input" id="siName" type="text" placeholder="Ada Lovelace" autocomplete="name" />
+        </div>
+      </div>
       <div class="field">
         <label class="field__label" for="siEmail">Email</label>
         <div class="input-wrap">
           <svg class="input-icon" width="18" height="18"><use href="#icon-mail"/></svg>
           <input class="input" id="siEmail" type="email" placeholder="you@company.com" autocomplete="email" />
-        </div>
-      </div>
-      <div class="field">
-        <label class="field__label" for="siPassword">Password</label>
-        <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18"><use href="#icon-lock"/></svg>
-          <input class="input" id="siPassword" type="password" placeholder="••••••••" autocomplete="current-password" style="padding-right:44px;" />
-          <button class="input-toggle" type="button" data-toggle-password="siPassword" aria-label="Show password">
-            <svg width="18" height="18"><use href="#icon-eye"/></svg>
-          </button>
         </div>
       </div>
       <button class="btn btn--primary btn--full" type="submit">Sign in</button>
@@ -476,7 +382,7 @@
       <svg width="18" height="18"><use href="#icon-user"/></svg>
       Continue as guest
     </button>
-    <p class="auth-footer-note mt-4" style="margin-top: var(--space-3);">Guest sessions aren't saved — nothing persists, even in a normal window.</p>
+    <p class="auth-footer-note mt-4" style="margin-top: var(--space-3);">Guest sessions are not saved. Nothing persists, even in a normal window.</p>
     <p class="auth-footer-note mt-4">No account? <a href="#" data-open-modal="signupModal" data-close-modal>Create one</a></p>
   </div>
 </div>
@@ -492,7 +398,7 @@
     </div>
     <img src="assets/logo/nemotron-48.png" alt="" width="36" height="36" style="margin-bottom: var(--space-4);" />
     <h2 class="modal__title" id="signupTitle">Create your account</h2>
-    <p class="modal__body">Get free access to Nemotron Nano and Super. This is a frontend-only mockup.</p>
+    <p class="modal__body">Your account lives on this device only. Bring your own free OpenRouter API key to chat with all 8 Nemotron models.</p>
     <form class="auth-form">
       <div class="field">
         <label class="field__label" for="suName">Full name</label>
@@ -505,16 +411,6 @@
           <input class="input" id="suEmail" type="email" placeholder="you@company.com" autocomplete="email" />
         </div>
       </div>
-      <div class="field">
-        <label class="field__label" for="suPassword">Password</label>
-        <div class="input-wrap">
-          <svg class="input-icon" width="18" height="18"><use href="#icon-lock"/></svg>
-          <input class="input" id="suPassword" type="password" placeholder="Min. 8 characters" autocomplete="new-password" style="padding-right:44px;" />
-          <button class="input-toggle" type="button" data-toggle-password="suPassword" aria-label="Show password">
-            <svg width="18" height="18"><use href="#icon-eye"/></svg>
-          </button>
-        </div>
-      </div>
       <button class="btn btn--primary btn--full" type="submit">Create account</button>
     </form>
     <div class="auth-divider">or</div>
@@ -522,37 +418,8 @@
       <svg width="18" height="18"><use href="#icon-user"/></svg>
       Continue as guest
     </button>
-    <p class="auth-footer-note mt-4" style="margin-top: var(--space-3);">Guest sessions aren't saved — nothing persists, even in a normal window.</p>
+    <p class="auth-footer-note mt-4" style="margin-top: var(--space-3);">Guest sessions are not saved. Nothing persists, even in a normal window.</p>
     <p class="auth-footer-note mt-4">Already have an account? <a href="#" data-open-modal="signinModal" data-close-modal>Sign in</a></p>
-  </div>
-</div>
-
-<!-- Confirmation dialog -->
-<div class="modal-overlay" id="confirmModal" data-modal-overlay>
-  <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmBody" style="max-width: 400px;">
-    <span class="modal__icon modal__icon--danger">
-      <svg><use href="#icon-trash"/></svg>
-    </span>
-    <h2 class="modal__title" id="confirmTitle">Delete this conversation?</h2>
-    <p class="modal__body" id="confirmBody">This action can't be undone. The conversation and its messages will be permanently removed.</p>
-    <div class="modal__actions">
-      <button class="btn btn--ghost" type="button" data-close-modal>Cancel</button>
-      <button class="btn btn--danger" type="button" data-close-modal>Delete</button>
-    </div>
-  </div>
-</div>
-
-<!-- Info / demo modal -->
-<div class="modal-overlay" id="demoModal" data-modal-overlay>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="demoTitle" style="max-width: 400px;">
-    <span class="modal__icon modal__icon--brand">
-      <svg><use href="#icon-play"/></svg>
-    </span>
-    <h2 class="modal__title" id="demoTitle">Demo coming soon</h2>
-    <p class="modal__body">The interactive product walkthrough will be added in a later milestone. This foundation release covers layout, branding, and shared components.</p>
-    <div class="modal__actions">
-      <button class="btn btn--primary btn--full" type="button" data-close-modal>Got it</button>
-    </div>
   </div>
 </div>
 
@@ -700,29 +567,39 @@
 <script src="js/router.js"></script>
 <script src="js/app.js"></script>
 <script>
-  // Mock sign-in / sign-up submit handling for the landing-page modals.
-  // Frontend-only: no request leaves the page, but a real session object is
-  // stored (see js/session.js) so chat.html reflects the signed-in identity.
+  // Sign-in / sign-up handling for the landing-page modals. There is no
+  // backend: the account (name, email, avatar initials) is a real identity
+  // stored on this device only (see js/session.js), which chat.html and
+  // profile.html read to show who is using the current session.
   (function () {
     "use strict";
-    function wireMockAuthForm(overlaySelector, nameFieldId) {
+    function wireAuthForm(overlaySelector, nameFieldId, emailFieldId) {
       var overlay = document.querySelector(overlaySelector);
       var form = overlay && overlay.querySelector("form.auth-form");
       if (!form) return;
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         var nameField = nameFieldId ? document.getElementById(nameFieldId) : null;
+        var emailField = emailFieldId ? document.getElementById(emailFieldId) : null;
+        var overrides = {};
+        var name = nameField && nameField.value.trim();
+        var email = emailField && emailField.value.trim();
+        if (name) overrides.name = name;
+        if (email) {
+          overrides.email = email;
+          if (!name) overrides.name = email.split("@")[0];
+        }
         if (window.NemotronSession) {
-          window.NemotronSession.signIn(nameField && nameField.value.trim() ? { name: nameField.value.trim() } : {});
+          window.NemotronSession.signIn(overrides);
         }
         if (window.NemotronToast) {
-          window.NemotronToast("success", "Signed in", "This is a frontend demo — no data leaves this page.");
+          window.NemotronToast("success", "Signed in", "Your session is saved on this device.");
         }
-        setTimeout(function () { window.location.href = "pages/chat.html"; }, 600);
+        setTimeout(function () { window.location.href = "pages/chat.html"; }, 500);
       });
     }
-    wireMockAuthForm("#signinModal", null);
-    wireMockAuthForm("#signupModal", "suName");
+    wireAuthForm("#signinModal", "siName", "siEmail");
+    wireAuthForm("#signupModal", "suName", "suEmail");
   })();
 </script>
 </body>

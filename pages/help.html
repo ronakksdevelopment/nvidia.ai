@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Help &amp; FAQ — Nemotron</title>
+<title>Help &amp; FAQ - Nemotron</title>
 <meta name="description" content="Frequently asked questions about Nemotron and OpenRouter setup." />
 <meta name="theme-color" content="#0A0A0A" />
 
@@ -120,7 +120,7 @@
             <svg width="16" height="16"><use href="#icon-chevron-down"/></svg>
           </button>
           <div class="faq-item__a">
-            <p>No. Your key is saved only in this browser's local storage. Requests using your key go straight from your browser to OpenRouter's API — this build has no backend to pass through.</p>
+            <p>No. Your key is saved only in this browser's local storage. Requests using your key go straight from your browser to OpenRouter's API. There is no backend in between.</p>
           </div>
         </div>
 
@@ -146,11 +146,11 @@
 
         <div class="faq-item" data-open="false">
           <button class="faq-item__q" type="button">
-            The test connection button shows an error — what now?
+            The test connection button shows an error. What now?
             <svg width="16" height="16"><use href="#icon-chevron-down"/></svg>
           </button>
           <div class="faq-item__a">
-            <p>Read the error text below the button — it comes directly from OpenRouter's API response. Common causes are an invalid or expired key, a rate limit on the free tier, or a temporary outage for that specific model.</p>
+            <p>Read the error text below the button. It comes directly from OpenRouter's API response. Common causes are an invalid or expired key, a rate limit on the free tier, or a temporary outage for that specific model.</p>
           </div>
         </div>
 
@@ -170,7 +170,27 @@
             <svg width="16" height="16"><use href="#icon-chevron-down"/></svg>
           </button>
           <div class="faq-item__a">
-            <p>No — it only changes how this site looks. Choosing System follows your OS's light/dark preference automatically.</p>
+            <p>No. It only changes how this site looks. Choosing System follows your OS's light/dark preference automatically.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-open="false">
+          <button class="faq-item__q" type="button">
+            Is my chat history saved?
+            <svg width="16" height="16"><use href="#icon-chevron-down"/></svg>
+          </button>
+          <div class="faq-item__a">
+            <p>If you're signed in, your conversations are saved in this browser's local storage so they're still there next time you visit. Guest sessions save nothing: your chats disappear as soon as you close the tab.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" data-open="false">
+          <button class="faq-item__q" type="button">
+            Why did my message fail to send?
+            <svg width="16" height="16"><use href="#icon-chevron-down"/></svg>
+          </button>
+          <div class="faq-item__a">
+            <p>The most common causes are a missing or invalid API key (add one in Settings), a rate limit on the free tier of the model you picked, or a temporary outage on OpenRouter's side. Try again in a moment, or switch to a different free model.</p>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 /* =========================================================================
-   NVIDIA Nemotron v1.0 Beta — Core Stylesheet
-   Foundation Milestone 1
+   NVIDIA Nemotron v1.0 Beta - Core Stylesheet
+   Reset, layout, and every reusable component shared across the site.
    ========================================================================= */
 
 /* -------------------------------------------------------------------------
@@ -856,7 +856,7 @@ textarea.input { resize: vertical; min-height: 96px; }
 .state-panel__body { font-size: var(--fs-body-sm); color: var(--text-secondary); max-width: 40ch; }
 .state-panel__actions { display: flex; gap: var(--space-3); margin-top: var(--space-2); }
 
-/* 404 page — centers the state-panel in the viewport for a standalone page
+/* 404 page: centers the state-panel in the viewport for a standalone page
    (every other .state-panel usage lives inside an existing page layout). */
 .not-found-page {
   min-height: 100vh;
@@ -1158,7 +1158,7 @@ textarea.input { resize: vertical; min-height: 96px; }
 .onboarding__feature-text { font-size: var(--fs-body-sm); color: var(--text-secondary); }
 
 /* =========================================================================
-   22. AUTH (mockup)
+   22. AUTH (sign-in page)
    ========================================================================= */
 .auth-page {
   min-height: 100svh;

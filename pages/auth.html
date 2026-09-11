@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Sign in — Nemotron</title>
+<title>Sign in - Nemotron</title>
 <meta name="theme-color" content="#0A0A0A" />
 <link rel="icon" type="image/png" href="../assets/logo/nemotron-32.png" />
 <link rel="manifest" href="../manifest.json" />
@@ -23,7 +23,7 @@
       <span>Nemotron</span>
     </a>
     <p class="auth-page__aside-quote">
-      "Open weights and transparent training data — Nemotron is built so you always
+      "Open weights and transparent training data. Nemotron is built so you always
       know what's under the hood."
     </p>
     <span class="text-caption">NVIDIA Nemotron v1.0 Beta</span>
@@ -34,47 +34,23 @@
       <div class="auth-card__header">
         <img class="auth-card__mark" src="../assets/logo/nemotron-48.png" alt="Nemotron" width="40" height="40" />
         <h1 style="font-size: var(--fs-h2);">Sign in to Nemotron</h1>
-        <p>Frontend-only authentication mockup — no data leaves this page.</p>
+        <p>Your account stays on this device. No data leaves your browser.</p>
       </div>
-
-      <div class="auth-social">
-        <button class="btn btn--secondary btn--full" type="button">
-          <svg width="18" height="18"><use href="#icon-github"/></svg>
-          Continue with GitHub
-        </button>
-        <button class="btn btn--secondary btn--full" type="button">
-          <svg width="18" height="18"><use href="#icon-globe"/></svg>
-          Continue with Google
-        </button>
-      </div>
-
-      <div class="auth-divider">or</div>
 
       <form class="auth-form" id="authForm" novalidate>
+        <div class="field">
+          <label class="field__label" for="authName">Name</label>
+          <div class="input-wrap">
+            <svg class="input-icon" width="18" height="18"><use href="#icon-user"/></svg>
+            <input class="input" id="authName" type="text" placeholder="Ada Lovelace" autocomplete="name" required />
+          </div>
+        </div>
         <div class="field">
           <label class="field__label" for="authEmail">Email</label>
           <div class="input-wrap">
             <svg class="input-icon" width="18" height="18"><use href="#icon-mail"/></svg>
             <input class="input" id="authEmail" type="email" placeholder="you@company.com" autocomplete="email" required />
           </div>
-        </div>
-        <div class="field">
-          <label class="field__label" for="authPassword">Password</label>
-          <div class="input-wrap">
-            <svg class="input-icon" width="18" height="18"><use href="#icon-lock"/></svg>
-            <input class="input" id="authPassword" type="password" placeholder="••••••••" autocomplete="current-password" style="padding-right:44px;" required />
-            <button class="input-toggle" type="button" data-toggle-password="authPassword" aria-label="Show password">
-              <svg width="18" height="18"><use href="#icon-eye"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="cluster" style="justify-content:space-between;">
-          <label class="switch">
-            <input type="checkbox" />
-            <span class="switch__track"><span class="switch__thumb"></span></span>
-            <span class="switch__label">Remember me</span>
-          </label>
-          <a href="#" class="text-body-sm" style="color:var(--nv-green); font-weight:var(--fw-medium);">Forgot password?</a>
         </div>
         <button class="btn btn--primary btn--full btn--lg" type="submit">Sign in</button>
       </form>
@@ -86,12 +62,12 @@
         Continue as guest
       </button>
       <p class="auth-footer-note" style="margin-top: var(--space-3);">
-        Guest mode saves nothing on this device — settings, API keys, and
+        Guest mode saves nothing on this device. Settings, API keys, and
         chat history all disappear when the tab closes, same as private
         browsing.
       </p>
 
-      <p class="auth-footer-note">No account? <a href="#">Create one free</a></p>
+      <p class="auth-footer-note">Signing in creates a local account on this device only. No password is required and no data is sent to a server.</p>
     </div>
   </main>
 </div>
@@ -101,11 +77,6 @@
 <div aria-hidden="true" style="display:none">
   <svg xmlns="http://www.w3.org/2000/svg">
     <symbol id="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
-    <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
-    <symbol id="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
-    <symbol id="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.2 4.2M6.4 6.7C4 8.3 2 12 2 12s3.5 7 10 7c1.8 0 3.4-.5 4.7-1.2M9.9 5.2A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a15.6 15.6 0 0 1-2.2 3"/></symbol>
-    <symbol id="icon-github" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2a10 10 0 0 0-3.16 19.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.9-1.3 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></symbol>
-    <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/></symbol>
     <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></symbol>
   </svg>
 </div>
@@ -116,14 +87,21 @@
 <script>
   document.getElementById('authForm').addEventListener('submit', function (e) {
     e.preventDefault();
+    var name = document.getElementById('authName').value.trim();
     var email = document.getElementById('authEmail').value.trim();
     if (window.NemotronSession) {
-      window.NemotronSession.signIn(email ? { email: email, name: email.split('@')[0] } : {});
+      var overrides = {};
+      if (name) overrides.name = name;
+      if (email) {
+        overrides.email = email;
+        if (!name) overrides.name = email.split('@')[0];
+      }
+      window.NemotronSession.signIn(overrides);
     }
     if (window.NemotronToast) {
-      window.NemotronToast('success', 'Signed in', 'This is a frontend demo — no data leaves this page.');
+      window.NemotronToast('success', 'Signed in', 'Your session is saved on this device.');
     }
-    setTimeout(function () { window.location.href = 'chat.html'; }, 600);
+    setTimeout(function () { window.location.href = 'chat.html'; }, 500);
   });
 </script>
 </body>

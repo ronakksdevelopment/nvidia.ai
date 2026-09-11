@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Profile — Nemotron</title>
+<title>Profile - Nemotron</title>
 <meta name="description" content="Your Nemotron beta profile and usage overview." />
 <meta name="theme-color" content="#0A0A0A" />
 
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="../css/styles.css" />
 <link rel="stylesheet" href="../css/settings.css" />
 </head>
-<body>
+<body data-requires-session>
 
 <a class="skip-link" href="#settingsMain">Skip to content</a>
 
@@ -99,21 +99,21 @@
           Profile
         </span>
         <h1 class="settings-page-header__title">Your profile</h1>
-        <p class="settings-page-header__desc">Frontend-only beta profile. Nothing here is sent to a server — it reflects this browser's local session.</p>
+        <p class="settings-page-header__desc">Your account and settings for this browser. Nothing here is sent to a server; it reflects this device's local session.</p>
       </div>
 
       <div class="profile-header">
-        <span class="profile-header__avatar" data-account-initials>DK</span>
+        <span class="profile-header__avatar" data-account-initials>?</span>
         <div>
-          <div class="profile-header__name" data-account-name>Dev Kumar</div>
-          <div class="profile-header__email" data-account-email>dev.kumar@example.com</div>
-          <span class="badge badge--brand" style="margin-top:6px;" data-account-plan>Beta access</span>
+          <div class="profile-header__name" data-account-name>Account</div>
+          <div class="profile-header__email" data-account-email>–</div>
+          <span class="badge badge--brand" style="margin-top:6px;" data-account-plan>Free</span>
         </div>
       </div>
 
       <div class="profile-stats">
         <div class="profile-stat">
-          <div class="profile-stat__value" id="statModel">—</div>
+          <div class="profile-stat__value" id="statModel">...</div>
           <div class="profile-stat__label">Default model</div>
         </div>
         <div class="profile-stat">
@@ -132,24 +132,24 @@
             <svg width="18" height="18"><use href="#icon-user"/></svg>
             Account details
           </h2>
-          <p class="settings-section__desc">Static beta placeholder details for this build.</p>
+          <p class="settings-section__desc">Stored on this device only, from when you signed in.</p>
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
             <div class="settings-row__label">Name</div>
-            <div class="settings-row__hint" data-account-name>Dev Kumar</div>
+            <div class="settings-row__hint" data-account-name>Account</div>
           </div>
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
             <div class="settings-row__label">Email</div>
-            <div class="settings-row__hint" data-account-email>dev.kumar@example.com</div>
+            <div class="settings-row__hint" data-account-email>–</div>
           </div>
         </div>
         <div class="settings-row">
           <div class="settings-row__text">
             <div class="settings-row__label">Plan</div>
-            <div class="settings-row__hint">Nemotron v1.0 Beta — free access</div>
+            <div class="settings-row__hint">Nemotron v1.0 Beta, free access</div>
           </div>
         </div>
       </section>
@@ -165,7 +165,7 @@
         <div class="settings-row">
           <div class="settings-row__text">
             <div class="settings-row__label">Default model</div>
-            <div class="settings-row__hint" id="rowModel">—</div>
+            <div class="settings-row__hint" id="rowModel">...</div>
           </div>
           <a class="btn btn--secondary btn--sm" href="settings.html">Change</a>
         </div>
@@ -175,6 +175,23 @@
             <div class="settings-row__hint" id="rowKey">Not saved</div>
           </div>
           <a class="btn btn--secondary btn--sm" href="settings.html">Manage</a>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <div class="settings-section__head">
+          <h2 class="settings-section__title">
+            <svg width="18" height="18"><use href="#icon-arrow-right" style="transform:rotate(180deg)"/></svg>
+            Session
+          </h2>
+          <p class="settings-section__desc">Sign out of this device. Guest sessions have nothing to sign out of.</p>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row__text">
+            <div class="settings-row__label">Signed in as this account</div>
+            <div class="settings-row__hint">Signing out clears your name and email from this browser.</div>
+          </div>
+          <button class="btn btn--secondary btn--sm" type="button" id="profileSignOutBtn" data-authed-only>Sign out</button>
         </div>
       </section>
 
@@ -223,6 +240,16 @@
   document.getElementById("rowKey").textContent = hasKey
     ? "sk-or-v1-" + "•".repeat(12)
     : "Not saved";
+
+  // Sign out
+  var signOutBtn = document.getElementById("profileSignOutBtn");
+  if (signOutBtn) {
+    signOutBtn.addEventListener("click", function () {
+      if (window.NemotronSession) window.NemotronSession.signOut();
+      if (window.NemotronToast) window.NemotronToast("info", "Signed out", "Your session has been cleared on this device.");
+      setTimeout(function () { window.location.href = "../index.html"; }, 700);
+    });
+  }
 
   // Mobile nav drawer
   var toggle = document.getElementById("settingsNavToggle");

@@ -1,6 +1,6 @@
 /* =========================================================================
-   NVIDIA Nemotron — Chat Experience Behavior Layer
-   Chat Milestone 2 (vanilla JS, no dependencies, GitHub Pages compatible)
+   NVIDIA Nemotron - Chat Experience Behavior Layer
+   Real OpenRouter API integration (vanilla JS, no dependencies, GitHub Pages compatible)
    ========================================================================= */
 (function () {
   "use strict";
@@ -294,54 +294,69 @@
   }
 
   /* =======================================================================
-     4. State: conversations + messages (in-memory, session only)
+     4. State: conversations + messages
+     Persisted to localStorage for signed-in sessions; guest sessions never
+     write to localStorage, matching the guest-mode contract in session.js.
      ======================================================================= */
   const MAX_TOKENS = 32000;
+  const HISTORY_KEY = "nemotron.chatHistory";
+  const DEFAULT_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
 
-  const seedNow = Date.now();
+  const isGuestSession = () => !!(window.NemotronSession && window.NemotronSession.isGuestActive());
+
+  /* Settings (API key + model) are stored under nemotron.settings by
+     js/settings.js. chat.html doesn't load settings.js, so chat.js reads
+     the same localStorage key directly, keeping both pages in sync. */
+  const SETTINGS_KEY = "nemotron.settings";
+  function loadSettings() {
+    try {
+      const raw = localStorage.getItem(SETTINGS_KEY);
+      if (!raw) return { apiKey: "", model: DEFAULT_MODEL, theme: "dark" };
+      const parsed = JSON.parse(raw);
+      return Object.assign({ apiKey: "", model: DEFAULT_MODEL, theme: "dark" }, parsed);
+    } catch (e) {
+      return { apiKey: "", model: DEFAULT_MODEL, theme: "dark" };
+    }
+  }
+
+  function loadPersistedHistory() {
+    if (isGuestSession()) return null;
+    try {
+      const raw = localStorage.getItem(HISTORY_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || !Array.isArray(parsed.conversations)) return null;
+      return parsed;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function persistHistory() {
+    if (isGuestSession()) return;
+    try {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify({
+        conversations: state.conversations,
+        messagesByConvo: state.messagesByConvo,
+      }));
+    } catch (e) { /* storage full or unavailable: state simply won't survive reload */ }
+  }
+
+  const persistedHistory = loadPersistedHistory();
+
   const state = {
-    conversations: [
-      { id: "c1", title: "Explain transformer attention", updatedAt: seedNow - 1000 * 60 * 8, pinned: false },
-      { id: "c2", title: "Python merge sort with tests", updatedAt: seedNow - 1000 * 60 * 60 * 5, pinned: false },
-      { id: "c3", title: "Nemotron model comparison table", updatedAt: seedNow - 1000 * 60 * 60 * 30, pinned: false },
-      { id: "c4", title: "Beta onboarding email draft", updatedAt: seedNow - 1000 * 60 * 60 * 24 * 6, pinned: false },
-      { id: "c5", title: "Debugging a CUDA OOM error", updatedAt: seedNow - 1000 * 60 * 60 * 24 * 20, pinned: false },
-    ],
-    messagesByConvo: {}, // convoId -> [message]
+    conversations: (persistedHistory && persistedHistory.conversations) || [],
+    messagesByConvo: (persistedHistory && persistedHistory.messagesByConvo) || {},
     activeConvoId: null,
     tokensUsed: 0,
     isGenerating: false,
-    model: "super",
+    model: loadSettings().model || DEFAULT_MODEL,
   };
 
   function getMessages(convoId) {
     if (!state.messagesByConvo[convoId]) state.messagesByConvo[convoId] = [];
     return state.messagesByConvo[convoId];
   }
-
-  /* Seed a couple of conversations with sample messages so history isn't empty-feeling */
-  state.messagesByConvo.c1 = [
-    { id: uid(), role: "user", text: "Explain how transformer attention works, step by step.", ts: seedNow - 1000 * 60 * 9, attachments: [] },
-    { id: uid(), role: "assistant", text:
-`Attention lets a transformer decide, for every token, **which other tokens matter most** when building its representation.
-
-Here's the flow:
-
-1. Every token is projected into three vectors: **Query (Q)**, **Key (K)**, and **Value (V)**.
-2. For each query, we compute a similarity score against every key — typically a dot product.
-3. Scores are scaled and passed through \`softmax\` to get attention weights that sum to 1.
-4. The output is a weighted sum of the value vectors, using those weights.
-
-\`\`\`python
-def attention(Q, K, V):
-    scores = Q @ K.T / (K.shape[-1] ** 0.5)
-    weights = softmax(scores, axis=-1)
-    return weights @ V
-\`\`\`
-
-Multi-head attention just runs this several times in parallel with different learned projections, then concatenates the results — letting the model attend to different *kinds* of relationships (syntax, coreference, long-range dependencies) at once.`,
-      ts: seedNow - 1000 * 60 * 8, attachments: [] },
-  ];
 
   /* =======================================================================
      5. DOM refs
@@ -541,6 +556,7 @@ Multi-head attention just runs this several times in parallel with different lea
     const wasActive = pendingDeleteId === state.activeConvoId;
     pendingDeleteId = null;
     closeModalById("deleteConvoModal");
+    persistHistory();
     if (wasActive) {
       if (state.conversations.length) {
         switchConversation(state.conversations.slice().sort((a, b) => b.updatedAt - a.updatedAt)[0].id);
@@ -579,6 +595,7 @@ Multi-head attention just runs this several times in parallel with different lea
     renderHistory(historySearch.value);
     renderMessages();
     clearComposer();
+    persistHistory();
     if (isMobile()) setSidebarState(false);
     composerInput.focus();
   }
@@ -756,7 +773,8 @@ Multi-head attention just runs this several times in parallel with different lea
       msg.text = newText;
       msgs.push(msg);
       renderMessages();
-      generateAssistantReply(newText);
+      persistHistory();
+      generateAssistantReply();
     });
   }
 
@@ -765,14 +783,10 @@ Multi-head attention just runs this several times in parallel with different lea
     const msgs = getMessages(state.activeConvoId);
     const idx = msgs.findIndex((m) => m.id === assistantMsg.id);
     if (idx === -1) return;
-    // Find the preceding user message to regenerate from
-    let userText = "";
-    for (let i = idx - 1; i >= 0; i--) {
-      if (msgs[i].role === "user") { userText = msgs[i].text; break; }
-    }
-    msgs.splice(idx, 1); // remove old assistant message
+    msgs.splice(idx, 1); // remove old assistant message so it isn't sent as context
     renderMessages();
-    generateAssistantReply(userText || "Please continue.");
+    persistHistory();
+    generateAssistantReply();
   }
 
   /* =======================================================================
@@ -923,14 +937,31 @@ Multi-head attention just runs this several times in parallel with different lea
   });
 
   /* =======================================================================
-     11. Submit + simulated streaming generation
+     11. Submit + real OpenRouter streaming generation
      ======================================================================= */
+  const OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
   let currentStreamController = null;
+
+  function getApiKey() {
+    const settings = loadSettings();
+    return settings.apiKey || "";
+  }
+
+  function getActiveModel() {
+    const settings = loadSettings();
+    return settings.model || state.model || DEFAULT_MODEL;
+  }
 
   function submitComposer() {
     const text = composerInput.value.trim();
     if (!text && !pendingAttachments.length) return;
     if (state.isGenerating) return;
+
+    if (!getApiKey()) {
+      showToast("warning", "No API key set", "Add your OpenRouter API key in Settings to start chatting.");
+      window.location.href = "settings.html";
+      return;
+    }
 
     if (!state.activeConvoId) {
       const id = "c" + uid();
@@ -959,75 +990,13 @@ Multi-head attention just runs this several times in parallel with different lea
     clearComposer();
     renderHistory(historySearch.value);
     renderMessages();
+    persistHistory();
 
-    generateAssistantReply(text);
-  }
-
-  const CANNED_RESPONSES = [
-    (topic) => `Here's a breakdown of **${topic}**:
-
-1. Start by identifying the core constraint — this shapes every decision downstream.
-2. Break the problem into smaller, independently testable pieces.
-3. Iterate quickly, validating assumptions before investing in polish.
-
-\`\`\`javascript
-function summarize(input) {
-  // A minimal illustrative example
-  return input
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 12)
-    .join(" ") + "…";
-}
-\`\`\`
-
-A quick comparison of the main approaches:
-
-| Approach | Speed | Complexity |
-|---|---|---|
-| Naive | Fast to write | Low |
-| Optimized | Fast to run | Medium |
-| Distributed | Scales widely | High |
-
-Let me know if you'd like this adapted to a specific stack or use case.`,
-    (topic) => `Good question about **${topic}**. Here's how I'd think about it:
-
-- It usually comes down to trade-offs between latency, cost, and accuracy.
-- Nemotron Super is a solid default; reach for Ultra when context length or reasoning depth really matters.
-- Nano is great for high-throughput, low-latency tasks where "good enough" wins.
-
-> The right model is the smallest one that reliably meets your quality bar — not the biggest one available.
-
-Want me to go deeper on any of these points?`,
-    (topic) => `Sure — let's work through **${topic}** together.
-
-\`\`\`python
-def plan(topic: str) -> list[str]:
-    return [
-        f"Clarify the goal behind '{topic}'",
-        "Sketch the smallest version that could work",
-        "Identify what would make it fail",
-        "Build, test, and iterate",
-    ]
-\`\`\`
-
-A few things worth double-checking before you start:
-
-1. What does "done" actually look like?
-2. What's the cheapest way to get signal early?
-3. Who else needs to weigh in before you ship?
-
-Happy to expand on any step.`,
-  ];
-
-  function pickCannedResponse(userText) {
-    const topic = userText.length > 60 ? userText.slice(0, 57) + "…" : userText;
-    const fn = CANNED_RESPONSES[Math.floor(Math.random() * CANNED_RESPONSES.length)];
-    return fn(topic || "that");
+    generateAssistantReply();
   }
 
   function estimateTokens(str) {
-    return Math.max(1, Math.round(str.split(/\s+/).filter(Boolean).length * 1.3));
+    return Math.max(1, Math.round(String(str || "").split(/\s+/).filter(Boolean).length * 1.3));
   }
 
   function updateUsageUI() {
@@ -1046,83 +1015,155 @@ Happy to expand on any step.`,
     updateSendState();
   }
 
-  function generateAssistantReply(userText) {
+  /* Build the OpenRouter message list from the conversation so far,
+     excluding the in-progress placeholder. */
+  function buildApiMessages(convoId) {
+    const msgs = getMessages(convoId).filter((m) => !m.streaming);
+    return msgs.map((m) => ({
+      role: m.role === "assistant" ? "assistant" : "user",
+      content: m.text || "",
+    }));
+  }
+
+  function friendlyErrorMessage(status, apiMessage) {
+    if (status === 401 || status === 403) {
+      return "Your OpenRouter API key was rejected. Check it in Settings and save it again.";
+    }
+    if (status === 429) {
+      return "This model is rate-limited right now. Wait a moment and try again, or switch to a different free model in Settings.";
+    }
+    if (status >= 500) {
+      return "OpenRouter is having trouble reaching this model right now. Try again in a moment.";
+    }
+    return apiMessage || "The request failed. Check your connection and try again.";
+  }
+
+  function generateAssistantReply() {
     const convoId = state.activeConvoId;
     const msgs = getMessages(convoId);
+    const apiKey = getApiKey();
+    const model = getActiveModel();
 
-    // Add thinking/typing placeholder message
+    // Add thinking placeholder message
     const placeholder = { id: uid(), role: "assistant", text: "", ts: Date.now(), streaming: true, thinking: true, attachments: [] };
     msgs.push(placeholder);
     renderMessages();
     setGeneratingUI(true);
 
-    const fullText = pickCannedResponse(userText);
-    let charIndex = 0;
-    let cancelled = false;
-    currentStreamController = { cancel: () => { cancelled = true; } };
-
-    // Show typing dots briefly before streaming begins
     const placeholderEl = () => chatMessages.querySelector(`[data-msg-id="${placeholder.id}"] .msg__bubble`);
     const bubbleEl = placeholderEl();
     if (bubbleEl) {
       bubbleEl.innerHTML = `<div class="typing-indicator" role="status" aria-label="Nemotron is thinking"><span></span><span></span><span></span></div>`;
     }
 
-    setTimeout(() => {
-      if (cancelled) return;
-      placeholder.thinking = false;
-      streamTick();
-    }, 550 + Math.random() * 400);
+    const abortController = new AbortController();
+    let stoppedByUser = false;
+    currentStreamController = {
+      cancel: () => { stoppedByUser = true; abortController.abort(); },
+    };
 
-    function streamTick() {
-      if (cancelled) return;
-      // Stream in small chunks for a natural cadence
-      const chunkSize = 2 + Math.floor(Math.random() * 4);
-      charIndex = Math.min(fullText.length, charIndex + chunkSize);
-      placeholder.text = fullText.slice(0, charIndex);
-
-      const el = placeholderEl();
-      if (el) {
-        el.innerHTML = renderMarkdown(placeholder.text) + '<span class="streaming-caret"></span>';
-      }
-      if (isNearBottom()) scrollToBottom(false);
-
-      if (charIndex < fullText.length) {
-        setTimeout(streamTick, 12 + Math.random() * 18);
-      } else {
-        finishStreaming();
-      }
-    }
-
-    function finishStreaming() {
+    function finalizeMessage(errored) {
       placeholder.streaming = false;
-      const tokensAdded = estimateTokens(userText) + estimateTokens(fullText);
-      state.tokensUsed = Math.min(MAX_TOKENS, state.tokensUsed + tokensAdded);
-      updateUsageUI();
+      placeholder.thinking = false;
+      if (!errored) {
+        const tokensAdded = estimateTokens(placeholder.text);
+        state.tokensUsed = Math.min(MAX_TOKENS, state.tokensUsed + tokensAdded);
+        updateUsageUI();
+      }
       const convo = state.conversations.find((c) => c.id === convoId);
       if (convo) convo.updatedAt = Date.now();
       setGeneratingUI(false);
       currentStreamController = null;
       renderMessages();
       renderHistory(historySearch.value);
+      persistHistory();
     }
 
-    // Expose a way to stop mid-stream
-    currentStreamController.finishEarly = () => {
-      cancelled = true;
-      placeholder.streaming = false;
-      placeholder.thinking = false;
-      if (!placeholder.text) placeholder.text = "_Generation stopped._";
-      else placeholder.text += "\n\n_(Generation stopped by user.)_";
-      setGeneratingUI(false);
-      currentStreamController = null;
-      renderMessages();
-    };
+    fetch(OPENROUTER_ENDPOINT, {
+      method: "POST",
+      signal: abortController.signal,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + apiKey,
+        "HTTP-Referer": window.location.origin || "https://nemotron.local",
+        "X-Title": "NVIDIA Nemotron",
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: buildApiMessages(convoId),
+        stream: true,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().catch(() => null).then((data) => {
+            const apiMsg = data && data.error && data.error.message;
+            throw new Error(friendlyErrorMessage(response.status, apiMsg));
+          });
+        }
+        placeholder.thinking = false;
+        const el = placeholderEl();
+        if (el) el.innerHTML = '<span class="streaming-caret"></span>';
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+
+        function readChunk() {
+          return reader.read().then(({ done, value }) => {
+            if (done) {
+              finalizeMessage(false);
+              return;
+            }
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed || !trimmed.startsWith("data:")) continue;
+              const payload = trimmed.slice(5).trim();
+              if (payload === "[DONE]") continue;
+              let json;
+              try {
+                json = JSON.parse(payload);
+              } catch (e) {
+                continue;
+              }
+              const delta = json && json.choices && json.choices[0] && json.choices[0].delta;
+              const deltaText = delta && (delta.content || delta.reasoning_content || "");
+              if (deltaText) {
+                placeholder.text += deltaText;
+                const el2 = placeholderEl();
+                if (el2) {
+                  el2.innerHTML = renderMarkdown(placeholder.text) + '<span class="streaming-caret"></span>';
+                }
+                if (isNearBottom()) scrollToBottom(false);
+              }
+            }
+            return readChunk();
+          });
+        }
+        return readChunk();
+      })
+      .catch((err) => {
+        if (stoppedByUser) {
+          if (!placeholder.text) placeholder.text = "_Generation stopped._";
+          else placeholder.text += "\n\n_(Generation stopped by user.)_";
+          finalizeMessage(false);
+          return;
+        }
+        const message = (err && err.message) || "Something went wrong reaching OpenRouter.";
+        placeholder.text = placeholder.text || `_${message}_`;
+        placeholder.errored = true;
+        showToast("danger", "Generation failed", message);
+        finalizeMessage(true);
+      });
   }
 
   function stopGeneration() {
-    if (currentStreamController && currentStreamController.finishEarly) {
-      currentStreamController.finishEarly();
+    if (currentStreamController && currentStreamController.cancel) {
+      currentStreamController.cancel();
     }
   }
   stopBtn.addEventListener("click", stopGeneration);
@@ -1162,20 +1203,38 @@ Happy to expand on any step.`,
   document.addEventListener("click", (e) => { if (!modelDropdown.contains(e.target)) toggleModelDropdown(false); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleModelDropdown(false); });
 
+  function setActiveModelOption(modelId) {
+    $$(".model-option").forEach((o) => {
+      const isMatch = o.getAttribute("data-model") === modelId;
+      o.setAttribute("aria-selected", String(isMatch));
+      if (isMatch) {
+        const name = o.querySelector(".model-option__name").textContent;
+        $(".model-badge__name").textContent = name;
+      }
+    });
+  }
+
   $$(".model-option").forEach((opt) => {
     opt.addEventListener("click", () => {
-      $$(".model-option").forEach((o) => o.setAttribute("aria-selected", "false"));
-      opt.setAttribute("aria-selected", "true");
-      state.model = opt.getAttribute("data-model");
-      const name = opt.querySelector(".model-option__name").textContent;
-      $(".model-badge__name").textContent = name;
+      const modelId = opt.getAttribute("data-model");
+      state.model = modelId;
+      setActiveModelOption(modelId);
       toggleModelDropdown(false);
+
+      // Persist the choice so Settings and future sessions stay in sync.
+      try {
+        const current = loadSettings();
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(Object.assign({}, current, { model: modelId })));
+      } catch (e) { /* storage unavailable; selection still applies for this session */ }
+      const name = opt.querySelector(".model-option__name").textContent;
       showToast("info", null, `Switched to ${name}.`);
     });
   });
 
+  setActiveModelOption(state.model);
+
   /* =======================================================================
-     14. Modals (shortcuts / delete confirm) — self-contained open/close
+     14. Modals (shortcuts / delete confirm): self-contained open/close
      ======================================================================= */
   let lastFocusedEl = null;
   function openModalById(id) {
@@ -1276,6 +1335,10 @@ Happy to expand on any step.`,
     updateUsageUI();
     updateSendState();
     autoResize(composerInput);
+
+    if (!getApiKey()) {
+      showToast("info", "Add your API key", "Open Settings and paste your free OpenRouter API key to start chatting.");
+    }
   }
 
   init();

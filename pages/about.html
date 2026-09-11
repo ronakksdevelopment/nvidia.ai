@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>About — Nemotron</title>
+<title>About - Nemotron</title>
 <meta name="description" content="About the NVIDIA Nemotron v1.0 Beta project." />
 <meta name="theme-color" content="#0A0A0A" />
 
@@ -99,48 +99,49 @@
           About
         </span>
         <h1 class="settings-page-header__title">About Nemotron</h1>
-        <p class="settings-page-header__desc">What this project is, and what it isn't — yet.</p>
+        <p class="settings-page-header__desc">What this project is, and how it works.</p>
       </div>
 
       <div class="doc-content">
         <h2>What this is</h2>
         <p>
-          NVIDIA Nemotron v1.0 Beta is a frontend-only chat interface built to explore NVIDIA's open
-          Nemotron model family. This build lets you bring your own OpenRouter API key and talk directly
-          to any of the eight free NVIDIA Nemotron models currently available on OpenRouter — no backend,
-          no account system, and no server-side storage.
+          NVIDIA Nemotron is a chat interface built to explore NVIDIA's open Nemotron model family.
+          Bring your own free OpenRouter API key and talk directly to any of the eight free NVIDIA
+          Nemotron models available on OpenRouter. There is no backend server and no account system
+          beyond a local, on-device identity: your name, email, settings, and chat history live only
+          in this browser.
         </p>
 
         <h2>How it works</h2>
         <p>
           Your OpenRouter API key is saved only in this browser's <code class="text-mono">localStorage</code>.
-          When you send a test message or a chat, this page calls OpenRouter's API directly from your browser
-          using that key. Nothing passes through a Nemotron-owned server in this build.
+          When you send a chat message or run the connection test in Settings, your browser calls
+          OpenRouter's API directly using that key. Nothing passes through a Nemotron-owned server.
         </p>
 
         <h2>Project status</h2>
         <p>
-          This is an early beta focused on the Settings &amp; OpenRouter milestone: API key management, model
-          selection, theme preferences, and a live connection test. Routing between pages, a web app manifest,
-          deployment tooling, and final visual polish are tracked as later milestones and are intentionally
-          out of scope for this build.
+          Nemotron v1.0 covers real-time streaming chat with all eight free models, API key management,
+          model selection, dark/light/system theming, a live connection test, and a local account and
+          guest-mode system. Conversation history is saved on-device for signed-in sessions and never
+          saved for guest sessions.
         </p>
 
         <h2>Model family</h2>
-        <p>Eight free NVIDIA Nemotron models are wired into the model picker in Settings:</p>
+        <p>Eight free NVIDIA Nemotron models are wired into the model picker in Settings and in chat:</p>
         <ul>
-          <li><strong>nvidia/nemotron-3-ultra-550b-a55b:free</strong> — frontier reasoning &amp; orchestration</li>
-          <li><strong>nvidia/nemotron-3.5-lightning:free</strong> — high-throughput agentic workloads</li>
-          <li><strong>nvidia/nemotron-3-super-120b-a12b:free</strong> — balanced multi-agent reasoning</li>
-          <li><strong>nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free</strong> — compact omni-modal reasoning</li>
-          <li><strong>nvidia/llama-nemotron-rerank-vl-1b-v2:free</strong> — multimodal reranking</li>
-          <li><strong>nvidia/nemotron-3.5-content-safety:free</strong> — content moderation &amp; guardrails</li>
-          <li><strong>nvidia/llama-nemotron-embed-vl-1b-v2:free</strong> — multimodal embeddings</li>
-          <li><strong>nvidia/nemotron-3-embed-1b:free</strong> — text embeddings</li>
+          <li><strong>nvidia/nemotron-3-ultra-550b-a55b:free</strong>: frontier reasoning and orchestration</li>
+          <li><strong>nvidia/nemotron-3.5-lightning:free</strong>: high-throughput agentic workloads</li>
+          <li><strong>nvidia/nemotron-3-super-120b-a12b:free</strong>: balanced multi-agent reasoning</li>
+          <li><strong>nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free</strong>: compact omni-modal reasoning</li>
+          <li><strong>nvidia/llama-nemotron-rerank-vl-1b-v2:free</strong>: multimodal reranking</li>
+          <li><strong>nvidia/nemotron-3.5-content-safety:free</strong>: content moderation and guardrails</li>
+          <li><strong>nvidia/llama-nemotron-embed-vl-1b-v2:free</strong>: multimodal embeddings</li>
+          <li><strong>nvidia/nemotron-3-embed-1b:free</strong>: text embeddings</li>
         </ul>
 
         <h2>Built with</h2>
-        <p>Vanilla HTML, CSS, and JavaScript — no frameworks, no build step, no dependencies beyond Google Fonts.</p>
+        <p>Vanilla HTML, CSS, and JavaScript. No frameworks, no build step, no dependencies beyond Google Fonts.</p>
       </div>
 
     </div>

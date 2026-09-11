@@ -1,5 +1,5 @@
 /* =========================================================================
-   NVIDIA Nemotron — Service Worker (Production Milestone 4)
+   NVIDIA Nemotron - Service Worker
    Cache-first app-shell strategy for a static, no-build, GitHub-Pages site.
 
    Scope-safe: every path below is registered relative to this file's own
@@ -13,7 +13,7 @@
    assets forever.
    ========================================================================= */
 
-var CACHE_VERSION = "nemotron-v1.0.0-prod4";
+var CACHE_VERSION = "nemotron-v1.0.0";
 var CACHE_NAME = "nemotron-shell-" + CACHE_VERSION;
 
 // Resolved relative to the service worker's own scope at install time.
@@ -22,7 +22,6 @@ var SHELL_PATHS = [
   "index.html",
   "404.html",
   "manifest.json",
-  "site.webmanifest",
   "css/design-system.css",
   "css/styles.css",
   "css/chat.css",
@@ -102,7 +101,7 @@ self.addEventListener("activate", function (event) {
      with a background network fetch to refresh the cache for next time
      (stale-while-revalidate).
    - Cross-origin requests (Google Fonts, OpenRouter API calls): always
-     pass straight through to the network — never cached, never
+     pass straight through to the network: never cached, never
      intercepted, so API responses and auth headers are never stored.
    ----------------------------------------------------------------------- */
 self.addEventListener("fetch", function (event) {

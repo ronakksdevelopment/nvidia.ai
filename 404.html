@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Page not found — Nemotron</title>
+<title>Page not found - Nemotron</title>
 <meta name="description" content="This page doesn't exist. Redirecting you back to Nemotron." />
 <meta name="theme-color" content="#0A0A0A" />
 <meta name="robots" content="noindex" />
@@ -25,7 +25,7 @@
   /* -----------------------------------------------------------------------
      GitHub Pages has no server-side rewrites, so any deep link or hard
      refresh to a path that isn't a literal file (e.g. /repo/pages/chat)
-     lands here. We record the attempted path (sessionStorage — tab-scoped,
+     lands here. We record the attempted path (sessionStorage: tab-scoped,
      never written to disk) and bounce straight to the real entry point.
      A meta-refresh fallback covers browsers with JS disabled.
      ----------------------------------------------------------------------- */
@@ -34,7 +34,7 @@
     var path = window.location.pathname + window.location.search + window.location.hash;
     try {
       window.sessionStorage.setItem("nemotron.redirectedFrom", path);
-    } catch (e) { /* private/locked-down context — degrade silently */ }
+    } catch (e) { /* private/locked-down context: degrade silently */ }
 
     // Resolve project base the same way router.js does, so this works both
     // at a domain root and at a GitHub Pages project sub-path.

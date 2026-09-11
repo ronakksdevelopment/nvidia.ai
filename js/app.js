@@ -1,8 +1,7 @@
 /* =========================================================================
-   NVIDIA Nemotron — Foundation behavior layer (vanilla JS, no dependencies)
-   Production Milestone 4: adds service-worker registration, install-prompt
-   handling, and guest-mode wiring on top of the original Milestone 1 layer.
-   Every original behavior below is unchanged.
+   NVIDIA Nemotron - Shared behavior layer (vanilla JS, no dependencies)
+   Service worker registration, install-prompt handling, guest-mode wiring,
+   modals, toasts, and navigation shared across every page.
    ========================================================================= */
 (function () {
   "use strict";
@@ -19,7 +18,7 @@
       const pagesIdx = here.indexOf("/pages/");
       const base = pagesIdx !== -1 ? here.slice(0, pagesIdx + 1) : here.slice(0, here.lastIndexOf("/") + 1);
       navigator.serviceWorker.register(base + "sw.js").catch(() => {
-        /* Offline support degrades gracefully — the site still works fully online. */
+        /* Offline support degrades gracefully: the site still works fully online. */
       });
     });
   }
@@ -93,14 +92,6 @@
   window.addEventListener("online", () => updateOnlineStatus(true));
   window.addEventListener("offline", () => updateOnlineStatus(true));
   updateOnlineStatus(false);
-
-  // Manual demo toggle (foundation showcase only)
-  const offlineToggle = document.getElementById("offlineToggle");
-  if (offlineToggle && offlineBanner) {
-    offlineToggle.addEventListener("click", () => {
-      offlineBanner.classList.toggle("is-visible");
-    });
-  }
 
   /* -----------------------------------------------------------------------
      Mobile nav drawer
@@ -225,7 +216,7 @@
   });
 
   /* -----------------------------------------------------------------------
-     Dropdown menu (single demo instance, generic pattern)
+     Dropdown menu (generic open/close + selection pattern)
      ----------------------------------------------------------------------- */
   document.querySelectorAll(".dropdown").forEach((dropdown) => {
     const trigger = dropdown.querySelector(".dropdown__trigger");
@@ -258,10 +249,13 @@
   });
 
   /* -----------------------------------------------------------------------
-     Context menu (right-click + long-press-friendly click demo)
+     Context menu (right-click + long-press-friendly click pattern)
+     Wires up automatically if a page includes #contextMenuTrigger and a
+     matching menu; currently unused on any shipped page, kept generic so
+     future context-menu UI can opt in without new wiring.
      ----------------------------------------------------------------------- */
   const contextTrigger = document.getElementById("contextMenuTrigger");
-  const contextMenu = document.getElementById("demoContextMenu");
+  const contextMenu = document.getElementById("contextMenu");
 
   function openContextMenu(x, y) {
     if (!contextMenu) return;
@@ -338,29 +332,15 @@
     setTimeout(remove, 5000);
   }
 
-  // Expose for other pages / future milestones
+  // Expose for other pages
   window.NemotronToast = showToast;
-
-  // Demo triggers on landing page
-  const DEMO_TOAST_MESSAGES = {
-    success: "Your changes have been saved.",
-    danger: "We couldn't complete that request.",
-    warning: "You're approaching your usage limit.",
-    info: "A new Nemotron model is available.",
-  };
-  document.querySelectorAll("[data-toast]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const type = btn.getAttribute("data-toast");
-      showToast(type, null, DEMO_TOAST_MESSAGES[type]);
-    });
-  });
 
   /* -----------------------------------------------------------------------
      Guest mode entry points
      Any element with [data-continue-guest] anywhere in the app (sign-in
      modal, sign-up modal, auth.html page, onboarding) starts a guest
-     session and routes to chat. Guest sessions never touch localStorage —
-     see js/session.js — which also makes this the correct behavior in
+     session and routes to chat. Guest sessions never touch localStorage,
+     see js/session.js, which also makes this the correct behavior in
      private/incognito windows without any extra branching here.
      ----------------------------------------------------------------------- */
   document.querySelectorAll("[data-continue-guest]").forEach((btn) => {

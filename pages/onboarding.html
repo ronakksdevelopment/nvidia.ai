@@ -24,7 +24,7 @@
       <img class="onboarding__mark" src="../assets/logo/nemotron-192.png" alt="Nemotron" width="56" height="56" />
       <span class="badge badge--brand">BETA v1.0</span>
       <h1 style="font-size: var(--fs-h1);">Welcome to Nemotron</h1>
-      <p>NVIDIA's open, efficient AI model family — ready to reason, code, and build alongside you.</p>
+      <p>NVIDIA's open, efficient AI model family. Ready to reason, code, and build alongside you.</p>
       <div class="onboarding__feature-list">
         <div class="onboarding__feature">
           <svg width="20" height="20"><use href="#icon-bolt"/></svg>
@@ -32,7 +32,7 @@
         </div>
         <div class="onboarding__feature">
           <svg width="20" height="20"><use href="#icon-layers"/></svg>
-          <span class="onboarding__feature-text">Nano, Super, and Ultra model sizes</span>
+          <span class="onboarding__feature-text">Eight free NVIDIA Nemotron models</span>
         </div>
         <div class="onboarding__feature">
           <svg width="20" height="20"><use href="#icon-shield"/></svg>
@@ -46,22 +46,29 @@
       <span class="modal__icon modal__icon--brand" style="margin-inline:auto;">
         <svg><use href="#icon-cpu"/></svg>
       </span>
-      <h1 style="font-size: var(--fs-h1);">Choose your model</h1>
-      <p>You can switch between model sizes anytime from the model selector once you're in.</p>
+      <h1 style="font-size: var(--fs-h1);">Choose a model to start</h1>
+      <p>You can switch between all eight models anytime from the model selector in chat.</p>
       <div class="stack gap-3" style="width:100%; text-align:left; margin-top: var(--space-2);">
         <label class="card" style="padding: var(--space-4); display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
           <span>
-            <strong style="display:block;">Nemotron Nano</strong>
-            <span class="text-caption">8B · fastest, runs on-device</span>
+            <strong style="display:block;">Nemotron 3 Super</strong>
+            <span class="text-caption">Balanced reasoning, good default</span>
           </span>
-          <input type="radio" name="modelChoice" checked />
+          <input type="radio" name="modelChoice" value="nvidia/nemotron-3-super-120b-a12b:free" checked />
         </label>
         <label class="card" style="padding: var(--space-4); display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
           <span>
-            <strong style="display:block;">Nemotron Super</strong>
-            <span class="text-caption">49B · balanced reasoning</span>
+            <strong style="display:block;">Nemotron 3.5 Lightning</strong>
+            <span class="text-caption">Fastest, high-throughput</span>
           </span>
-          <input type="radio" name="modelChoice" />
+          <input type="radio" name="modelChoice" value="nvidia/nemotron-3.5-lightning:free" />
+        </label>
+        <label class="card" style="padding: var(--space-4); display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+          <span>
+            <strong style="display:block;">Nemotron 3 Ultra</strong>
+            <span class="text-caption">Deepest reasoning, 1M context</span>
+          </span>
+          <input type="radio" name="modelChoice" value="nvidia/nemotron-3-ultra-550b-a55b:free" />
         </label>
       </div>
     </div>
@@ -72,7 +79,7 @@
         <svg><use href="#icon-check-circle"/></svg>
       </span>
       <h1 style="font-size: var(--fs-h1);">You're all set</h1>
-      <p>Your workspace is ready. Jump in and start your first conversation with Nemotron.</p>
+      <p>Add your free OpenRouter API key in Settings, then start your first conversation with Nemotron.</p>
     </div>
 
     <div class="onboarding__steps" aria-hidden="true">
@@ -111,6 +118,18 @@
     const dots = document.querySelectorAll('[data-dot]');
     const nextBtn = document.getElementById('onboardNext');
     const backBtn = document.getElementById('onboardBack');
+    const SETTINGS_KEY = 'nemotron.settings';
+
+    function saveChosenModel() {
+      const checked = document.querySelector('input[name="modelChoice"]:checked');
+      if (!checked || !checked.value) return;
+      try {
+        const raw = localStorage.getItem(SETTINGS_KEY);
+        const current = raw ? JSON.parse(raw) : {};
+        const next = Object.assign({ apiKey: "", theme: "dark" }, current, { model: checked.value });
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
+      } catch (e) { /* localStorage unavailable; the choice still applies once they reach Settings */ }
+    }
 
     function render() {
       panels.forEach(p => p.classList.toggle('hidden', Number(p.dataset.panel) !== step));
@@ -119,10 +138,20 @@
       nextBtn.textContent = step === total ? 'Go to app' : 'Continue';
     }
     nextBtn.addEventListener('click', () => {
-      if (step < total) { step++; render(); }
-      else if (window.NemotronToast) {
-        window.NemotronToast('success', 'Welcome aboard', 'Setup complete — this is a foundation-milestone mockup.');
+      if (step === 2) saveChosenModel();
+      if (step < total) {
+        step++;
+        render();
+        return;
       }
+      if (window.NemotronToast) {
+        window.NemotronToast('success', 'Welcome aboard', 'Your model choice is saved. Sign in or continue as a guest to start chatting.');
+      }
+      setTimeout(function () {
+        window.location.href = (window.NemotronSession && window.NemotronSession.isSignedIn && window.NemotronSession.isSignedIn())
+          ? 'chat.html'
+          : 'auth.html';
+      }, 500);
     });
     backBtn.addEventListener('click', () => { if (step > 1) { step--; render(); } });
     render();

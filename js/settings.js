@@ -1,5 +1,5 @@
 /* =========================================================================
-   NVIDIA Nemotron — Settings & OpenRouter Milestone (vanilla JS)
+   NVIDIA Nemotron - Settings and OpenRouter integration (vanilla JS)
    Handles: API key validation, Save/Reset, localStorage persistence,
    model dropdown metadata, theme selection, and a live OpenRouter
    chat-completions test call using the user-supplied key.
@@ -35,7 +35,7 @@
     },
     "nvidia/nemotron-3-super-120b-a12b:free": {
       name: "Nemotron 3 Super",
-      desc: "120B-parameter hybrid MoE model activating 12B parameters — tuned for complex multi-agent applications with a 1M token context window.",
+      desc: "120B-parameter hybrid MoE model activating 12B parameters, tuned for complex multi-agent applications with a 1M token context window.",
       tags: ["Free", "1M context", "Multi-agent"],
     },
     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free": {
@@ -232,7 +232,7 @@
       if (result.valid) {
         setKeyStatus("valid", "Key saved on this device.");
       } else {
-        setKeyStatus("invalid", "Saved key doesn't look valid — you may want to update it.");
+        setKeyStatus("invalid", "Saved key doesn't look valid. You may want to update it.");
       }
       testStatus.querySelector("span").textContent = "Ready to test your saved key.";
       testStatus.className = "key-status key-status--idle";
@@ -263,7 +263,7 @@
       setKeyStatus("invalid", "Key format looks incorrect.");
     } else {
       setFieldError(null);
-      setKeyStatus("idle", "Key looks valid — remember to save.");
+      setKeyStatus("idle", "Key looks valid. Remember to save.");
     }
   });
 
@@ -364,7 +364,7 @@
   }
 
   /* -----------------------------------------------------------------------
-     Discard changes — reload form from last saved state
+     Discard changes: reload form from last saved state
      ----------------------------------------------------------------------- */
   discardBtn.addEventListener("click", () => {
     currentSettings = loadSettings();
@@ -374,7 +374,7 @@
   });
 
   /* -----------------------------------------------------------------------
-     Reset (with confirm modal — modal open/close handled by app.js)
+     Reset (with confirm modal; open/close handled by app.js)
      ----------------------------------------------------------------------- */
   resetSettingsBtn.addEventListener("click", () => {
     const overlay = document.getElementById("resetConfirmModal");
@@ -403,7 +403,7 @@
   });
 
   /* -----------------------------------------------------------------------
-     OpenRouter test connection — real frontend fetch integration
+     OpenRouter test connection: real frontend fetch integration
      ----------------------------------------------------------------------- */
   async function runConnectionTest() {
     const saved = loadSettings();
@@ -416,7 +416,7 @@
       return;
     }
 
-    setTestStatus("checking", "Sending test message…");
+    setTestStatus("checking", "Sending test message...");
     testOutput.textContent = "";
     testOutput.className = "test-panel__output";
     testConnectionBtn.classList.add("btn--loading");
@@ -462,7 +462,7 @@
       testOutput.textContent = reply ? reply.trim() : JSON.stringify(data, null, 2);
       toast("success", "Connection successful", "OpenRouter responded using " + model + ".");
     } catch (err) {
-      setTestStatus("invalid", "Network error — request could not be sent.");
+      setTestStatus("invalid", "Network error. The request could not be sent.");
       testOutput.className = "test-panel__output test-panel__output--error";
       testOutput.textContent = (err && err.message) || "Unknown network error.";
       toast("danger", "Network error", "Couldn't reach OpenRouter. Check your connection and try again.");

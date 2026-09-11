@@ -1,6 +1,6 @@
 /* =========================================================================
-   NVIDIA Nemotron — Router (Production Milestone 4)
-   This is NOT a single-page-app router — every page here is a real static
+   NVIDIA Nemotron - Router
+   This is NOT a single-page-app router. Every page here is a real static
    HTML file, which is deliberate: it keeps the project a zero-build,
    GitHub-Pages-native static site. This module instead solves the two
    real routing problems a static multi-page site hits on GitHub Pages:
@@ -78,7 +78,7 @@
       attempted = window.sessionStorage.getItem(REDIRECT_FLAG_KEY);
       if (attempted) window.sessionStorage.removeItem(REDIRECT_FLAG_KEY);
     } catch (e) {
-      /* sessionStorage unavailable (locked-down/private context) — degrade
+      /* sessionStorage unavailable (locked-down/private context): degrade
          silently, the visitor still landed on a working page. */
     }
     if (attempted && window.NemotronToast) {
@@ -92,7 +92,7 @@
 
   /* -----------------------------------------------------------------------
      Active nav-link marking. Compares each nav link's resolved pathname
-     against the current page and sets aria-current="page" — works for the
+     against the current page and sets aria-current="page": works for the
      top navbar, the mobile drawer, and the settings-shell side nav without
      any per-page hardcoding.
      ----------------------------------------------------------------------- */

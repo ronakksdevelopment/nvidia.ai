@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Chat — Nemotron</title>
-<meta name="description" content="Chat with NVIDIA Nemotron — fast, open, efficient AI models." />
+<title>Chat - Nemotron</title>
+<meta name="description" content="Chat with NVIDIA Nemotron: fast, open, efficient AI models." />
 <meta name="theme-color" content="#0A0A0A" />
 
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/logo/nemotron-32.png" />
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="../css/styles.css" />
 <link rel="stylesheet" href="../css/chat.css" />
 </head>
-<body class="chat-body">
+<body class="chat-body" data-requires-session>
 
 <a class="skip-link" href="#composerInput">Skip to composer</a>
 
@@ -35,7 +35,7 @@
 
 <div class="offline-banner guest-banner" id="guestBanner" data-guest-only hidden role="status">
   <svg width="16" height="16"><use href="#icon-user"/></svg>
-  <span>You're chatting as a guest — nothing here is saved, and this history disappears when you close the tab.</span>
+  <span>You're chatting as a guest. Nothing here is saved, and this history disappears when you close the tab.</span>
 </div>
 
 <div class="chat-shell" id="chatShell" data-sidebar="expanded">
@@ -90,38 +90,38 @@
       </div>
 
       <button class="account-menu-trigger" id="accountMenuTrigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu">
-        <span class="account-avatar" aria-hidden="true" data-account-initials>DK</span>
+        <span class="account-avatar" aria-hidden="true" data-account-initials>?</span>
         <span class="account-menu-trigger__info">
-          <span class="account-menu-trigger__name" data-account-name>Dev Kumar</span>
-          <span class="account-menu-trigger__plan" data-account-plan>Beta access</span>
+          <span class="account-menu-trigger__name" data-account-name>Account</span>
+          <span class="account-menu-trigger__plan" data-account-plan>Free</span>
         </span>
         <svg class="account-menu-trigger__chevron" width="16" height="16"><use href="#icon-chevron-up"/></svg>
       </button>
 
       <div class="account-menu" id="accountMenu" role="menu" aria-label="Account menu">
         <div class="account-menu__header">
-          <span class="account-avatar account-avatar--lg" aria-hidden="true" data-account-initials>DK</span>
+          <span class="account-avatar account-avatar--lg" aria-hidden="true" data-account-initials>?</span>
           <div>
-            <div class="account-menu__name" data-account-name>Dev Kumar</div>
-            <div class="account-menu__email" data-account-email>dev.kumar@example.com</div>
+            <div class="account-menu__name" data-account-name>Account</div>
+            <div class="account-menu__email" data-account-email>–</div>
           </div>
         </div>
         <p class="text-caption" data-guest-only hidden style="padding: 0 var(--space-2) var(--space-2); color: var(--text-tertiary);">
-          Guest session — nothing here is saved.
+          Guest session. Nothing here is saved.
         </p>
         <div class="dropdown__divider"></div>
-        <button class="dropdown__item" role="menuitem" type="button" disabled>
+        <a class="dropdown__item" role="menuitem" href="settings.html">
           <svg width="16" height="16"><use href="#icon-settings"/></svg>
-          Settings <span class="badge badge--neutral account-menu__soon">Soon</span>
-        </button>
+          Settings
+        </a>
         <button class="dropdown__item" role="menuitem" type="button" id="shortcutsMenuBtn">
           <svg width="16" height="16"><use href="#icon-keyboard"/></svg>
           Keyboard shortcuts
         </button>
-        <button class="dropdown__item" role="menuitem" type="button" disabled>
+        <a class="dropdown__item" role="menuitem" href="profile.html">
           <svg width="16" height="16"><use href="#icon-user"/></svg>
-          Profile <span class="badge badge--neutral account-menu__soon">Soon</span>
-        </button>
+          Profile
+        </a>
         <div class="dropdown__divider"></div>
         <a class="dropdown__item" role="menuitem" href="../index.html">
           <svg width="16" height="16"><use href="#icon-globe"/></svg>
@@ -153,30 +153,65 @@
         <button class="model-badge" id="modelDropdownTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
           <span class="model-badge__glyph"><svg width="14" height="14"><use href="#icon-nemotron-mark"/></svg></span>
           <span class="model-badge__text">
-            <span class="model-badge__name">Nemotron Super</span>
-            <span class="model-badge__tag">BETA v1.0</span>
+            <span class="model-badge__name">Nemotron 3 Super</span>
+            <span class="model-badge__tag">FREE</span>
           </span>
           <svg class="model-badge__chevron" width="14" height="14"><use href="#icon-chevron-down"/></svg>
         </button>
         <div class="dropdown__menu model-dropdown__menu" role="listbox" aria-label="Choose model">
-          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nano">
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3-ultra-550b-a55b:free">
             <span class="model-option__main">
-              <span class="model-option__name">Nemotron Nano</span>
-              <span class="text-caption">Fastest · lightweight tasks</span>
+              <span class="model-option__name">Nemotron 3 Ultra</span>
+              <span class="text-caption">Frontier reasoning, 1M context</span>
             </span>
             <svg width="16" height="16"><use href="#icon-check"/></svg>
           </button>
-          <button class="dropdown__item model-option" role="option" aria-selected="true" type="button" data-model="super">
+          <button class="dropdown__item model-option" role="option" aria-selected="true" type="button" data-model="nvidia/nemotron-3-super-120b-a12b:free">
             <span class="model-option__main">
-              <span class="model-option__name">Nemotron Super</span>
-              <span class="text-caption">Balanced · everyday reasoning</span>
+              <span class="model-option__name">Nemotron 3 Super</span>
+              <span class="text-caption">Balanced, everyday reasoning</span>
             </span>
             <svg width="16" height="16"><use href="#icon-check"/></svg>
           </button>
-          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="ultra">
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3.5-lightning:free">
             <span class="model-option__main">
-              <span class="model-option__name">Nemotron Ultra</span>
-              <span class="text-caption">Deepest · complex, long-context</span>
+              <span class="model-option__name">Nemotron 3.5 Lightning</span>
+              <span class="text-caption">Fastest, high-throughput</span>
+            </span>
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+          </button>
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">
+            <span class="model-option__main">
+              <span class="model-option__name">Nemotron 3 Nano Omni</span>
+              <span class="text-caption">Reasoning, text + image input</span>
+            </span>
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+          </button>
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3.5-content-safety:free">
+            <span class="model-option__main">
+              <span class="model-option__name">Nemotron 3.5 Content Safety</span>
+              <span class="text-caption">Moderation and guardrails</span>
+            </span>
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+          </button>
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/llama-nemotron-rerank-vl-1b-v2:free">
+            <span class="model-option__main">
+              <span class="model-option__name">Llama Nemotron Rerank VL 1B</span>
+              <span class="text-caption">Document reranking</span>
+            </span>
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+          </button>
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/llama-nemotron-embed-vl-1b-v2:free">
+            <span class="model-option__main">
+              <span class="model-option__name">Llama Nemotron Embed VL 1B</span>
+              <span class="text-caption">Multimodal embeddings</span>
+            </span>
+            <svg width="16" height="16"><use href="#icon-check"/></svg>
+          </button>
+          <button class="dropdown__item model-option" role="option" aria-selected="false" type="button" data-model="nvidia/nemotron-3-embed-1b:free">
+            <span class="model-option__main">
+              <span class="model-option__name">Nemotron 3 Embed 1B</span>
+              <span class="text-caption">Text embeddings</span>
             </span>
             <svg width="16" height="16"><use href="#icon-check"/></svg>
           </button>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Settings — Nemotron</title>
+<title>Settings - Nemotron</title>
 <meta name="description" content="Configure your OpenRouter API key, choose a Nemotron model, and manage theme preferences." />
 <meta name="theme-color" content="#0A0A0A" />
 
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="../css/styles.css" />
 <link rel="stylesheet" href="../css/settings.css" />
 </head>
-<body>
+<body data-requires-session>
 
 <a class="skip-link" href="#settingsMain">Skip to content</a>
 
@@ -180,14 +180,14 @@
             <label class="field__label" for="modelSelect">NVIDIA free model</label>
             <div class="select-wrap">
               <select class="select" id="modelSelect" name="model">
-                <option value="nvidia/nemotron-3-ultra-550b-a55b:free">nvidia/nemotron-3-ultra-550b-a55b:free</option>
-                <option value="nvidia/nemotron-3.5-lightning:free">nvidia/nemotron-3.5-lightning:free</option>
-                <option value="nvidia/nemotron-3-super-120b-a12b:free" selected>nvidia/nemotron-3-super-120b-a12b:free</option>
-                <option value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free</option>
-                <option value="nvidia/llama-nemotron-rerank-vl-1b-v2:free">nvidia/llama-nemotron-rerank-vl-1b-v2:free</option>
-                <option value="nvidia/nemotron-3.5-content-safety:free">nvidia/nemotron-3.5-content-safety:free</option>
-                <option value="nvidia/llama-nemotron-embed-vl-1b-v2:free">nvidia/llama-nemotron-embed-vl-1b-v2:free</option>
-                <option value="nvidia/nemotron-3-embed-1b:free">nvidia/nemotron-3-embed-1b:free</option>
+                <option value="nvidia/nemotron-3-ultra-550b-a55b:free">Nemotron 3 Ultra</option>
+                <option value="nvidia/nemotron-3.5-lightning:free">Nemotron 3.5 Lightning</option>
+                <option value="nvidia/nemotron-3-super-120b-a12b:free" selected>Nemotron 3 Super</option>
+                <option value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">Nemotron 3 Nano Omni (Reasoning)</option>
+                <option value="nvidia/llama-nemotron-rerank-vl-1b-v2:free">Llama Nemotron Rerank VL 1B v2</option>
+                <option value="nvidia/nemotron-3.5-content-safety:free">Nemotron 3.5 Content Safety</option>
+                <option value="nvidia/llama-nemotron-embed-vl-1b-v2:free">Llama Nemotron Embed VL 1B v2</option>
+                <option value="nvidia/nemotron-3-embed-1b:free">Nemotron 3 Embed 1B</option>
               </select>
               <svg class="select-chevron" width="16" height="16"><use href="#icon-chevron-down"/></svg>
             </div>
@@ -199,7 +199,7 @@
             <div>
               <div class="model-meta-card__name" id="modelMetaName">Nemotron 3 Super</div>
               <div class="model-meta-card__id" id="modelMetaId">nvidia/nemotron-3-super-120b-a12b:free</div>
-              <div class="model-meta-card__desc" id="modelMetaDesc">120B-parameter hybrid MoE model activating 12B parameters — tuned for complex multi-agent applications.</div>
+              <div class="model-meta-card__desc" id="modelMetaDesc">120B-parameter hybrid MoE model activating 12B parameters, tuned for complex multi-agent applications.</div>
               <div class="model-meta-card__tags" id="modelMetaTags">
                 <span class="badge badge--brand">Free</span>
                 <span class="badge badge--neutral">Text</span>

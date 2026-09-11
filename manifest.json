@@ -1,7 +1,7 @@
 {
-  "name": "NVIDIA Nemotron — Open, Efficient AI Models",
+  "name": "NVIDIA Nemotron - Open, Efficient AI Models",
   "short_name": "Nemotron",
-  "description": "Chat, build, and reason with NVIDIA's open Nemotron model family. Fast, efficient, and free to try — installable as an app.",
+  "description": "Chat, build, and reason with NVIDIA's open Nemotron model family. Fast, efficient, and free to try. Installable as an app.",
   "id": "/",
   "start_url": "./index.html",
   "scope": "./",
@@ -32,7 +32,7 @@
     {
       "name": "Continue as guest",
       "short_name": "Guest",
-      "description": "Open Nemotron without signing in — nothing is saved",
+      "description": "Open Nemotron without signing in. Nothing is saved",
       "url": "./pages/chat.html?guest=1",
       "icons": [{ "src": "assets/logo/nemotron-192.png", "sizes": "192x192" }]
     },

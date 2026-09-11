@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Privacy Policy — Nemotron</title>
+<title>Privacy Policy - Nemotron</title>
 <meta name="description" content="Privacy policy for the Nemotron v1.0 Beta frontend project." />
 <meta name="theme-color" content="#0A0A0A" />
 
@@ -99,25 +99,29 @@
           Legal
         </span>
         <h1 class="settings-page-header__title">Privacy Policy</h1>
-        <p class="settings-page-header__desc">How this beta build handles your data.</p>
+        <p class="settings-page-header__desc">How this site handles your data.</p>
       </div>
 
       <div class="doc-content">
-        <p class="doc-meta">Beta placeholder policy — last updated September 2026.</p>
+        <p class="doc-meta">Last updated September 2026.</p>
 
         <h2>Summary</h2>
         <p>
-          This is a frontend-only demo. There is no account system and no application server that stores your
-          data. The only persistent data this site keeps is what you explicitly save in Settings, and it stays
-          in your browser.
+          Nemotron has no application server and does not collect or store your data on any server we operate.
+          Everything this site keeps, including your account identity, your API key, your chosen model and
+          theme, and your conversation history, stays in your browser's local storage on your own device.
         </p>
 
         <h2>What is stored, and where</h2>
         <p>
-          Your OpenRouter API key, selected model, and theme preference are saved using your browser's
-          <code class="text-mono">localStorage</code>. This data never leaves your device except when it is sent
-          directly to OpenRouter's API as part of a request you initiate (for example, clicking "Send test
-          message" or sending a chat message).
+          If you sign in, the name and email you enter are saved using your browser's
+          <code class="text-mono">localStorage</code> as a local display identity; no password or
+          verification is required or stored, because there is no server to check one against. Your
+          OpenRouter API key, selected model, theme preference, and conversation history are saved the
+          same way. None of this data ever leaves your device except when it is sent directly to
+          OpenRouter's API as part of a request you initiate, such as sending a chat message or running
+          the connection test in Settings. If you use guest mode instead of signing in, nothing is saved
+          at all, and everything disappears when you close the tab.
         </p>
 
         <h2>Third-party services</h2>
@@ -130,15 +134,16 @@
 
         <h2>Clearing your data</h2>
         <p>
-          You can remove everything this site has stored at any time using the Reset settings control in
-          Settings → General &amp; OpenRouter, or by clearing your browser's site data for this page.
+          You can remove your saved API key, model choice, and theme at any time using the Reset settings
+          control in Settings. Signing out clears your saved name and email. You can also delete individual
+          conversations, or clear your browser's site data for this page to remove everything at once.
         </p>
 
         <h2>Cookies and tracking</h2>
-        <p>This build does not set cookies and does not include analytics or tracking scripts.</p>
+        <p>This site does not set cookies and does not include analytics or tracking scripts.</p>
 
         <h2>Changes to this policy</h2>
-        <p>As this project moves past the beta milestones, this policy will be updated to reflect any backend or account features that are added.</p>
+        <p>If this project adds a backend or server-side account system in the future, this policy will be updated to reflect it.</p>
       </div>
 
     </div>

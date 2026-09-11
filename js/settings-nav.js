@@ -1,7 +1,7 @@
 /* =========================================================================
-   NVIDIA Nemotron — Shared mobile drawer behavior for settings-shell pages
+   NVIDIA Nemotron - Shared mobile drawer behavior for settings-shell pages
    (Profile, About, Help/FAQ, Privacy, Terms). settings.html has its own
-   inline wiring inside settings.js — this file is for the static pages.
+   inline wiring inside settings.js. This file is for the static pages.
    ========================================================================= */
 (function () {
   "use strict";
