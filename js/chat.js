@@ -612,6 +612,16 @@
   const topbarWeeklyUsageChip = $("#topbarWeeklyUsageChip");
   const topbarWeeklyUsageText = $("#topbarWeeklyUsageText");
   const topbarWeeklyResetText = $("#topbarWeeklyResetText");
+  // Mobile composer usage strip: same data, mirrored above the composer
+  // for screens where the topbar chips are hidden (see composer-usage-bar
+  // in chat.css). All lookups are null-safe the same way as the topbar
+  // ones above, so this is a no-op anywhere the markup is absent.
+  const composerSessionUsageChip = $("#composerSessionUsageChip");
+  const composerSessionUsageText = $("#composerSessionUsageText");
+  const composerSessionResetText = $("#composerSessionResetText");
+  const composerWeeklyUsageChip = $("#composerWeeklyUsageChip");
+  const composerWeeklyUsageText = $("#composerWeeklyUsageText");
+  const composerWeeklyResetText = $("#composerWeeklyResetText");
 
   const incognitoBadge = $("#incognitoBadge");
   const incognitoToggleBtn = $("#incognitoToggleBtn");
@@ -1506,6 +1516,13 @@
 
     if (topbarWeeklyUsageText) topbarWeeklyUsageText.textContent = `Weekly ${weeklyPct}%`;
     if (topbarWeeklyResetText) topbarWeeklyResetText.textContent = `resets ${formatCountdown(usageWindows.weeklyResetAt - now, "days")}`;
+
+    if (composerSessionUsageText) composerSessionUsageText.textContent = `Session ${sessionPct}%`;
+    if (composerSessionResetText) composerSessionResetText.textContent = `resets ${formatCountdown(usageWindows.sessionResetAt - now, "hours")}`;
+    if (composerSessionUsageChip) composerSessionUsageChip.classList.toggle("is-near-limit", sessionPct >= 90);
+
+    if (composerWeeklyUsageText) composerWeeklyUsageText.textContent = `Weekly ${weeklyPct}%`;
+    if (composerWeeklyResetText) composerWeeklyResetText.textContent = `resets ${formatCountdown(usageWindows.weeklyResetAt - now, "days")}`;
   }
 
   // Keep both countdowns ticking live even when no tokens are being added.

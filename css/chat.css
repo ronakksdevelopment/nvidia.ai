@@ -407,7 +407,12 @@ body.chat-body {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
-  z-index: var(--z-overlay);
+  /* Must render BEHIND the sidebar drawer, not at the same z-index. Both
+     shared var(--z-overlay) before, and since this element comes after
+     .sidebar in the DOM, equal z-index ties resolve in DOM order - so the
+     scrim painted on top of the whole sidebar, making it look dark/tinted
+     and swallowing every click and tap on it. */
+  z-index: calc(var(--z-overlay) - 1);
 }
 
 /* -------------------------------------------------------------------------
@@ -1031,6 +1036,50 @@ body.chat-body {
   padding: 0 var(--space-6) var(--space-5);
 }
 
+/* Compact usage strip shown above the composer on mobile, where the
+   topbar's own usage chips are hidden (see .chat-topbar__usage-chip at
+   max-width:760px below) to keep the topbar from overflowing. Hidden by
+   default; only shown at the same breakpoint the topbar chips disappear,
+   so usage info isn't lost on phones, just relocated. */
+.composer-usage-bar {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  padding-bottom: var(--space-2);
+}
+.composer-usage-bar__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+.composer-usage-bar__chip .nv-icon { flex-shrink: 0; color: var(--nv-green); }
+.composer-usage-bar__reset {
+  color: var(--text-disabled);
+  opacity: 0.85;
+}
+.composer-usage-bar__reset::before {
+  content: "\00b7";
+  margin-right: var(--space-2);
+  opacity: 0.7;
+}
+.composer-usage-bar__chip.is-near-limit { color: var(--status-warning); }
+@media (max-width: 760px) {
+  .composer-usage-bar { display: flex; }
+}
+@media (max-width: 480px) {
+  /* Not enough room for both the value and its reset countdown on very
+     small phones without wrapping mid-chip; drop the countdown text and
+     keep just "Session 42%" / "Weekly 10%" - the full detail is still in
+     Settings/sidebar. */
+  .composer-usage-bar__reset { display: none; }
+}
+
 .composer {
   background: var(--surface-raised);
   border: 1px solid var(--border-default);
@@ -1247,7 +1296,19 @@ body.chat-body {
   .model-badge__text { display: none; }
   .model-badge { padding: var(--space-2); }
   .model-badge__chevron { display: none; }
-  .model-dropdown__menu { left: auto; right: 0; min-width: 240px; max-width: calc(100vw - 24px); }
+  .model-dropdown__menu {
+    /* The model badge sits near the LEFT edge of the topbar (right after
+       the hamburger icon), not the right. Anchoring the menu with
+       right:0 made its right edge align to that narrow left-side badge,
+       so the 240px-wide menu extended further left from there - off the
+       left edge of the screen and cut off / invisible. Anchoring left:0
+       instead opens it rightward from the badge, which is where the
+       actual open space is. */
+    left: 0;
+    right: auto;
+    min-width: 240px;
+    max-width: calc(100vw - 24px);
+  }
 
   .composer-region {
     position: sticky;

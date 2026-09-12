@@ -310,6 +310,25 @@
          COMPOSER (desktop centered / mobile bottom docked)
          ========================================================= -->
     <div class="composer-region" id="composerRegion">
+
+      <!-- Compact usage strip: mirrors the topbar usage chips (hidden on
+           mobile below 760px to keep the topbar uncluttered) so session/
+           weekly usage is still visible on phones, docked just above the
+           composer inside the same sticky-bottom block. Desktop keeps
+           using the topbar chips only (this stays display:none there). -->
+      <div class="composer-usage-bar" id="composerUsageBar">
+        <span class="composer-usage-bar__chip" id="composerSessionUsageChip">
+          <i class="fa-solid fa-microchip nv-icon nv-icon--sm" aria-hidden="true"></i>
+          <span id="composerSessionUsageText">Session 0%</span>
+          <span class="composer-usage-bar__reset" id="composerSessionResetText">resets in 1h 00m</span>
+        </span>
+        <span class="composer-usage-bar__chip" id="composerWeeklyUsageChip">
+          <i class="fa-solid fa-calendar-days nv-icon nv-icon--sm" aria-hidden="true"></i>
+          <span id="composerWeeklyUsageText">Weekly 0%</span>
+          <span class="composer-usage-bar__reset" id="composerWeeklyResetText">resets in 7d</span>
+        </span>
+      </div>
+
       <form class="composer" id="composerForm" novalidate>
 
         <div class="composer__attachments" id="composerAttachments" hidden></div>
