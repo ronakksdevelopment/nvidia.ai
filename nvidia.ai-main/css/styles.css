@@ -219,6 +219,12 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
   margin-inline: auto;
   padding-inline: var(--container-pad);
 }
+@supports (padding: max(0px)) {
+  .navbar .container {
+    padding-left: max(var(--container-pad), calc(env(safe-area-inset-left) + var(--space-4)));
+    padding-right: max(var(--container-pad), calc(env(safe-area-inset-right) + var(--space-4)));
+  }
+}
 
 .stack { display: flex; flex-direction: column; }
 .stack[hidden] { display: none; }
@@ -227,9 +233,9 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
 .section {
   padding-block: var(--space-12);
 }
-@media (max-width: 640px) {
+
   .section { padding-block: var(--space-9); }
-}
+
 
 /* -------------------------------------------------------------------------
    4. Glass surface utility
@@ -343,13 +349,18 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
   color: var(--text-primary);
   padding: var(--space-2);
   border-radius: var(--radius-sm);
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
-.navbar__menu-btn:hover { background: var(--surface-hover); }
+.navbar__menu-btn:hover, .navbar__menu-btn:active { background: var(--surface-hover); }
 
-@media (max-width: 880px) {
-  .navbar__links { display: none; }
-  .navbar__menu-btn { display: inline-flex; }
-}
+.navbar__links { display: none; }
+.navbar__menu-btn { display: inline-flex; }
+.navbar__actions .btn { display: none; }
+.navbar__actions { gap: var(--space-1); margin-right: calc(-1 * var(--space-2)); }
+
 
 /* -------------------------------------------------------------------------
    Mobile drawer
@@ -1108,7 +1119,7 @@ textarea.input { resize: vertical; min-height: 96px; }
 .toast__close:hover { color: var(--text-primary); }
 .toast__close .nv-icon { font-size: 1rem; }
 
-@media (max-width: 640px) {
+
   .toast-region {
     left: var(--space-3);
     right: var(--space-3);
@@ -1117,7 +1128,7 @@ textarea.input { resize: vertical; min-height: 96px; }
     max-height: calc(100vh - var(--space-3) * 2);
     max-height: calc(100dvh - var(--space-3) * 2);
   }
-}
+
 
 /* =========================================================================
    16. SKELETONS
@@ -1272,9 +1283,9 @@ textarea.input { resize: vertical; min-height: 96px; }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-@media (max-width: 640px) {
+
   .hero { padding-block: var(--space-10) var(--space-9); }
-}
+
 
 /* -------------------------------------------------------------------------
    Feature grid
@@ -1284,11 +1295,11 @@ textarea.input { resize: vertical; min-height: 96px; }
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-5);
 }
-@media (max-width: 900px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .grid-3 { grid-template-columns: 1fr; } }
+ .grid-3 { grid-template-columns: repeat(2, 1fr); } 
+ .grid-3 { grid-template-columns: 1fr; } 
 
 .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
-@media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+ .grid-2 { grid-template-columns: 1fr; } 
 
 .section-head {
   max-width: 620px;
@@ -1467,10 +1478,10 @@ textarea.input { resize: vertical; min-height: 96px; }
 .footer__legal a { color: var(--text-tertiary); text-decoration: underline; }
 .footer__legal a:hover { color: var(--nv-green); }
 .footer__legal-sep { opacity: 0.6; }
-@media (max-width: 640px) {
+
   .footer__inner { justify-content: center; text-align: center; }
   .footer__legal { flex-direction: column; gap: var(--space-1); }
-}
+
 
 /* =========================================================================
    20. SPLASH SCREEN
@@ -1635,9 +1646,9 @@ textarea.input { resize: vertical; min-height: 96px; }
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-@media (max-width: 900px) {
+
   .auth-page { grid-template-columns: 1fr; }
-}
+
 .auth-page__aside {
   position: relative;
   background: linear-gradient(160deg, var(--nv-graphite-900), var(--nv-black));
@@ -1678,9 +1689,9 @@ textarea.input { resize: vertical; min-height: 96px; }
    pitfall as the .settings-savebar mobile override elsewhere in the
    codebase: a media-query override placed before the rule it's meant to
    override loses at equal specificity to whatever comes later in the file. */
-@media (max-width: 900px) {
+
   .auth-page__aside { display: none; }
-}
+
 .auth-page__aside-quote {
   position: relative;
   z-index: 1;

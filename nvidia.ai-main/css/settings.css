@@ -124,7 +124,7 @@
   z-index: var(--z-sticky);
 }
 
-@media (max-width: 860px) {
+
   .settings-shell { flex-direction: column; }
   .settings-shell__nav {
     position: fixed;
@@ -138,7 +138,7 @@
   .settings-shell__nav.is-open { transform: translateX(0); }
   .settings-shell__mobile-topbar { display: flex; }
   .settings-shell__main { padding: var(--space-6) var(--space-4) var(--space-11); }
-}
+
 
 .settings-nav-scrim {
   display: none;
@@ -177,12 +177,12 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 .settings-section:last-child { border-bottom: none; }
-@media (max-width: 640px) {
+
   .settings-section { padding-block: var(--space-6); }
   .profile-header { flex-wrap: wrap; text-align: center; justify-content: center; }
   .profile-header > div { min-width: 0; width: 100%; }
   .profile-header__name, .profile-header__email { white-space: normal; text-align: center; }
-}
+
 
 .settings-section__head { margin-bottom: var(--space-5); }
 .settings-section__title {
@@ -233,10 +233,10 @@
 }
 .account-details-row__item { min-width: 0; flex: 1 1 0; }
 .account-details-row__item .settings-row__hint { white-space: normal; word-break: break-word; }
-@media (max-width: 640px) {
+
   .account-details-row { flex-direction: column; gap: var(--space-4); }
   .account-details-row__item { width: 100%; }
-}
+
 
 /* -------------------------------------------------------------------------
    4. API key field
@@ -271,7 +271,7 @@
   padding: var(--space-2) var(--space-3);
   gap: var(--space-1);
 }
-@media (max-width: 480px) {
+
   /* Not enough room for icon + paste + a labelled Save button inline on
      very small screens: stack Save below the field instead of squeezing
      three controls into one row. */
@@ -279,7 +279,7 @@
   .api-key-field__actions { position: static; margin-top: var(--space-2); justify-content: flex-end; width: 100%; }
   .api-key-field { flex-wrap: wrap; }
   .api-key-field .input-wrap { flex-wrap: wrap; }
-}
+
 
 .key-status {
   display: inline-flex;
@@ -302,9 +302,9 @@
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-4);
 }
-@media (max-width: 560px) {
+
   .theme-picker { grid-template-columns: 1fr; }
-}
+
 
 .theme-option { position: relative; }
 .theme-option input {
@@ -433,14 +433,14 @@
   border-top: 1px solid var(--border-subtle);
   z-index: var(--z-sticky);
 }
-@media (max-width: 860px) {
+
   .settings-savebar {
     bottom: calc(var(--space-11) * -1);
     margin-inline: calc(var(--space-4) * -1);
     margin-bottom: calc(var(--space-11) * -1);
     padding-inline: var(--space-4);
   }
-}
+
 .settings-savebar__status {
   margin-right: auto;
   font-size: var(--fs-caption);
@@ -725,15 +725,15 @@
 }
 .model-tabs__row:last-child { border-bottom: none; }
 
-@media (max-width: 640px) {
+
   .model-tabs__nav { flex-wrap: wrap; }
   .model-tabs__btn { flex: 1 1 45%; min-width: 0; padding: var(--space-2) var(--space-2); gap: var(--space-1); font-size: 12px; }
   .model-tabs__btn span.model-tabs__count { display: inline-flex; }
   .model-tabs__row { flex-wrap: wrap; }
-}
-@media (max-width: 400px) {
+
+
   .model-tabs__btn { flex: 1 1 100%; }
-}
+
 
 /* -------------------------------------------------------------------------
    Credits & Attribution (About) — same bold-border / rounded-corner card
@@ -789,10 +789,10 @@
 }
 .credits-disclaimer .nv-icon { margin-top: 2px; }
 
-@media (max-width: 640px) {
+
   .credits-grid { grid-template-columns: 1fr; }
   .credits-cta { width: 100%; justify-content: center; }
-}
+
 
 
 /* FAQ search */
@@ -966,13 +966,13 @@
 }
 .faq-item__a p + p { margin-top: var(--space-3); }
 
-@media (max-width: 640px) {
+
   .faq-list { gap: 0; }
   .faq-item { padding-left: 48px; }
   .faq-item::before { left: 15px; }
   .faq-item__q::before { left: -48px; width: 34px; height: 24px; font-size: 10px; }
   .faq-item[data-open="true"] .faq-item__a { padding-left: var(--space-3); }
-}
+
 
 
 /* -------------------------------------------------------------------------
@@ -1017,7 +1017,7 @@
   gap: var(--space-4);
   margin-bottom: var(--space-8);
 }
-@media (max-width: 560px) { .profile-stats { grid-template-columns: 1fr; } }
+ .profile-stats { grid-template-columns: 1fr; } 
 .profile-stat {
   background: var(--surface-sunken);
   border: 1px solid var(--border-subtle);
