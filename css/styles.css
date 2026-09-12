@@ -351,31 +351,6 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
   .navbar__menu-btn { display: inline-flex; }
 }
 
-/* Mobile: the Sign in / Get started buttons plus the hamburger no longer
-   fit in one row and were overflowing off the right edge of the screen.
-   The nav drawer (below) already has its own full-width Sign in / Get
-   started buttons, so hide the topbar pair here and give the hamburger a
-   proper 44px touch target instead of it sitting flush with almost no
-   hit area. Desktop/tablet (>640px) is untouched. */
-@media (max-width: 640px) {
-  .navbar__actions .btn { display: none; }
-  .navbar__actions { gap: var(--space-1); }
-  .navbar__menu-btn {
-    min-width: 44px;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-@supports (padding: max(0px)) {
-  @media (max-width: 640px) {
-    .navbar .container {
-      padding-right: max(var(--container-pad), calc(env(safe-area-inset-right) + var(--space-4)));
-    }
-  }
-}
-
 /* -------------------------------------------------------------------------
    Mobile drawer
    Docked to the LEFT edge and sized from the viewport (min(320px, 84vw)),
