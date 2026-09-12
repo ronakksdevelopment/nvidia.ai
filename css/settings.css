@@ -306,11 +306,16 @@
 @media (max-width: 480px) {
   /* Not enough room for icon + paste + a labelled Save button inline on
      very small screens: stack Save below the field instead of squeezing
-     three controls into one row. */
+     three controls into one row. .api-key-field IS .input-wrap (same
+     element), so wrapping it to stack the actions row below also makes
+     this element taller - which would pull the absolutely-positioned
+     .input-icon's top:50% down with it, off the actual input field.
+     Anchor the icon to the input's own fixed height instead so it stays
+     centered on the field regardless of how tall the wrapped row gets. */
   .api-key-field .input { padding-right: 88px; }
   .api-key-field__actions { position: static; margin-top: var(--space-2); justify-content: flex-end; width: 100%; }
   .api-key-field { flex-wrap: wrap; }
-  .api-key-field .input-wrap { flex-wrap: wrap; }
+  .api-key-field .input-icon { top: 22px; transform: none; }
 }
 
 .key-status {
