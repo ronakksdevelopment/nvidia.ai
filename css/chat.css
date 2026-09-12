@@ -238,6 +238,18 @@ body.chat-body {
 .history-item.is-editing .history-item__edit-btn,
 .history-item.is-editing .history-item__menu-btn { opacity: 0; pointer-events: none; }
 
+/* Touch/coarse-pointer devices have no :hover, so the rename and options
+   buttons above (opacity:0 until hovered) were only ever reachable on the
+   single currently-active conversation - every other item in the sidebar
+   had no way to rename or delete it on a phone or tablet. Detect the
+   input type directly (hover: none) rather than viewport width, since a
+   touchscreen can be wide (tablet landscape) and a narrow window can
+   still be mouse-driven (resized desktop browser). */
+@media (hover: none) {
+  .history-item__menu-btn,
+  .history-item__edit-btn { opacity: 1; }
+}
+
 .history-item__edit-input {
   flex: 1;
   min-width: 0;

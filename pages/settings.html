@@ -187,14 +187,20 @@
             <label class="field__label" for="modelSelectTrigger">NVIDIA free model</label>
             <div class="nv-dropdown" id="modelDropdown">
               <select class="select visually-hidden" id="modelSelect" name="model" tabindex="-1" aria-hidden="true">
-                <option value="nvidia/nemotron-3-ultra-550b-a55b:free">Nemotron 3 Ultra</option>
-                <option value="nvidia/nemotron-3.5-lightning:free">Nemotron 3.5 Lightning</option>
-                <option value="nvidia/nemotron-3-super-120b-a12b:free" selected>Nemotron 3 Super</option>
-                <option value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">Nemotron 3 Nano Omni (Reasoning)</option>
-                <option value="nvidia/llama-nemotron-rerank-vl-1b-v2:free">Llama Nemotron Rerank VL 1B v2</option>
-                <option value="nvidia/nemotron-3.5-content-safety:free">Nemotron 3.5 Content Safety</option>
-                <option value="nvidia/llama-nemotron-embed-vl-1b-v2:free">Llama Nemotron Embed VL 1B v2</option>
-                <option value="nvidia/nemotron-3-embed-1b:free">Nemotron 3 Embed 1B</option>
+                <optgroup label="Text">
+                  <option value="nvidia/nemotron-3-ultra-550b-a55b:free">Nemotron 3 Ultra</option>
+                  <option value="nvidia/nemotron-3.5-lightning:free">Nemotron 3.5 Lightning</option>
+                  <option value="nvidia/nemotron-3-super-120b-a12b:free" selected>Nemotron 3 Super</option>
+                  <option value="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free">Nemotron 3 Nano Omni (Reasoning)</option>
+                  <option value="nvidia/nemotron-3.5-content-safety:free">Nemotron 3.5 Content Safety</option>
+                </optgroup>
+                <optgroup label="Embedding">
+                  <option value="nvidia/llama-nemotron-embed-vl-1b-v2:free">Llama Nemotron Embed VL 1B v2</option>
+                  <option value="nvidia/nemotron-3-embed-1b:free">Nemotron 3 Embed 1B</option>
+                </optgroup>
+                <optgroup label="Rerank">
+                  <option value="nvidia/llama-nemotron-rerank-vl-1b-v2:free">Llama Nemotron Rerank VL 1B v2</option>
+                </optgroup>
               </select>
 
               <button type="button" class="nv-dropdown__trigger" id="modelSelectTrigger"
@@ -205,6 +211,7 @@
 
               <ul class="nv-dropdown__list" id="modelSelectListbox" role="listbox" tabindex="-1"
                   aria-labelledby="modelSelectTrigger" hidden>
+                <li class="nv-dropdown__group-label" role="presentation">Text</li>
                 <li class="nv-dropdown__option" role="option" aria-selected="false" data-value="nvidia/nemotron-3-ultra-550b-a55b:free">
                   <span>Nemotron 3 Ultra</span>
                   <i class="fa-solid fa-check nv-icon nv-icon--xs nv-dropdown__check" aria-hidden="true"></i>
@@ -221,20 +228,22 @@
                   <span>Nemotron 3 Nano Omni (Reasoning)</span>
                   <i class="fa-solid fa-check nv-icon nv-icon--xs nv-dropdown__check" aria-hidden="true"></i>
                 </li>
-                <li class="nv-dropdown__option" role="option" aria-selected="false" data-value="nvidia/llama-nemotron-rerank-vl-1b-v2:free">
-                  <span>Llama Nemotron Rerank VL 1B v2</span>
-                  <i class="fa-solid fa-check nv-icon nv-icon--xs nv-dropdown__check" aria-hidden="true"></i>
-                </li>
                 <li class="nv-dropdown__option" role="option" aria-selected="false" data-value="nvidia/nemotron-3.5-content-safety:free">
                   <span>Nemotron 3.5 Content Safety</span>
                   <i class="fa-solid fa-check nv-icon nv-icon--xs nv-dropdown__check" aria-hidden="true"></i>
                 </li>
+                <li class="nv-dropdown__group-label" role="presentation">Embedding</li>
                 <li class="nv-dropdown__option" role="option" aria-selected="false" data-value="nvidia/llama-nemotron-embed-vl-1b-v2:free">
                   <span>Llama Nemotron Embed VL 1B v2</span>
                   <i class="fa-solid fa-check nv-icon nv-icon--xs nv-dropdown__check" aria-hidden="true"></i>
                 </li>
                 <li class="nv-dropdown__option" role="option" aria-selected="false" data-value="nvidia/nemotron-3-embed-1b:free">
                   <span>Nemotron 3 Embed 1B</span>
+                  <i class="fa-solid fa-check nv-icon nv-icon--xs nv-dropdown__check" aria-hidden="true"></i>
+                </li>
+                <li class="nv-dropdown__group-label" role="presentation">Rerank</li>
+                <li class="nv-dropdown__option" role="option" aria-selected="false" data-value="nvidia/llama-nemotron-rerank-vl-1b-v2:free">
+                  <span>Llama Nemotron Rerank VL 1B v2</span>
                   <i class="fa-solid fa-check nv-icon nv-icon--xs nv-dropdown__check" aria-hidden="true"></i>
                 </li>
               </ul>

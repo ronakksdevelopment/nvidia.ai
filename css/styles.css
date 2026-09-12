@@ -351,6 +351,24 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
   .navbar__menu-btn { display: inline-flex; }
 }
 
+@media (max-width: 400px) {
+  /* Brand (logo + "Nemotron" + beta badge) + Sign in/Get started buttons +
+     hamburger add up to more than fits in a 320-375px viewport once the
+     container's fixed 24px side padding is subtracted (roughly 400px of
+     content in as little as 272px of space) - on the smallest phones this
+     either forced the page to scroll horizontally or squeezed the brand
+     and buttons together with no room to breathe. Drop the beta badge
+     (purely decorative), tighten the container's own side padding just
+     for this row, and tighten gaps/button padding to reclaim enough
+     width for both the brand and the actions to sit comfortably on one
+     line without wrapping or forcing horizontal scroll. */
+  .navbar__inner { padding-inline: var(--space-3); gap: var(--space-2); }
+  .navbar__brand-beta { display: none; }
+  .navbar__brand span:not(.navbar__brand-beta) { font-size: var(--fs-body-sm); }
+  .navbar__actions { gap: var(--space-2); }
+  .navbar__actions .btn--sm { padding-inline: var(--space-3); }
+}
+
 /* -------------------------------------------------------------------------
    Mobile drawer
    Docked to the LEFT edge and sized from the viewport (min(320px, 84vw)),
@@ -926,6 +944,12 @@ textarea.input { resize: vertical; min-height: 96px; }
   padding: var(--space-5);
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(6px);
+  /* Lets the overlay itself scroll when a tall modal (e.g. the 8-row
+     shortcuts list) can't fit even after the modal's own max-height/
+     overflow below - without this, align-items:center centers content
+     that's taller than the viewport with no way to reach what's clipped
+     above/below on short mobile screens (landscape phones especially). */
+  overflow-y: auto;
 }
 .modal-overlay.is-open {
   display: flex;
@@ -934,6 +958,15 @@ textarea.input { resize: vertical; min-height: 96px; }
 .modal {
   width: 100%;
   max-width: 440px;
+  /* Caps the modal to the viewport minus the overlay's own padding on
+     both edges, with its own scrollbar once content exceeds that - a
+     short landscape-phone viewport (e.g. ~375px tall) plus the
+     shortcuts modal's header + 8 rows + button previously had no
+     height limit at all, so content could run past the bottom of the
+     screen with no way to scroll to it or reach the action buttons. */
+  max-height: calc(100vh - var(--space-5) * 2);
+  max-height: calc(100dvh - var(--space-5) * 2);
+  overflow-y: auto;
   background: var(--surface-raised);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
@@ -974,6 +1007,16 @@ textarea.input { resize: vertical; min-height: 96px; }
 .modal__body { font-size: var(--fs-body-sm); color: var(--text-secondary); margin-bottom: var(--space-7); }
 .modal__actions { display: flex; justify-content: flex-end; gap: var(--space-3); }
 .modal__actions.stacked { flex-direction: column-reverse; }
+
+@media (max-width: 480px) {
+  /* Overlay/modal padding was a fixed 20px+32px on every screen size;
+     on very small phones that's a disproportionate amount of the
+     already-limited width/height spent on whitespace instead of
+     content. Match the tighter spacing used elsewhere in this file for
+     small screens (e.g. .toast-region, .settings-section). */
+  .modal-overlay { padding: var(--space-3); }
+  .modal { padding: var(--space-5); max-height: calc(100vh - var(--space-3) * 2); max-height: calc(100dvh - var(--space-3) * 2); }
+}
 
 /* =========================================================================
    13. TOOLTIPS
@@ -1531,6 +1574,7 @@ textarea.input { resize: vertical; min-height: 96px; }
   align-items: center;
   justify-content: center;
   padding: var(--space-6);
+  overflow-y: auto;
 }
 .onboarding__card {
   width: 100%;

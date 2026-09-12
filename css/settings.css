@@ -128,7 +128,15 @@
   .settings-shell { flex-direction: column; }
   .settings-shell__nav {
     position: fixed;
-    inset: 0 25% 0 0;
+    top: 0; bottom: 0; left: 0;
+    /* Same cap as the chat sidebar drawer (min(300px, 84vw)): a fixed
+       25%-from-right inset made the drawer scale with viewport width
+       instead of content width, so it read too narrow on small phones
+       (25% of 320px leaves only 240px, tight for nav labels + icons)
+       and too wide on tablets right at the 860px breakpoint (~645px
+       drawer covering most of the screen). A capped width fits every
+       size in between correctly instead of scaling linearly forever. */
+    width: min(300px, 84vw);
     z-index: var(--z-overlay);
     background: var(--surface-canvas);
     transform: translateX(-100%);
@@ -550,6 +558,19 @@
   margin: 0;
 }
 .nv-dropdown__list[hidden] { display: none; }
+
+/* Category headers (Text / Embedding / Rerank) above their models, same
+   pattern as .model-dropdown__group-label in chat.css. Not a role="option"
+   element, so it's inert for keyboard nav and screen-reader option count. */
+.nv-dropdown__group-label {
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-disabled);
+  padding: var(--space-3) var(--space-3) var(--space-1);
+}
+.nv-dropdown__group-label:first-child { padding-top: var(--space-1); }
 
 .nv-dropdown__option {
   display: flex;
