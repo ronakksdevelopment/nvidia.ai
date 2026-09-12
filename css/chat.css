@@ -1066,6 +1066,7 @@ body.chat-body {
   padding: 4px var(--space-2);
   border-radius: var(--radius-sm);
   letter-spacing: 0.01em;
+  overflow: hidden;
 }
 .composer-usage-bar__chip .nv-icon { flex-shrink: 0; font-size: 0.85em; }
 #composerSessionUsageChip {
@@ -1096,11 +1097,24 @@ body.chat-body {
   .composer-usage-bar { display: flex; }
 }
 @media (max-width: 480px) {
-  /* Not enough room for both the value and its reset countdown on very
-     small phones without wrapping mid-chip; drop the countdown text and
-     keep just "Session 42%" / "Weekly 10%" - the full detail is still in
-     Settings/sidebar. */
-  .composer-usage-bar__reset { display: none; }
+  /* Not enough horizontal room for both the value and its reset countdown
+     on the same line on very small phones. Rather than hiding the reset
+     time (PC always shows it), stack each chip's label and reset text on
+     two lines so both stay visible in the same pill width. */
+  .composer-usage-bar__chip {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    line-height: 1.25;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .composer-usage-bar__chip .nv-icon { display: none; }
+  .composer-usage-bar__reset {
+    font-size: 9px;
+    opacity: 0.75;
+  }
+  .composer-usage-bar__reset::before { content: none; }
 }
 
 .composer {

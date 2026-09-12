@@ -244,6 +244,10 @@ button:hover .nv-icon, button:focus-visible .nv-icon, button:active .nv-icon,
 /* =========================================================================
    5. NAVIGATION
    ========================================================================= */
+#features, #models {
+  scroll-margin-top: calc(var(--header-height) + var(--space-4));
+}
+
 .navbar {
   position: sticky;
   top: 0;
@@ -672,6 +676,8 @@ input[type="search"]::-webkit-search-results-decoration {
 .input-wrap .input-icon {
   position: absolute;
   left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--text-tertiary);
   font-size: 1.125rem;
   display: inline-flex;

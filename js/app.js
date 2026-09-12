@@ -151,6 +151,33 @@
   document.querySelectorAll("[data-close-drawer]").forEach((el) =>
     el.addEventListener("click", closeDrawer)
   );
+
+  // In-page anchor links inside the mobile drawer (Home / Features / Models)
+  // need to close the drawer AND scroll to the target section. The page is
+  // pinned with position:fixed while the drawer is open (see
+  // .nv-scroll-locked), so the browser's native anchor jump can't do
+  // anything - it silently no-ops, which looked like the links "did
+  // nothing". unlockPageScroll() also restores the pre-drawer scroll
+  // position, which would immediately undo a native jump anyway. Instead,
+  // close the drawer first, then scroll to the target on the next frame
+  // once the page is unlocked.
+  if (navDrawer) {
+    navDrawer.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const targetId = link.getAttribute("href");
+        if (!targetId || targetId === "#") return;
+        const target = document.querySelector(targetId);
+        if (!target) return;
+        e.preventDefault();
+        closeDrawer();
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        });
+      });
+    });
+  }
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && navDrawer && navDrawer.classList.contains("is-open")) {
       closeDrawer();

@@ -124,6 +124,30 @@
   z-index: var(--z-sticky);
 }
 
+/* .icon-btn is normally defined in chat.css, which these standalone pages
+   don't load — without this the mobile menu toggle rendered as a bare
+   white box with an unstyled bars icon instead of the homescreen's
+   circular button treatment. */
+.settings-shell__mobile-topbar .icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-fast) var(--ease-standard),
+              transform var(--duration-fast) var(--ease-standard);
+}
+.settings-shell__mobile-topbar .icon-btn:hover { background: var(--surface-hover); color: var(--text-primary); }
+.settings-shell__mobile-topbar .icon-btn:active { transform: scale(0.94); }
+.settings-shell__mobile-topbar .icon-btn[aria-expanded="true"] { color: var(--nv-green); }
+
 @media (max-width: 860px) {
   .settings-shell { flex-direction: column; }
   .settings-shell__nav {
