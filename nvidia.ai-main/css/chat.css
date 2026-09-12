@@ -453,8 +453,12 @@ body.chat-body {
   border-color: var(--status-warning);
 }
 
-.chat-topbar__usage-reset { display: none; }
-.chat-topbar__usage-chip { display: none; }
+@media (max-width: 900px) {
+  .chat-topbar__usage-reset { display: none; }
+}
+@media (max-width: 760px) {
+  .chat-topbar__usage-chip { display: none; }
+}
 
 /* Model badge / dropdown */
 .model-dropdown { position: relative; }
@@ -553,7 +557,9 @@ body.chat-body {
   width: 100%;
   max-width: 760px;
 }
-.chat-suggestions { grid-template-columns: 1fr; }
+@media (max-width: 640px) {
+  .chat-suggestions { grid-template-columns: 1fr; }
+}
 .chat-suggestion {
   display: flex;
   align-items: center;
@@ -1183,85 +1189,77 @@ body.chat-body {
    8. Responsive behavior
    ------------------------------------------------------------------------- */
 
-/* Mobile-only: sidebar is always an overlay drawer, never a grid column.
-   These rules used to be gated behind @media (max-width: 1024px) / 640px;
-   they are now unconditional so the layout is mobile-only regardless of
-   viewport width. */
-.chat-shell {
-  grid-template-columns: 0px 1fr;
+/* Tablet: sidebar becomes an overlay drawer instead of a grid column */
+@media (max-width: 1024px) {
+  .chat-shell {
+    grid-template-columns: 0px 1fr;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    width: min(300px, 84vw);
+    z-index: var(--z-overlay);
+    transform: translateX(-100%);
+    transition: transform var(--duration-slow) var(--ease-out);
+    border-right: 1px solid var(--border-default);
+  }
+  /* .sidebar becomes position:fixed above, which pulls it out of normal
+     flow but NOT out of grid auto-placement in all engines, and the
+     display:none .sidebar-scrim is skipped by auto-placement entirely.
+     That combination can push .chat-main into implicit/track-1 placement
+     instead of the 1fr track, collapsing it (and everything inside it,
+     including the composer) to zero width. Pin both explicitly so
+     placement can't misfire regardless of sidebar/scrim state. */
+  .sidebar { grid-column: 1; }
+  .chat-main { grid-column: 2; }
+  .chat-shell[data-sidebar="expanded"] .sidebar {
+    transform: translateX(0);
+    box-shadow: var(--shadow-xl);
+  }
+  .chat-shell[data-sidebar="expanded"] .sidebar-scrim {
+    display: block;
+    animation: fadeIn var(--duration-base) var(--ease-standard);
+  }
+  .chat-topbar__menu-btn { display: inline-flex; }
+  .sidebar__collapse-btn { display: none; }
+  .chat-topbar__reopen-sidebar-btn { display: none !important; }
 }
-.sidebar {
-  position: fixed;
-  top: 0; bottom: 0; left: 0;
-  width: 86vw;
-  max-width: 320px;
-  /* Must render above .sidebar-scrim (also var(--z-overlay)): as siblings
-     with equal z-index, the scrim comes later in the DOM (see chat.html)
-     and would otherwise paint on top of the sidebar, visually dimming it
-     and swallowing every tap on New Chat / search / history / model
-     selector underneath the scrim's own hit-testing. */
-  z-index: calc(var(--z-overlay) + 1);
-  transform: translateX(-100%);
-  transition: transform var(--duration-slow) var(--ease-out);
-  border-right: 1px solid var(--border-default);
-}
-/* .sidebar becomes position:fixed above, which pulls it out of normal
-   flow but NOT out of grid auto-placement in all engines, and the
-   display:none .sidebar-scrim is skipped by auto-placement entirely.
-   That combination can push .chat-main into implicit/track-1 placement
-   instead of the 1fr track, collapsing it (and everything inside it,
-   including the composer) to zero width. Pin both explicitly so
-   placement can't misfire regardless of sidebar/scrim state. */
-.sidebar { grid-column: 1; }
-.chat-main { grid-column: 2; }
-.chat-shell[data-sidebar="expanded"] .sidebar {
-  transform: translateX(0);
-  box-shadow: var(--shadow-xl);
-}
-.chat-shell[data-sidebar="expanded"] .sidebar-scrim {
-  display: block;
-  animation: fadeIn var(--duration-base) var(--ease-standard);
-}
-.chat-topbar__menu-btn { display: inline-flex; }
-.sidebar__collapse-btn { display: none; }
-.chat-topbar__reopen-sidebar-btn { display: none !important; }
 
-/* Mobile: bottom-docked composer, full width, no centering — unconditional */
-.chat-scroll__inner { padding: var(--space-4) var(--space-4) var(--space-6); }
-.chat-empty { padding: var(--space-7) var(--space-2); }
-.chat-empty__title { font-size: var(--fs-h3); }
+/* Mobile / Android: bottom-docked composer, full width, no centering */
+@media (max-width: 640px) {
+  .chat-scroll__inner { padding: var(--space-4) var(--space-4) var(--space-6); }
+  .chat-empty { padding: var(--space-7) var(--space-2); }
+  .chat-empty__title { font-size: var(--fs-h3); }
 
-.chat-topbar { padding: var(--space-2) var(--space-3); }
-/* Keep the model name + chevron visible on mobile — a bare icon reads as
-   "no model selector here". Just tighten the badge and clamp its width so
-   long model names ellipsis instead of overflowing the topbar. */
-.model-badge { padding: var(--space-2) var(--space-3); max-width: 62vw; }
-.model-badge__text { min-width: 0; }
-.model-badge__name {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  .chat-topbar { padding: var(--space-2) var(--space-3); }
+  .model-badge__text { display: none; }
+  .model-badge { padding: var(--space-2); }
+  .model-badge__chevron { display: none; }
+  .model-dropdown__menu { left: auto; right: 0; min-width: 240px; max-width: calc(100vw - 24px); }
+
+  .composer-region {
+    position: sticky;
+    bottom: 0;
+    padding: var(--space-2) var(--space-3);
+    background: linear-gradient(180deg, transparent, var(--surface-canvas) 30%);
+    max-width: none;
+  }
+  .composer { border-radius: var(--radius-lg); }
+  .composer__disclaimer { display: none; }
+  .composer__hint { display: none; }
+
+  .msg__avatar { width: 26px; height: 26px; }
+  .msg__actions { opacity: 1; } /* no hover on touch devices */
+
+  .sidebar { width: 86vw; }
 }
-.model-dropdown__menu { left: auto; right: 0; min-width: 240px; max-width: calc(100vw - 24px); }
-
-.composer-region {
-  position: sticky;
-  bottom: 0;
-  padding: var(--space-2) var(--space-3);
-  background: linear-gradient(180deg, transparent, var(--surface-canvas) 30%);
-  max-width: none;
-}
-.composer { border-radius: var(--radius-lg); }
-.composer__disclaimer { display: none; }
-.composer__hint { display: none; }
-
-.msg__avatar { width: 26px; height: 26px; }
-.msg__actions { opacity: 1; } /* no hover on touch devices */
 
 /* Landscape-safe area for notches */
 @supports (padding: max(0px)) {
-  .composer-region { padding-bottom: max(var(--space-2), env(safe-area-inset-bottom)); }
+  .composer-region { padding-bottom: max(var(--space-5), env(safe-area-inset-bottom)); }
+  @media (max-width: 640px) {
+    .composer-region { padding-bottom: max(var(--space-2), env(safe-area-inset-bottom)); }
+  }
 }
 
 /* -------------------------------------------------------------------------
@@ -1358,19 +1356,21 @@ body.chat-body {
   to   { box-shadow: var(--shadow-glow-green); }
 }
 
-.incognito-strip { padding: var(--space-2) var(--space-3); }
-.incognito-strip span {
-  font-size: var(--fs-caption);
-  /* The full sentence doesn't fit next to the icon + exit button on
-     narrow screens. Rather than let a `flex: 1; min-width: 0` child
-     wrap to one word per line (unreadable), truncate to one line with
-     an ellipsis; the same information is always available via the
-     "Turn off" action and the topbar badge/tooltip. */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+@media (max-width: 640px) {
+  .incognito-strip { padding: var(--space-2) var(--space-3); }
+  .incognito-strip span {
+    font-size: var(--fs-caption);
+    /* The full sentence doesn't fit next to the icon + exit button on
+       narrow screens. Rather than let a `flex: 1; min-width: 0` child
+       wrap to one word per line (unreadable), truncate to one line with
+       an ellipsis; the same information is always available via the
+       "Turn off" action and the topbar badge/tooltip. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .incognito-badge > span { display: none; } /* icon-only badge on small screens; icon is an <i>, unaffected */
 }
-.incognito-badge > span { display: none; } /* icon-only badge on small screens; icon is an <i>, unaffected */
 
 /* -------------------------------------------------------------------------
    9. Reduced motion respects
