@@ -407,12 +407,11 @@ body.chat-body {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
-  /* Must render BEHIND the sidebar drawer, not at the same z-index. Both
-     shared var(--z-overlay) before, and since this element comes after
-     .sidebar in the DOM, equal z-index ties resolve in DOM order - so the
-     scrim painted on top of the whole sidebar, making it look dark/tinted
-     and swallowing every click and tap on it. */
-  z-index: calc(var(--z-overlay) - 1);
+  /* Must render BEHIND the sidebar drawer, not at the same z-index or even
+     close to it. Pinned to a literal value comfortably below the
+     drawer's 9000, with no shared calc() dependency, so the two can never
+     collide again even if one of the underlying --z-* tokens changes. */
+  z-index: 8999;
 }
 
 /* -------------------------------------------------------------------------
@@ -1045,30 +1044,54 @@ body.chat-body {
   display: none;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
+  flex-wrap: nowrap;
+  gap: var(--space-2);
   padding-bottom: var(--space-2);
+  overflow-x: auto;
 }
+/* Same pill/card look as the desktop topbar's .badge chips (background
+   fill, border, rounded corners) rather than bare text, just sized down
+   to fit two side-by-side on one line above a phone-width composer. */
 .composer-usage-bar__chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-1);
+  flex: 1 1 0;
+  min-width: 0;
+  justify-content: center;
   font-family: var(--font-family-mono);
-  font-size: 11px;
-  color: var(--text-tertiary);
+  font-size: 10.5px;
+  font-weight: var(--fw-semibold);
   white-space: nowrap;
+  padding: 4px var(--space-2);
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.01em;
 }
-.composer-usage-bar__chip .nv-icon { flex-shrink: 0; color: var(--nv-green); }
+.composer-usage-bar__chip .nv-icon { flex-shrink: 0; font-size: 0.85em; }
+#composerSessionUsageChip {
+  background: var(--status-success-bg);
+  color: var(--nv-green);
+}
+#composerWeeklyUsageChip {
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
 .composer-usage-bar__reset {
-  color: var(--text-disabled);
   opacity: 0.85;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .composer-usage-bar__reset::before {
   content: "\00b7";
-  margin-right: var(--space-2);
+  margin-right: var(--space-1);
   opacity: 0.7;
 }
-.composer-usage-bar__chip.is-near-limit { color: var(--status-warning); }
+.composer-usage-bar__chip.is-near-limit {
+  background: var(--status-warning-bg);
+  color: var(--status-warning);
+  border-color: var(--status-warning);
+}
 @media (max-width: 760px) {
   .composer-usage-bar { display: flex; }
 }
@@ -1259,10 +1282,19 @@ body.chat-body {
     position: fixed;
     top: 0; bottom: 0; left: 0;
     width: min(300px, 84vw);
-    z-index: var(--z-overlay);
+    /* Explicit, isolated stacking context so this can never again tie or
+       lose to the scrim regardless of what z-index math elsewhere on the
+       page resolves to. z-index alone was correct, but it depends on both
+       elements sharing the same stacking context with nothing in between
+       creating a new one - isolation:isolate plus a large literal value
+       makes the drawer's paint order self-contained and unambiguous. */
+    isolation: isolate;
+    z-index: 9000;
+    background: var(--surface-raised);
     transform: translateX(-100%);
     transition: transform var(--duration-slow) var(--ease-out);
     border-right: 1px solid var(--border-default);
+    pointer-events: auto;
   }
   /* .sidebar becomes position:fixed above, which pulls it out of normal
      flow but NOT out of grid auto-placement in all engines, and the
@@ -1296,18 +1328,36 @@ body.chat-body {
   .model-badge__text { display: none; }
   .model-badge { padding: var(--space-2); }
   .model-badge__chevron { display: none; }
+  /* The model badge sits near the LEFT edge of the topbar, right after
+     the hamburger icon. Anchoring the menu to the badge itself - left:0
+     or right:0 on .model-dropdown - ties its horizontal position to
+     wherever that narrow trigger happens to sit, so on some widths it
+     still runs off one edge or the other. Anchoring to the topbar
+     instead (full-width, and already positioned correctly below any
+     banner above it) and centering the menu inside that gives it equal
+     margin on both sides no matter how narrow the device is. */
+  .chat-topbar { position: relative; }
+  /* .model-dropdown is `position: relative` by default (base rule above),
+     which makes IT the containing block for the absolutely-positioned
+     menu instead of .chat-topbar, no matter what position we set on the
+     topbar - the nearest positioned ancestor always wins. Unsetting it
+     here lets the menu's containing block fall through to .chat-topbar,
+     which is what actually centers it on the screen. */
+  .model-dropdown { position: static; }
   .model-dropdown__menu {
-    /* The model badge sits near the LEFT edge of the topbar (right after
-       the hamburger icon), not the right. Anchoring the menu with
-       right:0 made its right edge align to that narrow left-side badge,
-       so the 240px-wide menu extended further left from there - off the
-       left edge of the screen and cut off / invisible. Anchoring left:0
-       instead opens it rightward from the badge, which is where the
-       actual open space is. */
-    left: 0;
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    left: 50%;
     right: auto;
-    min-width: 240px;
+    transform: translateX(-50%) translateY(-4px) scale(0.98);
+    width: min(320px, calc(100vw - 24px));
+    min-width: 0;
     max-width: calc(100vw - 24px);
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+  }
+  .model-dropdown[data-open="true"] .model-dropdown__menu {
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 
   .composer-region {
