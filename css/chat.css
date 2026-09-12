@@ -1198,7 +1198,12 @@ body.chat-body {
     position: fixed;
     top: 0; bottom: 0; left: 0;
     width: min(300px, 84vw);
-    z-index: var(--z-overlay);
+    /* Must render above .sidebar-scrim (also var(--z-overlay)): as
+       siblings with equal z-index, the scrim comes later in the DOM
+       (see chat.html) and was painting on top of the sidebar, dimming it
+       and swallowing every tap on New Chat / search / history / model
+       selector underneath the scrim's own hit-testing. */
+    z-index: calc(var(--z-overlay) + 1);
     transform: translateX(-100%);
     transition: transform var(--duration-slow) var(--ease-out);
     border-right: 1px solid var(--border-default);
@@ -1232,9 +1237,18 @@ body.chat-body {
   .chat-empty__title { font-size: var(--fs-h3); }
 
   .chat-topbar { padding: var(--space-2) var(--space-3); }
-  .model-badge__text { display: none; }
-  .model-badge { padding: var(--space-2); }
-  .model-badge__chevron { display: none; }
+  /* Keep the model name + chevron visible on mobile — collapsing it to a
+     bare icon read as "no model selector here". Tighten the badge and
+     clamp its width so long model names ellipsis instead of overflowing
+     the topbar, instead of hiding the text outright. */
+  .model-badge { padding: var(--space-2) var(--space-3); max-width: 62vw; }
+  .model-badge__text { min-width: 0; }
+  .model-badge__name {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .model-dropdown__menu { left: auto; right: 0; min-width: 240px; max-width: calc(100vw - 24px); }
 
   .composer-region {
